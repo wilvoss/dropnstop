@@ -39,7 +39,7 @@ var app = new Vue({
       this.knifeY = -this.knifeHeight;
       this.dropCount++;
       if (this.dropCount === this.dropMaxCount) {
-        this.knifeWidth = getRandomInt(4, 20);
+        this.knifeWidth = getRandomInt(10, 20);
         this.knifeHeight = getRandomInt(this.knifeWidth, 200);
         this.knifeY = -this.knifeHeight;
         this.knifeX = getRandomInt(this.knifeWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.knifeWidth);
@@ -61,6 +61,15 @@ var app = new Vue({
           this.isSuccess = true;
         }
         this.dropTotalCount--;
+      }
+    },
+    EndGame() {
+      var result = window.confirm('Are you sure you want to quit?');
+      if (result) {
+        this.dropTotalCount = 0;
+        this.isStopped = true;
+        this.isReady = false;
+        this.isDropping = false;
       }
     },
     HandleActionButton(event) {
@@ -92,6 +101,13 @@ var app = new Vue({
       this.isStopped = false;
       this.isReady = true;
       this.ReadyStage();
+    },
+    Share() {
+      navigator.share({
+        title: "Drop 'n Stop!",
+        text: 'A game of precision.',
+        url: 'https://dropnstop.games',
+      });
     },
   },
 

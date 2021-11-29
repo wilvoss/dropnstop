@@ -61,6 +61,7 @@
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
+        <quit @click="EndGame">↦</quit>
         <knife
           :style="{transform: 'translate(' + knifeX + 'px, ' + knifeY + 'px)', width: knifeWidth + 'px', height: knifeHeight + 'px'}">
         </knife>
@@ -82,7 +83,9 @@
         </p>
         <controls class="endgame" v-if="dropTotalCount == 0">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
-            @click="RestartGame" class="action">New Game</button>
+            @click="RestartGame">New Game</button>
+          <button id="shareApp" class="action secondary"
+            style="width: 100%; position: relative; margin: 10px 0px 0px 0px;" @click="Share">Share</button>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">
             <input type="hidden" name="business" value="ZLBYQH4GJJL7J" />
             <input type="hidden" name="amount" value="1" />
@@ -90,7 +93,7 @@
             <input type="hidden" name="item_name"
               value="The purpose of Big Tent Games is to make Ad-free, tracker-free games that are fun to play and platform agnostic. " />
             <input type="hidden" name="currency_code" value="USD" />
-            <button name="submit" id="donate" class="action"
+            <button name="submit" id="donate" class="action secondary"
               style=" width: 100%; position: relative; margin: 0px;margin-top: 10px;"
               title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">Donate
             </button>

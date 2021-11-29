@@ -35,6 +35,17 @@ stage {
   margin: 0px auto;
 }
 
+quit {
+  display: block;
+  float: right;
+  width: 50px;
+  text-align: right;
+  height: 40px;
+  font-size: 1.6em;
+  padding: 0px 12px 24px 12px;
+  cursor: pointer;
+}
+
 logo {
   display: inline-block;
   position: absolute;
@@ -54,6 +65,7 @@ logo {
 }
 
 score {
+  pointer-events: none;
   display: block;
   position: absolute;
   padding: 20px;
@@ -61,7 +73,7 @@ score {
   width: calc(100% - 40px);
   text-align: center;
   max-width: 460px;
-  font-size: 2.5em;
+  font-size: 3.5em;
 }
 
 knife {
@@ -153,6 +165,11 @@ controls button {
   /* letter-spacing: 2px; */
   border-radius: 8px;
   font-family: 'Bauhaus';
+}
+
+controls button.secondary {
+  background: white;
+  color: rgb(0, 81, 173);
 }
 
 controls button:active {
