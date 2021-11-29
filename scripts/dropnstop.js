@@ -22,6 +22,7 @@ var app = new Vue({
     targetHeight: 100,
     dropMaxCount: 3,
     dropCount: 2,
+    dropTotalCount: 100,
     isSuccess: false,
     score: 0,
     knifeElement: document.getElementsByTagName('knife')[0],
@@ -38,25 +39,25 @@ var app = new Vue({
         this.knifeHeight = getRandomInt(this.knifeWidth, 200);
         this.knifeY = -this.knifeHeight;
         this.knifeX = getRandomInt(this.knifeWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.knifeWidth);
-
+        // this.r.style.setProperty('--targetX', this.knifeX + this.knifeWidth / 2 - 250 + 'px');
         this.targetHeight = getRandomInt(10, 100);
         this.targetY = getRandomInt(200 + this.knifeHeight, window.innerHeight - 120 - this.targetHeight);
         this.dropCount = 0;
       }
     },
-    DropKnife() {
-      this.knifeY = this.knifeHeight + this.targetY + this.targetHeight + 10;
-    },
     StopKnife() {
-      this.knifeElement = document.getElementsByTagName('knife')[0];
-      const kStyle = window.getComputedStyle(this.knifeElement);
-      const kMatrix = kStyle.transform;
-      const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
-      this.knifeY = kMatrixValues[5];
-      if (Number(this.knifeY) + Number(this.knifeHeight) + 10 < Number(this.targetHeight) + Number(this.targetY) && Number(this.knifeY) + Number(this.knifeHeight) + 10 > Number(this.targetY)) {
-        this.score = this.score + this.dropMaxCount - this.dropCount;
-        this.dropCount = this.dropMaxCount - 1;
-        this.isSuccess = true;
+      if (this.dropTotalCount > 0) {
+        this.knifeElement = document.getElementsByTagName('knife')[0];
+        const kStyle = window.getComputedStyle(this.knifeElement);
+        const kMatrix = kStyle.transform;
+        const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
+        this.knifeY = kMatrixValues[5];
+        if (Number(this.knifeY) + Number(this.knifeHeight) - 1 < Number(this.targetHeight) + Number(this.targetY) && Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetY)) {
+          this.score = Number(this.score) + -1 * (100 - Number(this.targetHeight) * Number(this.dropMaxCount) - Number(this.dropCount));
+          this.dropCount = this.dropMaxCount - 1;
+          this.isSuccess = true;
+        }
+        this.dropTotalCount--;
       }
     },
     HandleActionButton(event) {
@@ -71,17 +72,29 @@ var app = new Vue({
         this.isStopped = false;
         this.isReady = true;
       } else if (this.isReady) {
-        this.DropKnife();
         this.isReady = false;
         this.isDropping = true;
       }
     },
-    UpdateApp() {},
+    UpdateApp() {
+      if (this.isDropping) {
+        this.knifeY = Number(this.knifeY) + 6;
+      }
+    },
+    RestartGame() {
+      this.dropCount = this.dropMaxCount - 1;
+      this.dropTotalCount = 100;
+      this.score = 0;
+      this.isDropping = false;
+      this.isStopped = false;
+      this.isReady = true;
+      this.ReadyStage();
+    },
   },
 
   mounted() {
     this.ReadyStage();
-    this.updateInterval = window.setInterval(this.UpdateApp, 16);
+    this.updateInterval = window.setInterval(this.UpdateApp, 2);
   },
 
   computed: {},

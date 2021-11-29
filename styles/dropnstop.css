@@ -1,6 +1,12 @@
+@font-face {
+  font-family: 'Bauhaus';
+  src: url('../fonts/BAUHS93.TTF');
+}
+
 :root {
-  --appBackground: linear-gradient(hsl(148, 34%, 65%), hsl(147, 23%, 44%));
+  --appBackground: hsl(148, 34%, 65%);
   --appForeground: hsl(148, 41%, 7%);
+  --targetX: 50%;
 }
 html,
 body {
@@ -8,8 +14,12 @@ body {
   margin: 0px;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   color: var(--appForeground);
   font-family: 'Courier New', Courier, monospace;
+  background: repeating-linear-gradient(90deg, hsl(149, 28%, 41%) 0px, hsl(149, 28%, 41%) 40px, hsl(149, 28%, 38%) 40px, hsl(149, 28%, 38%) 80px);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 [v-cloak] {
@@ -21,7 +31,7 @@ stage {
   display: block;
   max-width: 500px;
   height: 100%;
-  background: var(--appBackground);
+  background: linear-gradient(90deg, hsl(148, 34%, 65%), hsl(148, 34%, 75%), hsl(148, 34%, 65%));
   margin: 0px auto;
 }
 
@@ -30,7 +40,7 @@ logo {
   position: absolute;
   mask-image: url(../images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
-  background: hsl(148, 24%, 50%);
+  background: linear-gradient(90deg, hsl(148, 34%, 60%), hsl(148, 34%, 70%), hsl(148, 34%, 60%));
   margin-top: 200px;
   width: 100%;
   max-width: 500px;
@@ -44,17 +54,24 @@ logo {
 }
 
 score {
+  display: block;
   position: absolute;
   padding: 20px;
+  font-family: 'Bauhaus';
+  font-weight: bold;
+  width: calc(100% - 40px);
+  text-align: center;
+  max-width: 460px;
+  font-size: 2.2em;
 }
 
 knife {
   position: fixed;
   display: block;
-  background: linear-gradient(rgba(255, 255, 255, 0), white);
-  transition: 550ms linear all;
-  border-bottom: 10px black solid;
-  border-radius: 0px 0px 50% 50%;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6));
+  /* transition: 2ms linear all; */
+  border-bottom: 1px black solid;
+  /* border-radius: 0px 0px 50% 50%; */
 }
 
 .stopped knife {
@@ -64,12 +81,19 @@ knife {
 target {
   position: fixed;
   display: block;
-  background: hsla(0, 0%, 100%, 0.5);
+  background: repeating-radial-gradient(circle, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.5) 25px);
+  background-position: var(--targetX);
   transition: 150ms ease-out all;
   color: white;
   text-align: center;
   width: calc(100%);
   max-width: 500px;
+  border: 1px solid;
+  border-width: 1px 0px;
+}
+
+.success target {
+  background: hsla(204, 100%, 76%, 0.5);
 }
 
 target span {
@@ -100,7 +124,7 @@ controls {
   bottom: 20px;
 }
 
-button.action {
+controls button {
   z-index: 1000;
   width: calc(50% - 30px);
   max-width: 460px;
@@ -108,22 +132,23 @@ button.action {
   position: absolute;
   height: 80px;
   right: 0px;
-  font-family: 'Courier New', Courier, monospace;
   font-size: 1.5em;
   background-color: rgb(0, 81, 173);
   color: white;
   border: none;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
+  border-radius: 8px;
+  font-family: 'Bauhaus';
 }
 
-button.action:active {
+controls button:active {
   transform: translateY(2px);
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
-button#resetButton {
+controls button#resetButton {
   /* bottom: 100px; */
   left: 0px;
   right: auto;
