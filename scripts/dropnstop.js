@@ -25,12 +25,16 @@ var app = new Vue({
     dropTotalCount: 100,
     isSuccess: false,
     score: 0,
+    showInstructions: true,
     knifeElement: document.getElementsByTagName('knife')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
   },
   methods: {
     ReadyStage() {
+      if (this.isSuccess) {
+        this.dropCount = this.dropMaxCount - 1;
+      }
       this.isSuccess = false;
       this.knifeY = -this.knifeHeight;
       this.dropCount++;
@@ -54,7 +58,6 @@ var app = new Vue({
         this.knifeY = kMatrixValues[5];
         if (Number(this.knifeY) + Number(this.knifeHeight) - 1 < Number(this.targetHeight) + Number(this.targetY) && Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetY)) {
           this.score = Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
-          this.dropCount = this.dropMaxCount - 1;
           this.isSuccess = true;
         }
         this.dropTotalCount--;

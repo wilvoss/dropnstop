@@ -66,13 +66,17 @@
         </knife>
         <target
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
-          <span>Target</span>
+          <span>+{{(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
         </target>
         <p v-if="isSuccess"><br /><br />You did it!</p>
-        <p v-if="!isSuccess">Press and hold the Drop button.<br />
-          The bullet will drop.<br />
+        <p v-if="!isSuccess && !showInstructions" @click="showInstructions = !showInstructions">
+          <br /><br />{{dropTotalCount}} drops left<br />
+        </p>
+        <p v-if="!isSuccess && showInstructions" @click="showInstructions = !showInstructions">Press and hold the Drop
+          button.<br />
+          The puck will drop.<br />
           Release the Drop button.<br />
-          The bullet will stop.<br />
+          The puck will stop.<br />
           <br />
           You have {{dropTotalCount}} more drops.
         </p>
