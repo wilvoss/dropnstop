@@ -53,7 +53,7 @@ var app = new Vue({
         const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
         this.knifeY = kMatrixValues[5];
         if (Number(this.knifeY) + Number(this.knifeHeight) - 1 < Number(this.targetHeight) + Number(this.targetY) && Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetY)) {
-          this.score = Number(this.score) + -1 * (100 - Number(this.targetHeight) * Number(this.dropMaxCount) - Number(this.dropCount));
+          this.score = Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
           this.dropCount = this.dropMaxCount - 1;
           this.isSuccess = true;
         }

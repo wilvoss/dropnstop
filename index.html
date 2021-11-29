@@ -7,13 +7,13 @@
 
     <title>Drop 'n Stop!</title>
 
-    <meta name="apple-mobile-web-app-title" content="Commoddities!" />
+    <meta name="apple-mobile-web-app-title" content="Drop 'n Stop!" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-touch-fullscreen" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#87c4a4">
 
     <meta name="keywords" content="Drop 'n Stop!, Drop, Stop, Big Tent Games, Games, Free, FullyFree" />
     <meta name="description" content="How quick are your reflexes?" />
@@ -73,7 +73,6 @@
           The bullet will drop.<br />
           Release the Drop button.<br />
           The bullet will stop.<br />
-          You have {{dropTotalCount}} drops left.
         </p>
         <controls v-if="dropTotalCount == 0" style="bottom: 200px;">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
@@ -95,7 +94,7 @@
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button id="stopButton" :class="{disabled:isStopped}" @pointerdown="HandleActionButton"
-            @pointerup="HandleActionButton" class="action">DROP</button>
+            @pointerup="HandleActionButton" class="action">DROP {{dropTotalCount}}</button>
           <button id="resetButton" :class="{disabled:!isStopped}" @pointerdown="HandleActionButton"
             class="action">RESET</button>
         </controls>
