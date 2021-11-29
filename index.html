@@ -73,6 +73,8 @@
           The bullet will drop.<br />
           Release the Drop button.<br />
           The bullet will stop.<br />
+          <br />
+          You have {{dropTotalCount}} more drops.
         </p>
         <controls v-if="dropTotalCount == 0" style="bottom: 200px;">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
@@ -94,7 +96,7 @@
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button id="stopButton" :class="{disabled:isStopped}" @pointerdown="HandleActionButton"
-            @pointerup="HandleActionButton" class="action">DROP {{dropTotalCount}}</button>
+            @pointerup="HandleActionButton" class="action">DROP</button>
           <button id="resetButton" :class="{disabled:!isStopped}" @pointerdown="HandleActionButton"
             class="action">RESET</button>
         </controls>
