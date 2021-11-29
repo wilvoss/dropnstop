@@ -80,7 +80,7 @@
           <br />
           You have {{dropTotalCount}} more drops.
         </p>
-        <controls v-if="dropTotalCount == 0" style="bottom: 200px;">
+        <controls class="endgame" v-if="dropTotalCount == 0">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
             @click="RestartGame" class="action">New Game</button>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">

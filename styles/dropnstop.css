@@ -123,6 +123,18 @@ controls {
   bottom: 20px;
 }
 
+controls.endgame {
+  bottom: auto;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: stretch;
+  height: 100%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
 controls button {
   z-index: 1000;
   width: calc(50% - 30px);
