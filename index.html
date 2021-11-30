@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html itemtype="http://schema.org/VideoGame" lang="en">
 
   <head>
     <meta charset="utf-8" />
@@ -13,14 +13,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#87c4a4">
+    <meta name="theme-color" content="#000000">
 
     <meta name="keywords" content="Drop 'n Stop!, Drop, Stop, Big Tent Games, Games, Free, FullyFree" />
-    <meta name="description" content="How quick are your reflexes?" />
+    <meta name="description" content="The puck stops here." />
 
+    <meta name="twitter:card" content="summary_large_image">
+    </meta>
     <meta property="og:title" content="Drop 'n Stop!" />
     <meta property="og:site_name" content="Drop 'n Stop" />
-    <meta property="og:description" content="How quick are your reflexes?" />
+    <meta property="og:description" content="The puck stops here." />
     <meta property="og:type" content="photo" />
     <meta property="og:url" content="https://dropnstop.games" />
     <meta property="og:image" content="https://dropnstop.games/images/dropnstop_og.png" />
@@ -79,7 +81,7 @@
           Release the Drop button.<br />
           The puck will stop.<br />
           <br />
-          You have {{dropTotalCount}} more drops.
+          You have {{dropTotalCount}} drops left.
         </p>
         <controls class="endgame" v-if="dropTotalCount == 0">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
