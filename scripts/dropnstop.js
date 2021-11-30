@@ -40,7 +40,7 @@ var app = new Vue({
       this.dropCount++;
       if (this.dropCount === this.dropMaxCount) {
         this.knifeWidth = getRandomInt(10, 20);
-        this.knifeHeight = getRandomInt(this.knifeWidth, 200);
+        this.knifeHeight = getRandomInt(60, 200);
         this.knifeY = -this.knifeHeight;
         this.knifeX = getRandomInt(this.knifeWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.knifeWidth);
         this.targetHeight = getRandomInt(10, 100);
@@ -56,11 +56,15 @@ var app = new Vue({
         const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
         this.knifeY = kMatrixValues[5];
         if (Number(this.knifeY) + Number(this.knifeHeight) + 1 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetY)) {
-          this.score = Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
+          this.score = 30 + Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
           this.isSuccess = true;
         }
         this.dropTotalCount--;
       }
+    },
+    ToggleInstructions() {
+      this.showInstructions = !this.showInstructions;
+      localStorage.setItem('showInstructions', this.showInstructions);
     },
     EndGame() {
       var result = window.confirm('Are you sure you want to quit?');
@@ -101,6 +105,9 @@ var app = new Vue({
       this.isReady = true;
       this.ReadyStage();
     },
+    GetSettings() {
+      this.showInstructions = localStorage.getItem('showInstructions') == 'false' ? false : true;
+    },
     Share() {
       navigator.share({
         title: "Drop 'n Stop!",
@@ -111,8 +118,9 @@ var app = new Vue({
   },
 
   mounted() {
+    this.GetSettings();
     this.ReadyStage();
-    this.updateInterval = window.setInterval(this.UpdateApp, 2);
+    this.updateInterval = window.setInterval(this.UpdateApp, 1);
   },
 
   computed: {},

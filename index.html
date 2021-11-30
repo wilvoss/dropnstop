@@ -60,6 +60,7 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
+        <version>1.43</version>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
@@ -69,13 +70,13 @@
         </knife>
         <target
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
-          <span>+{{(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
+          <span>+{{(30 + 100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
         </target>
         <p v-if="isSuccess"><br /><br />You did it!</p>
-        <p v-if="!isSuccess && !showInstructions" @click="showInstructions = !showInstructions">
+        <p v-if="!isSuccess && !showInstructions" @click="ToggleInstructions">
           <br /><br />{{dropTotalCount}} drops left<br />
         </p>
-        <p v-if="!isSuccess && showInstructions" @click="showInstructions = !showInstructions">Press and hold the Drop
+        <p v-if="!isSuccess && showInstructions" @click="ToggleInstructions">Press and hold the Drop
           button.<br />
           The puck will drop.<br />
           Release the Drop button.<br />
@@ -100,14 +101,12 @@
               title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">Donate
             </button>
           </form>
-
-
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button id="stopButton" :class="{disabled:isStopped}" @pointerdown="HandleActionButton"
             @pointerup="HandleActionButton" class="action">DROP</button>
           <button id="resetButton" :class="{disabled:!isStopped}" @pointerdown="HandleActionButton"
-            class="action">RESET</button>
+            class="action">NEXT</button>
         </controls>
       </stage>
     </app>

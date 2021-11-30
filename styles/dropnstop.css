@@ -50,6 +50,13 @@ quit {
   cursor: pointer;
 }
 
+version {
+  display: block;
+  position: fixed;
+  left: 10px;
+  top: 10px;
+}
+
 logo {
   display: inline-block;
   position: absolute;
@@ -83,7 +90,7 @@ score {
 knife {
   position: fixed;
   display: block;
-  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.6));
+  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.4));
   /* transition: 2ms linear all; */
   border-bottom: 1px black solid;
   /* border-radius: 0px 0px 50% 50%; */
