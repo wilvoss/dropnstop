@@ -60,7 +60,7 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.43</version>
+        <version>1.44</version>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
@@ -70,7 +70,7 @@
         </knife>
         <target
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
-          <span>+{{(30 + 100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
+          <span>+{{30 +(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
         </target>
         <p v-if="isSuccess"><br /><br />You did it!</p>
         <p v-if="!isSuccess && !showInstructions" @click="ToggleInstructions">
@@ -88,7 +88,7 @@
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
             @click="RestartGame">New Game</button>
           <button id="shareApp" class="action secondary"
-            style="width: 100%; position: relative; margin: 10px 0px 0px 0px;" @click="Share">Share</button>
+            style="width: 100%; position: relative; margin: 10px 0px 0px 0px;" @click="Share">Share App</button>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">
             <input type="hidden" name="business" value="ZLBYQH4GJJL7J" />
             <input type="hidden" name="amount" value="1" />
