@@ -87,6 +87,25 @@ score {
   font-size: 3.5em;
 }
 
+stats {
+  display: flex;
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  max-width: 500px;
+  align-content: center;
+}
+stat {
+  display: block;
+  width: 260px;
+}
+stat span {
+  float: right;
+}
+
 knife {
   position: fixed;
   display: block;
@@ -151,11 +170,11 @@ controls.endgame {
   display: flex;
   flex-direction: column;
   align-content: center;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: stretch;
   height: 100%;
   margin-top: 0px;
-  margin-bottom: 0px;
+  padding-bottom: 20px;
 }
 
 controls button {

@@ -60,7 +60,7 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.44</version>
+        <version>1.47</version>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
@@ -72,18 +72,31 @@
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
           <span>+{{30 +(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
         </target>
-        <p v-if="isSuccess"><br /><br />You did it!</p>
-        <p v-if="!isSuccess && !showInstructions" @click="ToggleInstructions">
-          <br /><br />{{dropTotalCount}} drops left<br />
-        </p>
-        <p v-if="!isSuccess && showInstructions" @click="ToggleInstructions">Press and hold the Drop
-          button.<br />
-          The puck will drop.<br />
-          Release the Drop button.<br />
-          The puck will stop.<br />
-          <br />
-          You have {{dropTotalCount}} drops left.
-        </p>
+        <info v-if="dropTotalCount > 0">
+          <p v-if="isSuccess"><br /><br />You did it!</p>
+          <p v-if="!isSuccess && !showInstructions" @click="ToggleInstructions">
+            <br /><br />{{dropTotalCount}} drops left<br />
+          </p>
+          <p v-if="!isSuccess && showInstructions" @click="ToggleInstructions">Press and hold the Drop
+            button.<br />
+            The puck will drop.<br />
+            Release the Drop button.<br />
+            The puck will stop.<br />
+            <br />
+            You have {{dropTotalCount}} drops left.
+          </p>
+        </info>
+        <stats v-if="dropTotalCount == 0">
+          <stat>1st attempt hits: <span>{{GetHitsOn(0)}}</span></stat>
+          <stat>2nd attempt hits: <span>{{GetHitsOn(1)}}</span></stat>
+          <stat>3rd attempt hits: <span>{{GetHitsOn(2)}}</span></stat>
+          <stat>Misses: <span>{{(GetMisses() * 3) + GetHitsOn(1) + (GetHitsOn(2) * 2)}}</span></stat>
+          <stat>Best score: <span>{{Intl.NumberFormat('en-US').format(GetHighestPossibleScore())}}</span>
+          </stat>
+          <stat v-if="score > 0">Percent of best:
+            <span>{{Math.round(100 * score/GetHighestPossibleScore()) + '%'}}</span>
+          </stat>
+        </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
           <button id="refreshApp" class="action" style="width: 100%; position: relative; margin: 0px;"
             @click="RestartGame">New Game</button>
@@ -97,7 +110,7 @@
               value="The purpose of Big Tent Games is to make Ad-free, tracker-free games that are fun to play and platform agnostic. " />
             <input type="hidden" name="currency_code" value="USD" />
             <button name="submit" id="donate" class="action secondary"
-              style=" width: 100%; position: relative; margin: 0px;margin-top: 10px;"
+              style=" width: 100%; position: relative; margin: 120px 0px; margin-top: 10px;"
               title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">Donate
             </button>
           </form>
@@ -111,6 +124,7 @@
       </stage>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
+    <script src="models/ResultObject.js" type='text/javascript'></script>
     <script src="scripts/dropnstop.js" type='text/javascript'></script>
   </body>
 

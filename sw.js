@@ -1,9 +1,9 @@
 // the cache version gets updated every time there is a new deployment
-const CACHE_VERSION = 1.44;
+const CACHE_VERSION = 1.47;
 const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 
 // these are the routes we are going to cache for offline support
-const cacheFiles = ['images/icon180.png', 'fonts/BAUHS93.TTF', 'images/big_tent_logo.svg', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'styles/dropnstop.css', 'scripts/dropnstop.js', 'index.html'];
+const cacheFiles = ['models/ResultObject.js', 'images/icon180.png', 'fonts/BAUHS93.TTF', 'images/big_tent_logo.svg', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'styles/dropnstop.css', 'scripts/dropnstop.js', 'index.html'];
 
 // on activation we clean up the previously registered service workers
 self.addEventListener('activate', (evt) =>
