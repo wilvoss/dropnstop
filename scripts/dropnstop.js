@@ -1,4 +1,5 @@
 /// <reference path="../models/ResultObject.js" />
+/// <reference path="../models/ModeObject.js" />
 
 // if (!UseDebug) {
 Vue.config.devtools = false;
@@ -16,7 +17,7 @@ var app = new Vue({
     isReady: true,
     knifeX: 0,
     knifeY: 0,
-    knifeWidth: 10,
+    knifeWidth: 20,
     knifeHeight: 100,
     targetX: 0,
     targetY: 0,
@@ -28,7 +29,9 @@ var app = new Vue({
     isSuccess: false,
     score: 0,
     showInstructions: true,
+    showSettings: false,
     results: [],
+    modes: Modes,
     knifeElement: document.getElementsByTagName('knife')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
@@ -42,8 +45,8 @@ var app = new Vue({
       this.knifeY = -this.knifeHeight;
       this.dropCount++;
       if (this.dropCount === this.dropMaxCount) {
-        this.knifeWidth = getRandomInt(10, 20);
-        this.knifeHeight = getRandomInt(60, 200);
+        // this.knifeWidth = getRandomInt(10, 20);
+        // this.knifeHeight = getRandomInt(60, 200);
         this.knifeY = -this.knifeHeight;
         this.knifeX = getRandomInt(this.knifeWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.knifeWidth);
         this.targetHeight = getRandomInt(20, 100);
@@ -88,6 +91,14 @@ var app = new Vue({
 
         this.dropTotalCount--;
       }
+    },
+    SelectMode(incoming) {
+      this.modes.forEach((mode) => {
+        mode.selected = false;
+      });
+      incoming.selected = true;
+      this.knifeHeight = incoming.height;
+      this.knifeWidth = incoming.width;
     },
     ToggleInstructions() {
       this.showInstructions = !this.showInstructions;

@@ -31,12 +31,81 @@ body {
   opacity: 0;
 }
 
-stage {
+h1 {
+  margin-top: 100px;
+  font-family: 'Bauhaus';
+}
+
+stage,
+settings {
   display: block;
   max-width: 500px;
   height: 100%;
   background: hsl(148, 34%, 65%);
   margin: 0px auto;
+}
+
+settingsbutton {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: left;
+  align-items: start;
+  position: absolute;
+  font-size: 1.4em;
+  padding-left: 10px;
+  z-index: 1001;
+  cursor: pointer;
+}
+
+settings {
+  position: absolute;
+  width: 100%;
+  transform: translateY(100%);
+  pointer-events: none;
+  opacity: 0;
+  top: 0px;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-left: calc((100vw / 2) - 250px);
+}
+
+settings.show {
+  pointer-events: all;
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+settings modes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  width: 100%;
+}
+
+settings modes mode {
+  display: flex;
+  align-items: flex-end;
+  cursor: pointer;
+  /* display: block; */
+  width: 8%;
+  border: 1px dashed white;
+  justify-content: center;
+  border-radius: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+settings modes mode.selected {
+  border-color: black;
 }
 
 quit {
@@ -115,6 +184,37 @@ knife {
   /* transition: 2ms linear all; */
   border-bottom: 1px black solid;
   /* border-radius: 0px 0px 50% 50%; */
+}
+
+settings knife {
+  width: 20px;
+  height: 40px;
+  position: relative;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  background: linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.4));
+  font-family: 'Bauhaus';
+  color: rgb(118, 118, 118);
+  transition: 150ms ease-out all;
+  cursor: pointer;
+}
+
+settings .selected knife {
+  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.4));
+  color: var(--appForeground);
+}
+
+settings knife value {
+  transform: translateY(26px);
+  display: block;
+  position: absolute;
+}
+
+settings .selected knife value {
+  color: (--appForeground);
 }
 
 .stopped knife {
@@ -201,7 +301,8 @@ controls button.secondary {
   color: rgb(0, 81, 173);
 }
 
-controls button:active {
+controls button:active,
+controls button:focus {
   transform: translateY(2px);
   box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
 }
@@ -216,4 +317,10 @@ controls button#resetButton {
 :disabled {
   pointer-events: none;
   opacity: 0.3;
+}
+
+@media only screen and (max-width: 500px) {
+  settings {
+    margin: auto;
+  }
 }

@@ -60,7 +60,10 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.48</version>
+        <version>1.49</version>
+        <settingsbutton @click="showSettings = !showSettings">
+          ⚙
+        </settingsbutton>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
@@ -124,14 +127,25 @@
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button id="stopButton" :class="{disabled:isStopped}" @pointerdown="HandleActionButton"
-            @pointerleave="HandleActionButton" class="action">DROP</button>
+            @pointerup="HandleActionButton" class="action">DROP</button>
           <button id="resetButton" :class="{disabled:!isStopped}" @pointerdown="HandleActionButton"
             class="action">NEXT</button>
         </controls>
       </stage>
+      <settings :class="{show: showSettings}">
+        <h1>Game mode</h1>
+        <modes>
+          <mode v-for="mode in modes" @click="SelectMode(mode)" :class="{selected: mode.selected}">
+            <knife :style="{height: mode.height + 'px', width: mode.width + 'px'}">
+              <value>{{mode.name}}</value>
+            </knife>
+          </mode>
+        </modes>
+      </settings>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
     <script src="models/ResultObject.js" type='text/javascript'></script>
+    <script src="models/ModeObject.js" type='text/javascript'></script>
     <script src="scripts/dropnstop.js" type='text/javascript'></script>
   </body>
 
