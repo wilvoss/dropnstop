@@ -23,6 +23,7 @@ var app = new Vue({
     targetY: 0,
     targetWidth: 100,
     targetHeight: 100,
+    speed: 6,
     dropMaxCount: 3,
     dropCount: 2,
     dropTotalCount: 100,
@@ -32,7 +33,7 @@ var app = new Vue({
     showSettings: false,
     results: [],
     modes: Modes,
-    currentMode: Modes[0],
+    currentMode: Modes[1],
     knifeElement: document.getElementsByTagName('knife')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
@@ -101,6 +102,7 @@ var app = new Vue({
       this.knifeHeight = incoming.height;
       this.knifeWidth = incoming.width;
       localStorage.setItem('mode', JSON.stringify(incoming));
+      this.speed = incoming.speed;
       this.currentMode = incoming;
       this.RestartGame();
     },
@@ -176,7 +178,7 @@ var app = new Vue({
     },
     UpdateApp() {
       if (this.isDropping) {
-        this.knifeY = Number(this.knifeY) + 6;
+        this.knifeY = Number(this.knifeY) + this.speed;
       }
     },
     RestartGame() {
@@ -198,6 +200,8 @@ var app = new Vue({
             this.SelectMode(mode);
           }
         });
+      } else {
+        this.SelectMode(Modes[1]);
       }
     },
     Share() {
