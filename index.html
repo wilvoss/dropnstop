@@ -60,8 +60,8 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.49</version>
-        <settingsbutton @click="showSettings = !showSettings">
+        <version>1.50</version>
+        <settingsbutton @click="showSettings = !showSettings" v-if="dropTotalCount == 100 || dropTotalCount == 0">
           ⚙
         </settingsbutton>
         <logo>
@@ -91,6 +91,7 @@
           </p>
         </info>
         <stats v-if="dropTotalCount == 0">
+          <stat>Difficulty: <span>{{currentMode.name}}</span></stat>
           <stat>Best possible: <span>{{Intl.NumberFormat('en-US').format(GetHighestPossibleScore())}}</span>
           </stat>
           <stat v-if="score > 0">Percent of best:
@@ -101,10 +102,10 @@
           <stat>3rd attempt hits: <span>{{GetHitsOn(2)}}</span></stat>
           <stat>Misses: <span>{{GetMisses()}}</span></stat>
           <stat>Missed
-            above:<span>{{GetDeltaAvgs('above') + '%'}}</span>
+            above:<span>{{GetMissedByDirection('above') + '%'}}</span>
           </stat>
           <stat>Missed
-            below:<span>{{GetDeltaAvgs('below') + '%'}}</span>
+            below:<span>{{GetMissedByDirection('below') + '%'}}</span>
           </stat>
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">

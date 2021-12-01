@@ -32,6 +32,7 @@ var app = new Vue({
     showSettings: false,
     results: [],
     modes: Modes,
+    currentMode: Modes[0],
     knifeElement: document.getElementsByTagName('knife')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
@@ -99,6 +100,9 @@ var app = new Vue({
       incoming.selected = true;
       this.knifeHeight = incoming.height;
       this.knifeWidth = incoming.width;
+      localStorage.setItem('mode', JSON.stringify(incoming));
+      this.currentMode = incoming;
+      this.RestartGame();
     },
     ToggleInstructions() {
       this.showInstructions = !this.showInstructions;
@@ -130,7 +134,7 @@ var app = new Vue({
       });
       return highest;
     },
-    GetDeltaAvgs(direction) {
+    GetMissedByDirection(direction) {
       let number = 0;
       this.results.forEach((result) => {
         for (let x = 0; x < result.deltas.length; x++) {
@@ -187,6 +191,14 @@ var app = new Vue({
     },
     GetSettings() {
       this.showInstructions = localStorage.getItem('showInstructions') == 'false' ? false : true;
+      if (localStorage.getItem('mode') != null) {
+        var incoming = new ModeObject(JSON.parse(localStorage.getItem('mode')));
+        this.modes.forEach((mode) => {
+          if (mode.name == incoming.name) {
+            this.SelectMode(mode);
+          }
+        });
+      }
     },
     Share() {
       navigator.share({
