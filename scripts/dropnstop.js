@@ -158,18 +158,18 @@ var app = new Vue({
         this.isDropping = false;
       }
     },
-    HandleActionButton(event) {
+    HandleActionButton(event, action) {
       event.stopPropagation();
       event.preventDefault();
-      if (this.isDropping) {
+      if (this.isDropping && action == 'stop') {
         this.StopKnife();
         this.isDropping = false;
         this.isStopped = true;
-      } else if (this.isStopped) {
+      } else if (this.isStopped && action == 'next') {
         this.ReadyStage();
         this.isStopped = false;
         this.isReady = true;
-      } else if (this.isReady) {
+      } else if (this.isReady && action == 'drop') {
         this.isReady = false;
         this.isDropping = true;
       }

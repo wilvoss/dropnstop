@@ -134,6 +134,7 @@ version {
   position: fixed;
   left: 10px;
   bottom: 10px;
+  font-size: 0.8em;
 }
 
 logo {
@@ -234,7 +235,7 @@ settings .selected knife value {
 target {
   position: fixed;
   display: flex;
-  background: hsla(0, 0%, 0%, 0.15);
+  background: repeating-radial-gradient(circle, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.5) 25px);
   background-position: var(--targetX);
   transition: 150ms ease-out all;
   color: white;
@@ -243,8 +244,8 @@ target {
   max-width: 500px;
   border: 1px solid;
   border-width: 1px 0px;
-  align-items: center;
-  align-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
   justify-content: center;
 }
 
@@ -254,6 +255,7 @@ target {
 
 target value {
   display: block;
+  transform: translateY(-20px);
 }
 
 p {

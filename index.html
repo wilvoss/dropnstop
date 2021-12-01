@@ -60,7 +60,7 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.51</version>
+        <version>1.52</version>
         <settingsbutton @click="showSettings = !showSettings" v-if="dropTotalCount == 100 || dropTotalCount == 0">
           {{ showSettings ? '✕' : '⚙' }}
         </settingsbutton>
@@ -73,8 +73,7 @@
         </knife>
         <target v-if="dropTotalCount > 0"
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
-          <value> {{dropCount == 0 ? '1st attempt' : dropCount == 1 ? '2nd attempt' : '3rd attempt'}} = {{30 +(100 -
-            Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</value>
+          <value> +{{30 +(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</value>
         </target>
         <info v-if="dropTotalCount > 0">
           <p v-if="isSuccess"><br /><br />You did it!</p>
@@ -127,9 +126,11 @@
           </form>
         </controls>
         <controls v-if="dropTotalCount > 0">
-          <button id="stopButton" :disabled="isStopped" @pointerdown="HandleActionButton"
-            @pointerup="HandleActionButton" class="action">DROP</button>
-          <button id="resetButton" :disabled="!isStopped" @pointerdown="HandleActionButton" class="action">NEXT</button>
+          <button id="stopButton" :disabled="isStopped" @pointerdown="HandleActionButton(event, 'drop')"
+            @pointerup="HandleActionButton(event, 'stop')" @pointerleave="HandleActionButton(event, 'stop')"
+            class="action">DROP</button>
+          <button id="resetButton" :disabled="!isStopped" @pointerdown="HandleActionButton(event, 'next')"
+            class="action">NEXT</button>
         </controls>
       </stage>
       <settings :class="{show: showSettings}">
