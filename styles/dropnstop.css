@@ -52,7 +52,7 @@ settingsbutton {
   justify-content: left;
   align-items: start;
   position: absolute;
-  font-size: 1.4em;
+  font-size: 2em;
   padding-left: 10px;
   z-index: 1001;
   cursor: pointer;
@@ -82,6 +82,17 @@ settings.show {
   transform: translateY(0px);
 }
 
+settings a {
+  text-decoration: none;
+  color: hsla(273, 100%, 50%, 1);
+}
+
+settings img {
+  width: 50%;
+  margin: 0px auto;
+  display: block;
+}
+
 settings modes {
   display: flex;
   flex-direction: row;
@@ -95,17 +106,16 @@ settings modes mode {
   display: flex;
   align-items: flex-end;
   cursor: pointer;
-  /* display: block; */
+  border-radius: 8px 8px 0px 0px;
   width: 8%;
-  border: 1px dashed white;
   justify-content: center;
-  border-radius: 8px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  background: rgb(240, 240, 240);
 }
 
 settings modes mode.selected {
-  border-color: black;
+  background: hsl(148, 50%, 75%);
 }
 
 quit {
@@ -114,7 +124,7 @@ quit {
   width: 50px;
   text-align: right;
   height: 40px;
-  font-size: 1.6em;
+  font-size: 2em;
   padding: 0px 12px 24px 12px;
   cursor: pointer;
 }
@@ -180,7 +190,7 @@ stat span {
 knife {
   position: fixed;
   display: block;
-  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.4));
+  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.6));
   /* transition: 2ms linear all; */
   border-bottom: 1px black solid;
   /* border-radius: 0px 0px 50% 50%; */
@@ -195,7 +205,7 @@ settings knife {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  background: linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.4));
+  background: linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.3));
   font-family: 'Bauhaus';
   color: rgb(118, 118, 118);
   transition: 150ms ease-out all;
@@ -203,12 +213,12 @@ settings knife {
 }
 
 settings .selected knife {
-  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.4));
+  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.6));
   color: var(--appForeground);
 }
 
 settings knife value {
-  transform: translateY(26px);
+  transform: translateY(29px);
   display: block;
   position: absolute;
 }
@@ -322,5 +332,9 @@ controls button#resetButton {
 @media only screen and (max-width: 500px) {
   settings {
     margin: auto;
+  }
+  settingsbutton,
+  quit {
+    font-size: 2em;
   }
 }
