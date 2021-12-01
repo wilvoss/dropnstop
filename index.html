@@ -60,17 +60,18 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <version>1.47</version>
+        <version>1.48</version>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
-        <quit @click="EndGame">↦</quit>
-        <knife
+        <quit v-if="dropTotalCount > 0" @click="EndGame">↦</quit>
+        <knife v-if="dropTotalCount > 0"
           :style="{transform: 'translate(' + knifeX + 'px, ' + knifeY + 'px)', width: knifeWidth + 'px', height: knifeHeight + 'px'}">
         </knife>
-        <target
+        <target v-if="dropTotalCount > 0"
           :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', width: targetWidth + '%', height: targetHeight + 'px'}">
-          <span>+{{30 +(100 - Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</span>
+          <value> {{dropCount == 0 ? '1st attempt' : dropCount == 1 ? '2nd attempt' : '3rd attempt'}} = {{30 +(100 -
+            Number(targetHeight)) * (Number(dropMaxCount) - Number(dropCount))}}</value>
         </target>
         <info v-if="dropTotalCount > 0">
           <p v-if="isSuccess"><br /><br />You did it!</p>
@@ -87,14 +88,20 @@
           </p>
         </info>
         <stats v-if="dropTotalCount == 0">
-          <stat>1st attempt hits: <span>{{GetHitsOn(0)}}</span></stat>
-          <stat>2nd attempt hits: <span>{{GetHitsOn(1)}}</span></stat>
-          <stat>3rd attempt hits: <span>{{GetHitsOn(2)}}</span></stat>
-          <stat>Misses: <span>{{(GetMisses() * 3) + GetHitsOn(1) + (GetHitsOn(2) * 2)}}</span></stat>
-          <stat>Best score: <span>{{Intl.NumberFormat('en-US').format(GetHighestPossibleScore())}}</span>
+          <stat>Best possible: <span>{{Intl.NumberFormat('en-US').format(GetHighestPossibleScore())}}</span>
           </stat>
           <stat v-if="score > 0">Percent of best:
             <span>{{Math.round(100 * score/GetHighestPossibleScore()) + '%'}}</span>
+          </stat>
+          <stat>1st attempt hits: <span>{{GetHitsOn(0)}}</span></stat>
+          <stat>2nd attempt hits: <span>{{GetHitsOn(1)}}</span></stat>
+          <stat>3rd attempt hits: <span>{{GetHitsOn(2)}}</span></stat>
+          <stat>Misses: <span>{{GetMisses()}}</span></stat>
+          <stat>Missed
+            above:<span>{{GetDeltaAvgs('above') + '%'}}</span>
+          </stat>
+          <stat>Missed
+            below:<span>{{GetDeltaAvgs('below') + '%'}}</span>
           </stat>
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
@@ -117,7 +124,7 @@
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button id="stopButton" :class="{disabled:isStopped}" @pointerdown="HandleActionButton"
-            @pointerup="HandleActionButton" class="action">DROP</button>
+            @pointerleave="HandleActionButton" class="action">DROP</button>
           <button id="resetButton" :class="{disabled:!isStopped}" @pointerdown="HandleActionButton"
             class="action">NEXT</button>
         </controls>

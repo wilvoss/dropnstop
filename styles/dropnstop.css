@@ -54,7 +54,7 @@ version {
   display: block;
   position: fixed;
   left: 10px;
-  top: 10px;
+  bottom: 10px;
 }
 
 logo {
@@ -104,6 +104,8 @@ stat {
 }
 stat span {
   float: right;
+  font-family: 'AlphaSlab';
+  margin-top: -2px;
 }
 
 knife {
@@ -121,8 +123,8 @@ knife {
 
 target {
   position: fixed;
-  display: block;
-  background: repeating-radial-gradient(circle, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.5) 25px);
+  display: flex;
+  background: hsla(0, 0%, 0%, 0.15);
   background-position: var(--targetX);
   transition: 150ms ease-out all;
   color: white;
@@ -131,20 +133,17 @@ target {
   max-width: 500px;
   border: 1px solid;
   border-width: 1px 0px;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 .success target {
   background: hsla(204, 100%, 76%, 0.5);
 }
 
-target span {
+target value {
   display: block;
-  margin: 100px 20px;
-  margin-top: -20px;
-  position: absolute;
-  width: calc(100% - 40px);
-  max-width: 460px;
-  text-align: center;
 }
 
 p {

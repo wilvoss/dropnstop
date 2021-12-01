@@ -46,9 +46,10 @@ var app = new Vue({
         this.knifeHeight = getRandomInt(60, 200);
         this.knifeY = -this.knifeHeight;
         this.knifeX = getRandomInt(this.knifeWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.knifeWidth);
-        this.targetHeight = getRandomInt(10, 100);
+        this.targetHeight = getRandomInt(20, 100);
         this.targetY = getRandomInt(200 + this.knifeHeight, window.innerHeight - 120 - this.targetHeight);
         this.dropCount = 0;
+        this.results.push(new ResultObject(this.dropTotalCount));
       }
     },
     StopKnife() {
@@ -58,28 +59,33 @@ var app = new Vue({
         const kMatrix = kStyle.transform;
         const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
         this.knifeY = kMatrixValues[5];
+
         let gain = 30 + Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
+
         if (Number(this.knifeY) + Number(this.knifeHeight) + 1 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetY)) {
           this.score = gain;
           this.isSuccess = true;
         }
 
-        if (this.isSuccess || this.dropCount == 2) {
-          this.results.push(
-            new ResultObject({
-              count: this.dropTotalCount,
-              attempts: this.dropCount,
-              success: this.isSuccess,
-              value: gain,
-              ky: this.knifeY,
-              kx: this.knifeX,
-              kh: this.knifeHeight,
-              ty: this.targetY,
-              th: this.targetHeight,
-            }),
-          );
-          log(this.results[this.results.length - 1].success);
+        let currentResult = this.results[this.results.length - 1];
+
+        if (Number(this.knifeY) + Number(this.knifeHeight) + 1 > Number(this.targetHeight) + Number(this.targetY) + 2) {
+          currentResult.deltas.push(Number(this.targetHeight) + Number(this.targetY) + 2 - Number(this.knifeY) + Number(this.knifeHeight) + 1);
+        } else if (Number(this.knifeY) + Number(this.knifeHeight) + 1 < Number(this.targetY)) {
+          currentResult.deltas.push(Number(this.knifeY) + Number(this.knifeHeight) + 1 - Number(this.targetY));
         }
+        if (this.isSuccess || this.dropCount == 2) {
+          currentResult.count = this.dropTotalCount;
+          currentResult.attempts = this.dropCount;
+          currentResult.success = this.isSuccess;
+          currentResult.value = gain;
+          currentResult.ky = this.knifeY;
+          currentResult.kx = this.knifeX;
+          currentResult.kh = this.knifeHeight;
+          currentResult.ty = this.targetY;
+          currentResult.th = this.targetHeight;
+        }
+
         this.dropTotalCount--;
       }
     },
@@ -99,19 +105,34 @@ var app = new Vue({
     GetMisses() {
       let misscount = 0;
       this.results.forEach((result) => {
-        if (!result.success) {
-          misscount++;
-        }
+        misscount = misscount + result.deltas.length;
       });
       return misscount;
     },
     GetHighestPossibleScore() {
       let highest = 0;
       this.results.forEach((result) => {
-        let value = 30 + (100 - Number(result.th)) * 3;
-        highest = highest + value;
+        if (result.th != undefined) {
+          let value = 30 + (100 - Number(result.th)) * 3;
+          highest = highest + value;
+        }
       });
       return highest;
+    },
+    GetDeltaAvgs(direction) {
+      let number = 0;
+      this.results.forEach((result) => {
+        for (let x = 0; x < result.deltas.length; x++) {
+          const delta = result.deltas[x];
+          if (delta > 0 && direction == 'below') {
+            number++;
+          }
+          if (delta < 0 && direction == 'above') {
+            number++;
+          }
+        }
+      });
+      return Math.round((number / this.GetMisses()) * 100);
     },
     EndGame() {
       var confirmed = window.confirm('Are you sure you want to quit?');
