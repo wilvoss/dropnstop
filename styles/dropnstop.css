@@ -44,6 +44,9 @@ settings {
   background: hsl(148, 34%, 65%);
   margin: 0px auto;
 }
+stage {
+  box-shadow: 0px 0px 40px black;
+}
 
 settingsbutton {
   width: 50px;
