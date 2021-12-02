@@ -207,7 +207,7 @@ var app = new Vue({
     Share() {
       navigator.share({
         title: "Drop 'n Stop!",
-        text: 'A game of precision.',
+        text: 'The puck stops here.',
         url: 'https://dropnstop.games',
       });
     },
