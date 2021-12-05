@@ -1,9 +1,9 @@
 // the cache version gets updated every time there is a new deployment
-const CACHE_VERSION = 1.53;
+const CACHE_VERSION = 1.55;
 const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 
 // these are the routes we are going to cache for offline support
-const cacheFiles = ['models/ResultObject.js', 'images/icon180.png', 'fonts/BAUHS93.TTF', 'images/big_tent_logo.svg', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'styles/dropnstop.css', 'scripts/dropnstop.js', 'index.html'];
+const cacheFiles = ['/', '', 'manifest.webmanifest', 'favicon.png', 'favicon-16x16.png', 'models/ModeObject.js', 'fonts/AlfaSlabOne-Regular.ttf', 'images/icon512.png', 'images/icon192.png', 'images/icon180.png', 'images/icon120.png', 'models/ResultObject.js', 'fonts/BAUHS93.TTF', 'images/big_tent_logo.svg', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'styles/dropnstop.css', 'scripts/dropnstop.js', 'index.html'];
 
 // on activation we clean up the previously registered service workers
 self.addEventListener('activate', (evt) =>
@@ -29,26 +29,11 @@ self.addEventListener('install', (evt) =>
   ),
 );
 
-// fetch the resource from the network
-const fromNetwork = (request, timeout) =>
-  new Promise((fulfill, reject) => {
-    const timeoutId = setTimeout(reject, timeout);
-    fetch(request).then((response) => {
-      clearTimeout(timeoutId);
-      fulfill(response);
-      update(request);
-    }, reject);
-  });
-
-// fetch the resource from the browser cache
-const fromCache = (request) => caches.open(CURRENT_CACHE).then((cache) => cache.match(request).then((matching) => matching || cache.match('/offline/')));
-
-// cache the current page to make it available for offline
-const update = (request) => caches.open(CURRENT_CACHE).then((cache) => fetch(request).then((response) => cache.put(request, response)));
-
-// general strategy when making a request (eg if online try to fetch it
-// from the network with a timeout, if something fails serve from cache)
-self.addEventListener('fetch', (evt) => {
-  evt.respondWith(fromNetwork(evt.request, 10000).catch(() => fromCache(evt.request)));
-  evt.waitUntil(update(evt.request));
+// fetch cache first, but use network if cache fails
+self.addEventListener('fetch', function (event) {
+  event.respondWith(
+    caches.match(event.request).then(function (response) {
+      return response || fetch(event.request);
+    }),
+  );
 });
