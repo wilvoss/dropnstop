@@ -404,8 +404,17 @@ controls.endgame button {
   opacity: 0.3;
 }
 
+.browseronly {
+  display: none;
+}
+
 @media only screen and (max-width: 500px) {
   modal {
     margin: auto;
+  }
+}
+@media (display-mode: standalone) {
+  .browseronly {
+    display: block;
   }
 }

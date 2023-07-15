@@ -111,9 +111,8 @@
           </stat>
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
-          <button @click="RestartGame">New
-            Game</button>
-          <button class="secondary" @click="Share">Share App</button>
+          <button @click="RestartGame">New Game</button>
+          <button class="secondary browseronly" @click="Share">Share App</button>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">
             <input type="hidden" name="business" value="ZLBYQH4GJJL7J" />
             <input type="hidden" name="amount" value="1" />
@@ -134,7 +133,7 @@
         </controls>
       </stage>
       <modal :class="{show: showSettings}">
-        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.66
+        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.72
         </version>
         <h1>puck</h1>
         <modes>
