@@ -16,6 +16,7 @@ var app = new Vue({
     isDropping: false,
     isStopped: false,
     isReady: true,
+    useDarkPuck: false,
     puckX: 0,
     puckY: 0,
     puckWidth: 20,
@@ -181,10 +182,21 @@ var app = new Vue({
         this.isDropping = true;
       }
     },
+    HandlePuckColorButtonClick(event, usedark) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.SetPuckColor(usedark);
+      localStorage.setItem('useDarkPuck', usedark);
+    },
+    SetPuckColor(usedark) {
+      this.useDarkPuck = usedark;
+      this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
+    },
     HandleThemeButton(event, theme) {
       event.stopPropagation();
       event.preventDefault();
       this.SelectGameTheme(theme.name);
+      localStorage.setItem('theme', theme.name);
     },
     SelectGameTheme(name) {
       var theme;
@@ -200,8 +212,6 @@ var app = new Vue({
       }
       this.r.style.setProperty('--hue', theme.h);
       this.r.style.setProperty('--saturation', theme.s + '%');
-      this.r.style.setProperty('--puckLuminosity', theme.pl + '%');
-      localStorage.setItem('theme', theme.name);
     },
     UpdateApp() {
       if (this.isDropping) {
@@ -232,6 +242,9 @@ var app = new Vue({
       }
       if (localStorage.getItem('theme') != null) {
         this.SelectGameTheme(localStorage.getItem('theme'));
+      }
+      if (localStorage.getItem('useDarkPuck') != null) {
+        this.SetPuckColor(localStorage.getItem('useDarkPuck') == 'true');
       }
     },
     Share() {

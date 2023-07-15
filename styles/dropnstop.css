@@ -40,8 +40,40 @@ a {
 }
 
 h1 {
-  margin-top: 0px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
+  padding-top: 20px;
+  line-height: 100%;
   font-family: var(--funfont);
+  font-size: 1.5em;
+}
+
+puckcolors {
+  column-gap: 20px;
+  display: flex;
+}
+
+puckcolor {
+  cursor: pointer;
+  padding: 4px;
+  width: 80px;
+  display: block;
+  font-family: var(--funfont);
+  border: 1px solid var(--appForeground);
+  text-align: center;
+}
+puckcolor.selected:before {
+  content: '✔ ';
+  color: var(--appBackground);
+}
+puckcolor.selected {
+  background-color: var(--appForeground);
+  color: white;
+}
+puckcolor.selected:before {
+  color: white;
 }
 
 stage,
@@ -73,9 +105,9 @@ settingsbutton {
 
 modal {
   position: absolute;
-  padding: 100px 0px;
+  padding: 0px;
   width: 100%;
-  height: calc(100% - 200px);
+  height: 100%;
   transform: translateY(100%);
   pointer-events: none;
   opacity: 0;
@@ -89,6 +121,14 @@ modal {
   flex-direction: column;
   margin-left: calc((100vw / 2) - 250px);
   background: var(--appBackground);
+}
+
+modal section {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
+  flex-direction: row;
 }
 
 .center {
@@ -115,7 +155,7 @@ modal modes {
   justify-content: space-evenly;
   align-content: flex-start;
   width: 100%;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
 }
 
 modal modes mode {
@@ -126,11 +166,6 @@ modal modes mode {
   justify-content: center;
   padding-top: 6px;
   padding-bottom: 8px;
-  border: 1px solid var(--appForeground);
-}
-
-modal modes mode.selected {
-  background: var(--appForeground);
 }
 
 modal themes {
@@ -141,7 +176,7 @@ modal themes {
   column-gap: 20px;
   align-content: flex-start;
   width: 100%;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
 }
 
 modal themes theme {
@@ -261,6 +296,7 @@ puck {
 modal puck {
   width: 20px;
   height: 40px;
+  margin-bottom: 34px;
   position: relative;
   display: flex;
   align-content: center;
@@ -278,13 +314,29 @@ modal .selected puck {
 }
 
 modal puck value {
-  transform: translateY(38px);
+  transform: translateY(42px);
+  /* margin-top: 42px; */
   display: block;
+  width: 60px;
+  text-align: center;
   position: absolute;
+  text-transform: lowercase;
   color: var(--appForeground);
+  padding: 4px 10px;
+  border: 1px solid var(--appForeground);
+}
+
+modal modes mode value {
+}
+
+modal modes mode.selected {
+}
+
+modal modes mode.selected value {
 }
 
 modal .selected puck value {
+  background-color: var(--appForeground);
   color: white;
 }
 

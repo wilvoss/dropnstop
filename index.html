@@ -21,7 +21,8 @@
     <meta name="twitter:card" content="summary_large_image">
     </meta>
     <meta property="og:title" content="Drop 'n Stop!" />
-    <meta property="og:site_name" content="Drop 'n Stop" />
+    <meta property="og:author" content="Wil Voss" />
+    <meta property="og:site_name" content="Big Tent Games" />
     <meta property="og:description" content="The puck stops here." />
     <meta property="og:type" content="photo" />
     <meta property="og:url" content="https://dropnstop.games" />
@@ -55,7 +56,7 @@
   </head>
 
   <body>
-    <app id="app" :class="{stopped: isStopped, success: isSuccess}">
+    <app id="app" :class="{stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck}">
       <audio id="themeMusic" loop>
         <source src="" id="themeSource" type="audio/aac">
       </audio>
@@ -133,9 +134,7 @@
         </controls>
       </stage>
       <modal :class="{show: showSettings}">
-        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.72
-        </version>
-        <h1>puck</h1>
+        <h1>mode</h1>
         <modes>
           <mode v-for="mode in modes" @click="SelectMode(mode)" :class="{selected: mode.selected}">
             <puck :style="{height: mode.height + 'px', width: mode.width + 'px'}">
@@ -143,6 +142,13 @@
             </puck>
           </mode>
         </modes>
+        <h1>puck</h1>
+        <puckcolors>
+          <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">white
+          </puckcolor>
+          <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">black
+          </puckcolor>
+        </puckcolors>
         <h1>theme</h1>
         <themes>
           <theme :class="{selected: theme.selected}" v-for="theme in themes"
@@ -152,6 +158,8 @@
           </theme>
         </themes>
         <!-- <h1>published by</h1> -->
+        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.73
+        </version>
 
       </modal>
       <modal :class="{show: showQuitscreen}" class="center">
