@@ -61,14 +61,14 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <stage v-cloak>
-        <settingsbutton @click="showSettings = !showSettings"
+        <settingsbutton @pointerdown="showSettings = !showSettings"
           v-if="!showQuitscreen && dropTotalCount == 100 || dropTotalCount == 0">
           {{ showSettings ? 'close' : 'settings' }}
         </settingsbutton>
         <logo>
         </logo>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
-        <quit v-if="dropTotalCount!=0" @click="showQuitscreen = true">quit</quit>
+        <quit v-if="dropTotalCount!=0" @pointerdown="showQuitscreen = true">quit</quit>
         <puck v-if="dropTotalCount > 0"
           :style="{transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
         </puck>
@@ -84,11 +84,10 @@
           </value>
         </target>
         <info v-if="dropTotalCount > 0">
-          <!-- <p v-if="isSuccess"><br /><br />You did it!</p> -->
-          <p v-if="!showInstructions" @click="ToggleInstructions">
+          <p v-if="!showInstructions">
             <br />{{dropTotalCount}} drops left<br />
           </p>
-          <p v-if="!isSuccess && showInstructions" @click="ToggleInstructions">
+          <p v-if="!isSuccess && showInstructions">
             <br />Press and hold the Drop button.
           </p>
         </info>
@@ -112,8 +111,8 @@
           </stat>
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
-          <button @click="RestartGame">New Game</button>
-          <button class="secondary browseronly" @click="Share">Share App</button>
+          <button @pointerdown="RestartGame">New Game</button>
+          <button class="secondary browseronly" @pointerdown="Share">Share App</button>
           <form action="https://www.paypal.com/donate" method="post" target="_blank">
             <input type="hidden" name="business" value="ZLBYQH4GJJL7J" />
             <input type="hidden" name="amount" value="1" />
@@ -127,46 +126,59 @@
           </form>
         </controls>
         <controls v-if="dropTotalCount > 0">
-          <button :disabled="!isStopped" @pointerdown="HandleActionButton(event, 'next')" class="action">NEXT</button>
+          <button :disabled="!isStopped" @pointerdown="HandleActionButton(event, 'next')" class="action">
+            {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
+          </button>
           <button :disabled="isStopped" @pointerdown="HandleActionButton(event, 'drop')"
             @pointerup="HandleActionButton(event, 'stop')" @pointerleave="HandleActionButton(event, 'stop')"
             class="action">DROP</button>
         </controls>
       </stage>
       <modal :class="{show: showSettings}">
-        <h1>mode</h1>
-        <modes>
-          <mode v-for="mode in modes" @click="SelectMode(mode)" :class="{selected: mode.selected}">
-            <puck :style="{height: mode.height + 'px', width: mode.width + 'px'}">
+        <h1>Settings</h1>
+        <divider></divider>
+        <section>
+          <h2>mode</h2>
+          <setting>
+            <mode v-for="mode in modes" @pointerdown="SelectMode(mode)" :class="{selected: mode.selected}">
+              <puck :style="{height: mode.height + 'px', width: mode.width + 'px'}">
+              </puck>
               <value>{{mode.name}}</value>
-            </puck>
-          </mode>
-        </modes>
-        <h1>puck</h1>
-        <puckcolors>
-          <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">white
-          </puckcolor>
-          <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">black
-          </puckcolor>
-        </puckcolors>
-        <h1>theme</h1>
-        <themes>
-          <theme :class="{selected: theme.selected}" v-for="theme in themes"
-            @pointerdown="HandleThemeButton(event, theme)">
-            <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
-            <value>{{theme.name}}</value>
-          </theme>
-        </themes>
+            </mode>
+          </setting>
+        </section>
+        <divider></divider>
+        <section class="puck">
+          <h2>puck</h2>
+          <setting>
+            <puckcolor @pointerdown="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">white
+            </puckcolor>
+            <puckcolor @pointerdown="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">black
+            </puckcolor>
+          </setting>
+        </section>
+        <divider></divider>
+        <section>
+          <h2>theme</h2>
+          <setting>
+            <theme :class="{selected: theme.selected}" v-for="theme in themes"
+              @pointerdown="HandleThemeButton(event, theme)">
+              <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
+              <value>{{theme.name}}</value>
+            </theme>
+          </setting>
+        </section>
+        <divider></divider>
         <!-- <h1>published by</h1> -->
-        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.73
+        <version>&copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.79
         </version>
 
       </modal>
       <modal :class="{show: showQuitscreen}" class="center">
         <h1>quit, for reals?</h1>
         <controls>
-          <button @click="showQuitscreen = false" class="secondary">no</button>
-          <button @click="HandleActionButton(event, 'quit')">yes</button>
+          <button @pointerdown="showQuitscreen = false" class="secondary">no</button>
+          <button @pointerdown="HandleActionButton(event, 'quit')">yes</button>
         </controls>
 
       </modal>

@@ -39,41 +39,21 @@ a {
   color: var(--appForeground);
 }
 
-h1 {
-  margin-top: 25px;
+h1,
+h2 {
+  margin-top: 20px;
   margin-bottom: 20px;
-  width: 100%;
   text-align: center;
-  padding-top: 20px;
+  padding-top: 0px;
   line-height: 100%;
   font-family: var(--funfont);
+}
+
+h2 {
+  margin: 0;
+  padding-bottom: 20px;
   font-size: 1.5em;
-}
-
-puckcolors {
-  column-gap: 20px;
-  display: flex;
-}
-
-puckcolor {
-  cursor: pointer;
-  padding: 4px;
-  width: 80px;
-  display: block;
-  font-family: var(--funfont);
-  border: 1px solid var(--appForeground);
-  text-align: center;
-}
-puckcolor.selected:before {
-  content: '✔ ';
-  color: var(--appBackground);
-}
-puckcolor.selected {
-  background-color: var(--appForeground);
-  color: white;
-}
-puckcolor.selected:before {
-  color: white;
+  font-weight: normal;
 }
 
 stage,
@@ -101,115 +81,6 @@ settingsbutton {
   padding-left: 10px;
   z-index: 1001;
   cursor: pointer;
-}
-
-modal {
-  position: absolute;
-  padding: 0px;
-  width: 100%;
-  height: 100%;
-  transform: translateY(100%);
-  pointer-events: none;
-  opacity: 0;
-  top: 0px;
-  z-index: 1000;
-  box-shadow: none;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  margin-left: calc((100vw / 2) - 250px);
-  background: var(--appBackground);
-}
-
-modal section {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: flex-start;
-  flex-direction: row;
-}
-
-.center {
-  justify-content: center;
-}
-
-modal.show {
-  pointer-events: all;
-  opacity: 1;
-  transform: translateY(0px);
-}
-
-modal img {
-  width: 50%;
-  margin: 0px auto;
-  opacity: 0.5;
-  display: block;
-}
-
-modal modes {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-  align-content: flex-start;
-  width: 100%;
-  /* margin-bottom: 100px; */
-}
-
-modal modes mode {
-  display: flex;
-  align-items: flex-end;
-  cursor: pointer;
-  width: 8%;
-  justify-content: center;
-  padding-top: 6px;
-  padding-bottom: 8px;
-}
-
-modal themes {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  column-gap: 20px;
-  align-content: flex-start;
-  width: 100%;
-  /* margin-bottom: 100px; */
-}
-
-modal themes theme {
-  display: flex;
-  flex-direction: column;
-  row-gap: 4px;
-  align-items: center;
-  cursor: pointer;
-  width: 8%;
-  justify-content: center;
-  padding: 6px;
-  font-family: var(--funfont);
-  border: 1px solid var(--appForeground);
-  /* transition: 100ms ease-in-out all; */
-}
-
-modal themes theme.selected {
-  color: white;
-  /* border-color: white; */
-  background: var(--appForeground);
-}
-
-modal themes theme color {
-  display: flex;
-  justify-content: center;
-  height: 40px;
-  width: calc(100% - 2px);
-  border: 1px solid var(--appForeground);
-  /* transition: 100ms ease-in-out all; */
-}
-
-modal themes theme value {
-  /* display: none; */
 }
 
 quit {
@@ -293,55 +164,168 @@ puck {
   z-index: 100;
 }
 
-modal puck {
+.stopped puck {
+  transition: 0ms linear all;
+}
+
+modal {
+  position: absolute;
+  margin: 0px auto;
+  padding: 20px 0px 60px;
+  width: 100%;
+  max-width: 500px;
+  height: calc(100% - 80px);
+  transform: translateY(100%);
+  pointer-events: none;
+  opacity: 0;
+  top: 0px;
+  z-index: 1000;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  margin-left: calc((100vw / 2) - 250px);
+  row-gap: 0px;
+  background: var(--appBackground);
+}
+
+modal.center {
+  justify-content: center;
+}
+
+modal.show {
+  pointer-events: all;
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+section {
+  padding: 20px 0px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+divider {
+  display: flex;
+  width: 100%;
+  height: 1px;
+  background-color: var(--appForeground);
+  background-color: white;
+  opacity: 0.3;
+}
+
+setting {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  width: calc(100% - 40px);
+  /* margin-bottom: 100px; */
+}
+
+section.puck setting {
+  justify-content: center;
+  column-gap: 12px;
+}
+
+mode {
+  display: flex;
+  flex-basis: 20%;
+  align-items: center;
+  cursor: pointer;
+  justify-content: flex-end;
+  flex-direction: column;
+  border: 1px solid var(--appForeground);
+}
+
+mode puck {
   width: 20px;
   height: 40px;
-  margin-bottom: 34px;
+  margin: 0 0 12px 0;
   position: relative;
   display: flex;
   align-content: center;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  font-family: var(--funfont);
-  color: var(--appForeground);
-  /* transition: 150ms ease-out all; */
   cursor: pointer;
 }
 
-modal .selected puck {
-  color: var(--appForeground);
-}
-
-modal puck value {
-  transform: translateY(42px);
-  /* margin-top: 42px; */
+mode value {
+  font-family: var(--funfont);
   display: block;
-  width: 60px;
+  width: 100%;
   text-align: center;
-  position: absolute;
   text-transform: lowercase;
   color: var(--appForeground);
-  padding: 4px 10px;
-  border: 1px solid var(--appForeground);
+  padding: 4px 0px;
+  border-top: 1px solid var(--appForeground);
 }
 
-modal modes mode value {
-}
-
-modal modes mode.selected {
-}
-
-modal modes mode.selected value {
-}
-
-modal .selected puck value {
+mode.selected value {
   background-color: var(--appForeground);
   color: white;
 }
 
-.stopped puck {
-  transition: 0ms linear all;
+puckcolor {
+  cursor: pointer;
+  padding: 4px;
+  width: 80px;
+  display: block;
+  font-family: var(--funfont);
+  border: 1px solid var(--appForeground);
+  text-align: center;
+}
+
+/* puckcolor.selected:before {
+  content: '✔ ';
+  color: var(--appBackground);
+} */
+
+puckcolor.selected {
+  background-color: var(--appForeground);
+  color: white;
+}
+
+/* puckcolor.selected:before {
+  color: white;
+} */
+
+theme {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  align-items: center;
+  cursor: pointer;
+  width: 8%;
+  justify-content: center;
+  padding: 6px;
+  font-family: var(--funfont);
+  border: 1px solid var(--appForeground);
+}
+
+theme.selected {
+  color: white;
+  background: var(--appForeground);
+}
+
+theme color {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  width: calc(100% - 2px);
+  border: 1px solid var(--appForeground);
+}
+
+theme value {
+  display: none;
 }
 
 target {

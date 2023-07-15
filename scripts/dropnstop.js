@@ -27,7 +27,7 @@ var app = new Vue({
     targetHeight: 100,
     speed: 6,
     dropMaxCount: 3,
-    dropCount: 2,
+    dropCount: 0,
     dropTotalCount: 100,
     isSuccess: false,
     score: 0,
@@ -186,17 +186,16 @@ var app = new Vue({
       event.stopPropagation();
       event.preventDefault();
       this.SetPuckColor(usedark);
-      localStorage.setItem('useDarkPuck', usedark);
     },
     SetPuckColor(usedark) {
       this.useDarkPuck = usedark;
       this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
+      localStorage.setItem('useDarkPuck', usedark);
     },
     HandleThemeButton(event, theme) {
       event.stopPropagation();
       event.preventDefault();
       this.SelectGameTheme(theme.name);
-      localStorage.setItem('theme', theme.name);
     },
     SelectGameTheme(name) {
       var theme;
@@ -212,6 +211,7 @@ var app = new Vue({
       }
       this.r.style.setProperty('--hue', theme.h);
       this.r.style.setProperty('--saturation', theme.s + '%');
+      localStorage.setItem('theme', theme.name);
     },
     UpdateApp() {
       if (this.isDropping) {
@@ -294,7 +294,7 @@ var app = new Vue({
   mounted() {
     window.addEventListener('keyup', this.HandleKeyUp);
     this.GetSettings();
-    this.ReadyStage();
+    // this.ReadyStage();
     this.updateInterval = window.setInterval(this.UpdateApp, 1);
   },
 
