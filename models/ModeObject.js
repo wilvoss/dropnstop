@@ -29,7 +29,7 @@ var Modes = [
   }),
   new ModeObject({
     name: 'Ultra',
-    height: 4,
+    height: 15,
     width: 5,
     speed: 12,
   }),

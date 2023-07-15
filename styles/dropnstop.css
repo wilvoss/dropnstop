@@ -1,17 +1,21 @@
 @font-face {
-  font-family: 'Bauhaus';
-  src: url('../fonts/BAUHS93.TTF');
-}
-@font-face {
-  font-family: 'AlphaSlab';
-  src: url('../fonts/AlfaSlabOne-Regular.ttf');
+  font-family: 'Tektur';
+  src: url('../fonts/Tektur.ttf');
 }
 
 :root {
-  --appBackground: hsl(148, 34%, 65%);
-  --appForeground: hsl(148, 41%, 17%);
+  --hue: 148;
+  --saturation: 34%;
+  --highlightHue: calc(var(--hue) + 56);
+  --highlighSaturation: 100%;
+  --puckLuminosity: 100%;
+  --appBackground: hsl(var(--hue), var(--saturation), 61%);
+  --appForeground: hsl(var(--hue), var(--saturation), 17%);
+  --appForegroundDisabled: hsla(var(--hue), var(--saturation), 17%, 0.5);
   --targetX: 50%;
+  --funfont: 'Tektur';
 }
+
 html,
 body {
   padding: 0px;
@@ -21,7 +25,7 @@ body {
   overflow: hidden;
   color: var(--appForeground);
   font-family: 'Courier New', Courier, monospace;
-  background: repeating-linear-gradient(90deg, hsl(149, 28%, 41%) 0px, hsl(149, 28%, 41%) 40px, hsl(149, 28%, 38%) 40px, hsl(149, 28%, 38%) 80px);
+  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), 17%) 0px, hsl(var(--hue), var(--saturation), 17%) 40px, hsl(var(--hue), var(--saturation), 16%) 40px, hsl(var(--hue), var(--saturation), 16%) 80px);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -31,122 +35,173 @@ body {
   opacity: 0;
 }
 
+a {
+  color: var(--appForeground);
+}
+
 h1 {
-  margin-top: 100px;
-  font-family: 'Bauhaus';
+  margin-top: 0px;
+  font-family: var(--funfont);
 }
 
 stage,
-settings {
+modal {
   display: block;
   max-width: 500px;
   height: 100%;
-  background: hsl(148, 34%, 65%);
+  background: var(--appBackground);
   margin: 0px auto;
+  /* transition: 100ms ease-in-out background-color; */
 }
 stage {
-  box-shadow: 0px 0px 40px black;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
 settingsbutton {
-  width: 50px;
-  height: 50px;
   display: flex;
+  font-family: var(--funfont);
   justify-content: left;
   align-items: start;
   position: absolute;
-  font-size: 2em;
+  height: 40px;
+  font-size: 1.35em;
+  padding: 6px 12px 24px 12px;
   padding-left: 10px;
   z-index: 1001;
   cursor: pointer;
 }
 
-settings {
+modal {
   position: absolute;
+  padding: 100px 0px;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 200px);
   transform: translateY(100%);
   pointer-events: none;
   opacity: 0;
   top: 0px;
   z-index: 1000;
-  background: white;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: none;
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: flex-start;
   flex-direction: column;
   margin-left: calc((100vw / 2) - 250px);
+  background: var(--appBackground);
 }
 
-settings.show {
+.center {
+  justify-content: center;
+}
+
+modal.show {
   pointer-events: all;
   opacity: 1;
   transform: translateY(0px);
 }
 
-settings a {
-  text-decoration: none;
-  color: hsla(273, 100%, 50%, 1);
-}
-
-settings img {
+modal img {
   width: 50%;
   margin: 0px auto;
+  opacity: 0.5;
   display: block;
 }
 
-settings modes {
+modal modes {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-evenly;
   align-content: flex-start;
   width: 100%;
+  margin-bottom: 100px;
 }
 
-settings modes mode {
+modal modes mode {
   display: flex;
   align-items: flex-end;
   cursor: pointer;
-  border-radius: 8px 8px 0px 0px;
   width: 8%;
   justify-content: center;
   padding-top: 6px;
-  padding-bottom: 6px;
-  background: rgb(240, 240, 240);
+  padding-bottom: 8px;
+  border: 1px solid var(--appForeground);
 }
 
-settings modes mode.selected {
-  background: hsl(148, 50%, 75%);
+modal modes mode.selected {
+  background: var(--appForeground);
+}
+
+modal themes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  column-gap: 20px;
+  align-content: flex-start;
+  width: 100%;
+  margin-bottom: 100px;
+}
+
+modal themes theme {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+  align-items: center;
+  cursor: pointer;
+  width: 8%;
+  justify-content: center;
+  padding: 6px;
+  font-family: var(--funfont);
+  border: 1px solid var(--appForeground);
+  /* transition: 100ms ease-in-out all; */
+}
+
+modal themes theme.selected {
+  color: white;
+  /* border-color: white; */
+  background: var(--appForeground);
+}
+
+modal themes theme color {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  width: calc(100% - 2px);
+  border: 1px solid var(--appForeground);
+  /* transition: 100ms ease-in-out all; */
+}
+
+modal themes theme value {
+  /* display: none; */
 }
 
 quit {
   display: block;
   float: right;
-  width: 50px;
   text-align: right;
+  font-family: var(--funfont);
   height: 40px;
-  font-size: 2em;
-  padding: 0px 12px 24px 12px;
+  font-size: 1.35em;
+  padding: 6px 12px 24px 12px;
   cursor: pointer;
 }
 
 version {
   display: block;
   position: fixed;
-  left: 10px;
-  bottom: 10px;
+  left: 20px;
+  bottom: 20px;
   font-size: 0.8em;
 }
 
 logo {
-  display: inline-block;
+  display: none;
   position: absolute;
   mask-image: url(../images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
-  background: hsl(148, 34%, 70%);
+  background: hsl(var(--hue), var(--saturation), 70%);
   margin-top: 200px;
   width: 100%;
   max-width: 500px;
@@ -163,18 +218,18 @@ score {
   pointer-events: none;
   display: block;
   position: absolute;
-  padding: 20px;
-  font-family: 'AlphaSlab';
+  padding: 50px 20px 20px;
+  font-family: var(--funfont);
   width: calc(100% - 40px);
   text-align: center;
   max-width: 460px;
-  font-size: 3.5em;
+  font-size: 4.5em;
 }
 
 stats {
   display: flex;
   position: absolute;
-  top: 100px;
+  top: 170px;
   width: 100%;
   margin: auto;
   flex-direction: column;
@@ -182,26 +237,28 @@ stats {
   max-width: 500px;
   align-content: center;
 }
+
 stat {
   display: block;
   width: 260px;
+  text-transform: lowercase;
 }
+
 stat span {
   float: right;
-  font-family: 'AlphaSlab';
-  margin-top: -2px;
+  font-weight: bold;
 }
 
-knife {
+puck {
   position: fixed;
   display: block;
-  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.6));
-  /* transition: 2ms linear all; */
-  border-bottom: 1px black solid;
-  /* border-radius: 0px 0px 50% 50%; */
+  background: linear-gradient(hsla(0, 0%, var(--puckLuminosity), 0), hsla(0, 0%, var(--puckLuminosity), 0.5));
+  border-bottom: 2px hsl(0, 0%, var(--puckLuminosity)) solid;
+  border-radius: 0px 0px 4px 4px;
+  z-index: 100;
 }
 
-settings knife {
+modal puck {
   width: 20px;
   height: 40px;
   position: relative;
@@ -210,39 +267,39 @@ settings knife {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  background: linear-gradient(hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.3));
-  font-family: 'Bauhaus';
-  color: rgb(118, 118, 118);
-  transition: 150ms ease-out all;
+  font-family: var(--funfont);
+  color: var(--appForeground);
+  /* transition: 150ms ease-out all; */
   cursor: pointer;
 }
 
-settings .selected knife {
-  background: linear-gradient(hsla(219, 100%, 50%, 0), hsla(273, 100%, 50%, 0.6));
+modal .selected puck {
   color: var(--appForeground);
 }
 
-settings knife value {
-  transform: translateY(29px);
+modal puck value {
+  transform: translateY(38px);
   display: block;
   position: absolute;
+  color: var(--appForeground);
 }
 
-settings .selected knife value {
-  color: (--appForeground);
+modal .selected puck value {
+  color: white;
 }
 
-.stopped knife {
+.stopped puck {
   transition: 0ms linear all;
 }
 
 target {
   position: fixed;
   display: flex;
-  background: repeating-radial-gradient(circle, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.5) 25px);
+  background: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), 17%, 0), hsla(var(--hue), var(--saturation), 17%, 0.2) 25px);
+  /* background: repeating-linear-gradient(45deg, hsla(var(--hue), var(--saturation), 17%, 0.2), hsla(var(--hue), var(--saturation), 17%, 0.2) 1px, var(--appBackground) 2px, var(--appBackground) 10px); */
   background-position: var(--targetX);
   transition: 150ms ease-out all;
-  color: white;
+  color: var(--appForeground);
   text-align: center;
   width: calc(100%);
   max-width: 500px;
@@ -254,79 +311,91 @@ target {
 }
 
 .success target {
-  background: hsla(204, 100%, 76%, 0.5);
+  background: hsla(var(--highlightHue), var(--highlighSaturation), 76%, 0.7);
+  border-color: var(--appForeground);
 }
 
 target value {
+  font-weight: bold;
   display: block;
-  transform: translateY(-20px);
+  font-family: var(--funfont);
+  transform: translateY(-24px);
+  transition: 0ms ease-in-out;
+  transition-property: transform, opacity;
+}
+
+.success stage {
+  background: var(--appBackground);
+}
+
+.success target value {
+  color: white;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: 800ms ease-in-out;
+  transition-delay: 100ms;
+  transition-property: transform, opacity;
+}
+
+info {
+  display: block;
+  padding-top: 150px;
 }
 
 p {
   display: block;
   position: fixed;
   text-align: center;
-  margin: 100px 20px;
+  margin: 0px 20px;
   width: calc(100% - 40px);
   max-width: 460px;
 }
 
 controls {
   position: absolute;
-  display: block;
-  margin: 100px 20px;
-  width: calc(100% - 40px);
-  max-width: 460px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 100px 40px 20px;
+  width: calc(100% - 80px);
+  max-width: 420px;
   bottom: 20px;
+  row-gap: 10px;
+  column-gap: 20px;
 }
 
 controls.endgame {
-  bottom: auto;
-  display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-content: flex-end;
-  align-items: stretch;
-  height: 100%;
-  margin-top: 0px;
-  padding-bottom: 20px;
 }
 
 controls button {
   z-index: 1000;
-  width: calc(50% - 30px);
-  max-width: 460px;
-  margin: 0px 20px;
-  position: absolute;
-  height: 80px;
+  width: 100%;
+  margin: 0px;
+  cursor: pointer;
+  height: 70px;
   right: 0px;
   font-size: 1.5em;
   font-weight: 400;
-  background-color: rgb(0, 81, 173);
   color: white;
-  border: none;
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
-  text-transform: uppercase;
-  /* letter-spacing: 2px; */
-  border-radius: 8px;
-  font-family: 'Bauhaus';
+  background-color: var(--appForeground);
+  border: 1px solid var(--appForeground);
+  text-transform: lowercase;
+  font-family: var(--funfont);
+  transform: translateY(2px);
 }
 
 controls button.secondary {
-  background: white;
-  color: rgb(0, 81, 173);
+  background: var(--appBackground);
+  color: var(--appForeground);
 }
 
 controls button:active,
 controls button:focus {
-  transform: translateY(2px);
-  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+  transform: translateY(4px);
 }
 
-controls button#resetButton {
-  /* bottom: 100px; */
-  left: 0px;
-  right: auto;
+controls.endgame button {
+  height: 60px;
 }
 
 .disabled,
@@ -336,11 +405,7 @@ controls button#resetButton {
 }
 
 @media only screen and (max-width: 500px) {
-  settings {
+  modal {
     margin: auto;
-  }
-  settingsbutton,
-  quit {
-    font-size: 2em;
   }
 }
