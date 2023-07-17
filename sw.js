@@ -1,6 +1,6 @@
 // the cache version gets updated every time there is a new deployment
 const CACHE_VERSION = 2.79;
-const cacheName = `main-${CACHE_VERSION}`;
+const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 
 // these are the routes we are going to cache for offline support
 const cacheFiles = ['/', '', 'fonts/Tektur.ttf', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'images/big_tent_logo.svg', 'models/ModeObject.js', 'models/ThemeObject.js', 'models/ResultObject.js', 'scripts/dropnstop.js', 'styles/dropnstop.css', 'index.html'];
@@ -11,7 +11,7 @@ self.addEventListener('activate', (evt) =>
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== cacheName) {
+          if (cacheName !== CURRENT_CACHE) {
             return caches.delete(cacheName);
           }
         }),
@@ -23,7 +23,7 @@ self.addEventListener('activate', (evt) =>
 // on install we download the routes we want to cache for offline
 self.addEventListener('install', (evt) =>
   evt.waitUntil(
-    caches.open(cacheName).then((cache) => {
+    caches.open(CURRENT_CACHE).then((cache) => {
       return cache.addAll(cacheFiles);
     }),
   ),
@@ -32,7 +32,7 @@ self.addEventListener('install', (evt) =>
 // fetch cache first, but use network if cache fails
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.open(cacheName).then((cache) => {
+    caches.open(CURRENT_CACHE).then((cache) => {
       // Go to the cache first
       return cache.match(event.request.url).then((cachedResponse) => {
         // Return a cached response if we have one
