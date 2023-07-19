@@ -2,8 +2,22 @@
 const CACHE_VERSION = 3.0;
 const CURRENT_CACHE = `main-${CACHE_VERSION}`;
 
+// prettier-ignore
 // these are the routes we are going to cache for offline support
-const cacheFiles = ['/', '', 'fonts/Tektur.ttf', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'images/big_tent_logo.svg', 'models/ModeObject.js', 'models/ThemeObject.js', 'models/ResultObject.js', 'scripts/dropnstop.js', 'styles/dropnstop.css', 'index.html'];
+const cacheFiles = [
+  '/', 
+  '', 
+  'fonts/Tektur.ttf', 
+  'helpers/vue.min.js', 
+  'helpers/console-enhancer.js', 
+  'images/big_tent_logo.svg', 
+  'models/ModeObject.js', 
+  'models/ThemeObject.js', 
+  'models/ResultObject.js', 
+  'scripts/dropnstop.js', 
+  'styles/dropnstop.css', 
+  'index.html',
+];
 
 // on activation we clean up the previously registered service workers
 self.addEventListener('activate', (evt) =>
