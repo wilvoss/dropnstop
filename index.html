@@ -140,7 +140,7 @@
           <h2>mode</h2>
           <setting>
             <mode v-for="mode in modes" @pointerdown="SelectMode(mode)" :class="{selected: mode.selected}">
-              <puck :style="{height: mode.height + 'px', width: mode.width + 'px'}">
+              <puck :style="{width: mode.width + 'px'}">
               </puck>
               <value>{{mode.name}}</value>
             </mode>
@@ -170,7 +170,7 @@
         <divider></divider>
         <!-- <h1>published by</h1> -->
         <version>
-          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v2.9
+          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v3.0
         </version>
 
       </modal>

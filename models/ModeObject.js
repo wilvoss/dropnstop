@@ -11,7 +11,7 @@ class ModeObject {
 var Modes = [
   new ModeObject({
     name: 'Easy',
-    height: 100,
+    height: 16,
     speed: 3,
   }),
   new ModeObject({
@@ -23,13 +23,13 @@ var Modes = [
   }),
   new ModeObject({
     name: 'Hard',
-    height: 25,
+    height: 75,
     width: 10,
     speed: 12,
   }),
   new ModeObject({
     name: 'Ultra',
-    height: 15,
+    height: 100,
     width: 5,
     speed: 12,
   }),

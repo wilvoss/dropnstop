@@ -208,7 +208,7 @@ modal.show {
 }
 
 section {
-  padding: 20px 0px;
+  padding: 8px 0px 20px;
   display: flex;
   align-items: center;
   align-content: center;
@@ -253,8 +253,8 @@ mode {
 
 mode puck {
   width: 20px;
-  height: 40px;
-  margin: 0 0 12px 0;
+  height: 16px;
+  margin: 12px 0 12px 0;
   position: relative;
   display: flex;
   align-content: center;
