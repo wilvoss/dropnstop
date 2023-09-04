@@ -112,17 +112,7 @@
         <controls class="endgame" v-if="dropTotalCount == 0">
           <button @pointerdown="RestartGame">New Game</button>
           <button class="secondary browseronly" @pointerdown="Share">Share App</button>
-          <form action="https://www.paypal.com/donate" method="post" target="_blank">
-            <input type="hidden" name="business" value="ZLBYQH4GJJL7J" />
-            <input type="hidden" name="amount" value="1" />
-            <input type="hidden" name="no_recurring" value="0" />
-            <input type="hidden" name="item_name"
-              value="The purpose of Big Tent Games is to make Ad-free, tracker-free games that are fun to play and platform agnostic. " />
-            <input type="hidden" name="currency_code" value="USD" />
-            <button name="submit" id="donate" class="action secondary"
-              title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button">Donate
-            </button>
-          </form>
+         <button class="secondary action" @click="window.open('https://www.buymeacoffee.com/wilvoss')">Buy me a coffee!</button>
         </controls>
         <controls v-if="dropTotalCount > 0">
           <button :disabled="!isStopped" @pointerdown="HandleActionButton(event, 'next')" class="action">
@@ -170,7 +160,7 @@
         <divider></divider>
         <!-- <h1>published by</h1> -->
         <version>
-          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v3.0
+          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v3.0.001
         </version>
 
       </modal>
