@@ -1,6 +1,8 @@
 /// <reference path="../models/ResultObject.js" />
 /// <reference path="../models/ModeObject.js" />
 
+const { version } = require('react');
+
 // if (!UseDebug) {
 Vue.config.devtools = false;
 Vue.config.debug = false;
@@ -12,6 +14,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
+    version: '1.0.0',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,

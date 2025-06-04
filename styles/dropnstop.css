@@ -18,21 +18,21 @@
 
 html,
 body {
-  padding: 0px;
-  margin: 0px;
+  overflow: hidden;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  color: var(--appForeground);
+  margin: 0px;
+  padding: 0px;
   font-family: 'Courier New', Courier, monospace;
+  color: var(--appForeground);
   background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), 17%) 0px, hsl(var(--hue), var(--saturation), 17%) 40px, hsl(var(--hue), var(--saturation), 16%) 40px, hsl(var(--hue), var(--saturation), 16%) 80px);
   user-select: none;
   -webkit-user-select: none;
 }
 
 [v-cloak] {
-  transition: 250ms ease-out opacity;
   opacity: 0;
+  transition: 250ms ease-out opacity;
 }
 
 a {
@@ -41,83 +41,84 @@ a {
 
 h1,
 h2 {
+  font-family: var(--funfont);
+  line-height: 100%;
+  text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-  text-align: center;
   padding-top: 0px;
-  line-height: 100%;
-  font-family: var(--funfont);
 }
 
 h2 {
   margin: 0;
-  padding-bottom: 20px;
   font-size: 1.5em;
   font-weight: normal;
+  padding-bottom: 20px;
 }
 
 stage,
 modal {
   display: block;
-  max-width: 500px;
   height: 100%;
-  background: var(--appBackground);
   margin: 0px auto;
+  max-width: 500px;
+  background: var(--appBackground);
   /* transition: 100ms ease-in-out background-color; */
 }
+
 stage {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
 settingsbutton {
   display: flex;
+  position: absolute;
+  z-index: 1001;
+  height: 40px;
+  padding: 6px 12px 24px 12px;
   font-family: var(--funfont);
+  font-size: 1.35em;
   justify-content: left;
   align-items: start;
-  position: absolute;
-  height: 40px;
-  font-size: 1.35em;
-  padding: 6px 12px 24px 12px;
   padding-left: 10px;
-  z-index: 1001;
   cursor: pointer;
 }
 
 quit {
   display: block;
   float: right;
-  text-align: right;
-  font-family: var(--funfont);
   height: 40px;
-  font-size: 1.35em;
   padding: 6px 12px 24px 12px;
+  font-family: var(--funfont);
+  font-size: 1.35em;
+  text-align: right;
   cursor: pointer;
 }
 
 version {
   display: block;
   position: fixed;
-  left: 20px;
-  bottom: 20px;
   font-size: 0.7em;
   opacity: 0.8;
+  left: 20px;
+  bottom: 20px;
 }
 
 version a {
-  text-decoration: none;
   font-weight: bold;
+  text-decoration: none;
 }
 
 logo {
   display: none;
   position: absolute;
+  width: 100%;
+  height: 300px;
   mask-image: url(../images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
   background: hsl(var(--hue), var(--saturation), 70%);
   margin-top: 200px;
-  width: 100%;
   max-width: 500px;
-  height: 300px;
   mask-size: 290px;
   mask-repeat: no-repeat;
   mask-position: center;
@@ -127,27 +128,27 @@ logo {
 }
 
 score {
-  pointer-events: none;
   display: block;
   position: absolute;
+  width: calc(100% - 40px);
   padding: 50px 20px 20px;
   font-family: var(--funfont);
-  width: calc(100% - 40px);
-  text-align: center;
-  max-width: 460px;
   font-size: 4.5em;
+  text-align: center;
+  pointer-events: none;
+  max-width: 460px;
 }
 
 stats {
   display: flex;
   position: absolute;
-  top: 170px;
   width: 100%;
   margin: auto;
   flex-direction: column;
   align-items: center;
-  max-width: 500px;
   align-content: center;
+  top: 170px;
+  max-width: 500px;
 }
 
 stat {
@@ -162,12 +163,12 @@ stat span {
 }
 
 puck {
-  position: fixed;
   display: block;
+  position: fixed;
+  z-index: 100;
   background: linear-gradient(hsla(0, 0%, var(--puckLuminosity), 0), hsla(0, 0%, var(--puckLuminosity), 0.5));
   border-bottom: 2px hsl(0, 0%, var(--puckLuminosity)) solid;
   border-radius: 0px 0px 4px 4px;
-  z-index: 100;
 }
 
 .stopped puck {
@@ -175,23 +176,23 @@ puck {
 }
 
 modal {
+  display: flex;
   position: absolute;
+  z-index: 1000;
+  width: 100%;
+  height: calc(100% - 80px);
   margin: 0px auto;
   padding: 20px 0px 60px;
-  width: 100%;
-  max-width: 500px;
-  height: calc(100% - 80px);
-  transform: translateY(100%);
-  pointer-events: none;
   opacity: 0;
-  top: 0px;
-  z-index: 1000;
-  box-shadow: none;
-  display: flex;
+  transform: translateY(100%);
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
   align-content: center;
-  justify-content: space-evenly;
-  flex-direction: column;
+  max-width: 500px;
+  pointer-events: none;
+  top: 0px;
+  box-shadow: none;
   margin-left: calc((100vw / 2) - 250px);
   row-gap: 0px;
   background: var(--appBackground);
@@ -202,37 +203,36 @@ modal.center {
 }
 
 modal.show {
-  pointer-events: all;
   opacity: 1;
   transform: translateY(0px);
+  pointer-events: all;
 }
 
 section {
-  padding: 8px 0px 20px;
   display: flex;
+  width: 100%;
+  padding: 8px 0px 20px;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   align-content: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 100%;
 }
 
 divider {
   display: flex;
   width: 100%;
   height: 1px;
-  background-color: var(--appForeground);
   background-color: white;
   opacity: 0.3;
 }
 
 setting {
   display: flex;
+  width: calc(100% - 40px);
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-evenly;
   align-content: flex-start;
-  width: calc(100% - 40px);
   /* margin-bottom: 100px; */
 }
 
@@ -243,51 +243,51 @@ section.puck setting {
 
 mode {
   display: flex;
-  flex-basis: 20%;
-  align-items: center;
-  cursor: pointer;
-  justify-content: flex-end;
-  flex-direction: column;
   border: 1px solid var(--appForeground);
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  flex-basis: 20%;
+  cursor: pointer;
 }
 
 mode puck {
+  display: flex;
+  position: relative;
   width: 20px;
   height: 16px;
   margin: 12px 0 12px 0;
-  position: relative;
-  display: flex;
-  align-content: center;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  align-content: center;
   cursor: pointer;
 }
 
 mode value {
-  font-family: var(--funfont);
   display: block;
   width: 100%;
+  padding: 4px 0px;
+  font-family: var(--funfont);
   text-align: center;
   text-transform: lowercase;
   color: var(--appForeground);
-  padding: 4px 0px;
   border-top: 1px solid var(--appForeground);
 }
 
 mode.selected value {
-  background-color: var(--appForeground);
   color: white;
+  background-color: var(--appForeground);
 }
 
 puckcolor {
-  cursor: pointer;
-  padding: 4px;
-  width: 80px;
   display: block;
-  font-family: var(--funfont);
+  width: 80px;
+  padding: 4px;
   border: 1px solid var(--appForeground);
+  font-family: var(--funfont);
   text-align: center;
+  cursor: pointer;
 }
 
 /* puckcolor.selected:before {
@@ -296,8 +296,8 @@ puckcolor {
 } */
 
 puckcolor.selected {
-  background-color: var(--appForeground);
   color: white;
+  background-color: var(--appForeground);
 }
 
 /* puckcolor.selected:before {
@@ -306,15 +306,15 @@ puckcolor.selected {
 
 theme {
   display: flex;
-  flex-direction: column;
-  row-gap: 4px;
-  align-items: center;
-  cursor: pointer;
   width: 8%;
-  justify-content: center;
   padding: 6px;
-  font-family: var(--funfont);
   border: 1px solid var(--appForeground);
+  font-family: var(--funfont);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 4px;
+  cursor: pointer;
 }
 
 theme.selected {
@@ -324,10 +324,10 @@ theme.selected {
 
 theme color {
   display: flex;
-  justify-content: center;
-  height: 40px;
   width: calc(100% - 2px);
+  height: 40px;
   border: 1px solid var(--appForeground);
+  justify-content: center;
 }
 
 theme value {
@@ -335,21 +335,21 @@ theme value {
 }
 
 target {
-  position: fixed;
   display: flex;
+  position: fixed;
+  width: calc(100%);
+  border: 1px solid;
+  text-align: center;
+  color: var(--appForeground);
+  background-position: var(--targetX);
+  justify-content: center;
   background: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), 17%, 0), hsla(var(--hue), var(--saturation), 17%, 0.2) 25px);
   /* background: repeating-linear-gradient(45deg, hsla(var(--hue), var(--saturation), 17%, 0.2), hsla(var(--hue), var(--saturation), 17%, 0.2) 1px, var(--appBackground) 2px, var(--appBackground) 10px); */
-  background-position: var(--targetX);
-  transition: 150ms ease-out all;
-  color: var(--appForeground);
-  text-align: center;
-  width: calc(100%);
-  max-width: 500px;
-  border: 1px solid;
-  border-width: 1px 0px;
   align-items: flex-start;
   align-content: flex-start;
-  justify-content: center;
+  transition: 150ms ease-out all;
+  max-width: 500px;
+  border-width: 1px 0px;
 }
 
 .success target {
@@ -358,12 +358,12 @@ target {
 }
 
 target value {
-  font-weight: bold;
   display: block;
   font-family: var(--funfont);
+  font-weight: bold;
   transform: translateY(-24px);
-  transition: 0ms ease-in-out;
   transition-property: transform, opacity;
+  transition: 0ms ease-in-out;
 }
 
 .success stage {
@@ -372,11 +372,11 @@ target value {
 
 .success target value {
   color: white;
-  transform: translateY(-100px);
   opacity: 0;
-  transition: 800ms ease-in-out;
-  transition-delay: 100ms;
+  transform: translateY(-100px);
   transition-property: transform, opacity;
+  transition-delay: 100ms;
+  transition: 800ms ease-in-out;
 }
 
 info {
@@ -387,18 +387,18 @@ info {
 p {
   display: block;
   position: fixed;
-  text-align: center;
-  margin: 0px 20px;
   width: calc(100% - 40px);
+  margin: 0px 20px;
+  text-align: center;
   max-width: 460px;
 }
 
 controls {
-  position: absolute;
   display: flex;
-  justify-content: flex-end;
-  margin: 100px 40px 20px;
+  position: absolute;
   width: calc(100% - 80px);
+  margin: 100px 40px 20px;
+  justify-content: flex-end;
   max-width: 420px;
   bottom: 20px;
   row-gap: 10px;
@@ -412,23 +412,23 @@ controls.endgame {
 controls button {
   z-index: 1000;
   width: 100%;
-  margin: 0px;
-  cursor: pointer;
   height: 70px;
-  right: 0px;
+  margin: 0px;
+  border: 1px solid var(--appForeground);
+  font-family: var(--funfont);
   font-size: 1.5em;
   font-weight: 400;
+  text-transform: lowercase;
   color: white;
   background-color: var(--appForeground);
-  border: 1px solid var(--appForeground);
-  text-transform: lowercase;
-  font-family: var(--funfont);
   transform: translateY(2px);
+  cursor: pointer;
+  right: 0px;
 }
 
 controls button.secondary {
-  background: var(--appBackground);
   color: var(--appForeground);
+  background: var(--appBackground);
 }
 
 controls button:active,
@@ -442,8 +442,8 @@ controls.endgame button {
 
 .disabled,
 :disabled {
-  pointer-events: none;
   opacity: 0.3;
+  pointer-events: none;
 }
 
 .browseronly {
@@ -455,6 +455,7 @@ controls.endgame button {
     margin: auto;
   }
 }
+
 @media (display-mode: standalone) {
   .browseronly {
     display: block;
