@@ -1,8 +1,6 @@
 /// <reference path="../models/ResultObject.js" />
 /// <reference path="../models/ModeObject.js" />
 
-const { version } = require('react');
-
 // if (!UseDebug) {
 Vue.config.devtools = false;
 Vue.config.debug = false;
@@ -14,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '1.0.0',
+    version: '1.0.1',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -23,7 +21,9 @@ var app = new Vue({
     puckX: 0,
     puckY: 0,
     puckWidth: 20,
-    puckHeight: 100,
+    puckHeight: 10,
+    trailWidth: 20,
+    trailHeight: 10,
     targetX: 0,
     targetY: 0,
     targetWidth: 100,
@@ -35,8 +35,10 @@ var app = new Vue({
     isSuccess: false,
     score: 0,
     showInstructions: true,
+    showGameEnd: false,
+    isPlaying: true,
     showSettings: false,
-    showQuitscreen: false,
+    showYesNo: false,
     results: [],
     modes: Modes,
     currentMode: Modes[1],
@@ -46,7 +48,9 @@ var app = new Vue({
     c: window.getComputedStyle(document.querySelector(':root')),
   },
   methods: {
-    ReadyStage() {
+    ReadyTheater() {
+      let stage = document.getElementsByTagName('stage')[0];
+      let stageRect = stage.getBoundingClientRect();
       if (this.isSuccess) {
         this.dropCount = this.dropMaxCount - 1;
       }
@@ -55,11 +59,11 @@ var app = new Vue({
       this.dropCount++;
       if (this.dropCount === this.dropMaxCount) {
         this.puckY = -this.puckHeight;
-        this.puckX = getRandomInt(this.puckWidth, (window.innerWidth < 500 ? window.innerWidth : 500) - this.puckWidth);
+        this.puckX = getRandomInt(this.puckWidth, (window.innerWidth < stageRect.width ? window.innerWidth : stageRect.width) - this.puckWidth);
         this.targetHeight = getRandomInt(20, 100);
-        this.targetY = getRandomInt(200 + this.puckHeight, window.innerHeight - 120 - this.targetHeight);
+        this.targetY = getRandomInt(100 + this.puckHeight, stageRect.height - this.targetHeight);
         this.dropCount = 0;
-        this.results.push(new ResultObject(this.dropTotalCount));
+        this.results.push(new ResultObject({ count: this.dropTotalCount, difficulty: this.currentMode.name }));
       }
     },
     StopPuck() {
@@ -70,7 +74,7 @@ var app = new Vue({
         const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
         this.puckY = kMatrixValues[5];
 
-        let gain = 30 + Number(this.score) + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount));
+        let gain = this.score + this.targetValue;
 
         if (Number(this.puckY) + Number(this.puckHeight) + 1 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.puckY) + Number(this.puckHeight) + 1 > Number(this.targetY)) {
           this.score = gain;
@@ -104,12 +108,16 @@ var app = new Vue({
         mode.selected = false;
       });
       incoming.selected = true;
+      this.trailHeight = incoming.height;
+      this.trailWidth = incoming.width;
       this.puckHeight = incoming.height;
       this.puckWidth = incoming.width;
       localStorage.setItem('mode', JSON.stringify(incoming));
       this.speed = incoming.speed;
       this.currentMode = incoming;
-      this.RestartGame();
+      if (this.isPlaying) {
+        this.EndGame();
+      }
     },
     ToggleInstructions() {
       //this.showInstructions = !this.showInstructions;
@@ -158,18 +166,20 @@ var app = new Vue({
     },
     EndGame() {
       // var confirmed = window.confirm('Are you sure you want to quit?');
-      this.showQuitscreen = false;
+      this.showYesNo = false;
       this.showSettings = false;
       this.dropTotalCount = 0;
       this.isStopped = true;
       this.isReady = false;
       this.isDropping = false;
+      this.isPlaying = false;
+      this.showGameEnd = true;
     },
     HandleActionButton(event, action) {
       event.stopPropagation();
       event.preventDefault();
       log(action);
-      if (this.showQuitscreen && action == 'quit') {
+      if (this.showYesNo && action == 'quit') {
         this.EndGame();
       } else if (this.isDropping && action == 'stop') {
         this.StopPuck();
@@ -177,7 +187,7 @@ var app = new Vue({
         this.isDropping = false;
         this.isStopped = true;
       } else if (this.isStopped && action == 'next') {
-        this.ReadyStage();
+        this.ReadyTheater();
         this.isStopped = false;
         this.isReady = true;
       } else if (this.isReady && action == 'drop') {
@@ -192,7 +202,7 @@ var app = new Vue({
     },
     SetPuckColor(usedark) {
       this.useDarkPuck = usedark;
-      this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
+      this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 17 : 100) + '%');
       localStorage.setItem('useDarkPuck', usedark);
     },
     HandleThemeButton(event, theme) {
@@ -229,7 +239,9 @@ var app = new Vue({
       this.isDropping = false;
       this.isStopped = false;
       this.isReady = true;
-      this.ReadyStage();
+      this.isPlaying = true;
+      this.showGameEnd = false;
+      this.ReadyTheater();
     },
     GetSettings() {
       // this.showInstructions = localStorage.getItem('showInstructions') == 'false' ? false : true;
@@ -264,7 +276,7 @@ var app = new Vue({
           currentThemeIndex = i;
         }
       });
-      switch (event.key) {
+      switch (event.code) {
         case 'ArrowRight':
           currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
           break;
@@ -278,28 +290,73 @@ var app = new Vue({
           this.SelectMode(this.modes[event.key - 1]);
           break;
         case 'Enter':
-          if (this.showQuitscreen) {
+          if (this.showYesNo) {
             this.EndGame();
           }
           break;
         case 'Escape':
-          if (this.showQuitscreen) {
-            this.showQuitscreen = false;
+          if (this.showYesNo) {
+            this.showYesNo = false;
           }
           break;
+        case 'Space':
+          if (this.isDropping) {
+            this.HandleActionButton(event, 'stop');
+          } else if (this.isReady || this.isStopped) {
+            this.HandleActionButton(event, 'next');
+          }
       }
       if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
         this.SelectGameTheme(this.themes[currentThemeIndex].name);
+      }
+    },
+    HandleKeyDown(event) {
+      highlight('"' + event.key + '"');
+      console.log(event);
+      switch (event.code) {
+        case 'Space':
+          if (!this.isDropping && this.isReady) {
+            this.HandleActionButton(event, 'drop');
+          }
+          break;
       }
     },
   },
 
   mounted() {
     window.addEventListener('keyup', this.HandleKeyUp);
+    window.addEventListener('keydown', this.HandleKeyDown);
     this.GetSettings();
-    // this.ReadyStage();
     this.updateInterval = window.setInterval(this.UpdateApp, 1);
   },
 
-  computed: {},
+  computed: {
+    targetValue: function () {
+      let baseValue = parseInt(30 + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount)));
+      let bonus = (500 - this.targetY) / Number(this.dropCount + 1);
+
+      return (parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed;
+    },
+    hitsOnOne: function () {
+      return this.GetHitsOn(0);
+    },
+    hitsOnTwo: function () {
+      return this.GetHitsOn(1);
+    },
+    hitsOnThree: function () {
+      return this.GetHitsOn(2);
+    },
+    misses: function () {
+      return this.GetMisses();
+    },
+    highestPossibleScore: function () {
+      return this.GetHighestPossibleScore();
+    },
+    missedAbove: function () {
+      return this.GetMissedByDirection('above') + '%';
+    },
+    missedBelow: function () {
+      return this.GetMissedByDirection('below') + '%';
+    },
+  },
 });

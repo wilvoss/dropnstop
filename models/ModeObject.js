@@ -11,25 +11,25 @@ class ModeObject {
 var Modes = [
   new ModeObject({
     name: 'Easy',
-    height: 16,
+    height: 20,
     speed: 3,
   }),
   new ModeObject({
     name: 'Normal',
-    height: 50,
+    height: 12,
     width: 15,
     speed: 6,
     selected: true,
   }),
   new ModeObject({
     name: 'Hard',
-    height: 75,
+    height: 8,
     width: 10,
     speed: 12,
   }),
   new ModeObject({
     name: 'Ultra',
-    height: 100,
+    height: 4,
     width: 5,
     speed: 12,
   }),
