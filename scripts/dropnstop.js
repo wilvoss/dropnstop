@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.009',
+    version: '3.0.010',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -399,7 +399,7 @@ var app = new Vue({
           break;
 
         case this.startingDropCount:
-          text = "Press and hold the 'drop' button.";
+          text = this.isChromeAndiOSoriPadOS ? "Press and hold the 'drop' button." : "Press and hold the 'drop' button. <br />Or use the space bar.";
           break;
       }
       return text;
@@ -409,6 +409,13 @@ var app = new Vue({
       let stageRect = stage.getBoundingClientRect();
 
       return this.puckY + this.puckHeight >= stageRect.height - 2;
+    },
+    isChromeAndiOSoriPadOS: function () {
+      note('isChromeAndiOSoriPadOS()');
+      var userAgent = navigator.userAgent || window.opera;
+      var isChromeIOS = /CriOS/.test(userAgent) && /iPhone|iPad|iPod/.test(userAgent);
+      userAgent = userAgent.toLowerCase();
+      return isChromeIOS || (userAgent.includes('firefox') && userAgent.includes('android'));
     },
   },
 });

@@ -47,8 +47,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.0.009" media="screen" />
-    <script src="helpers/console-enhancer.js?3.0.009" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.010" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.010" type='text/javascript'></script>
     <script type="text/javascript">
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -65,7 +65,7 @@
       </audio>
       <theater v-cloak>
         <header :class="{disabled: showEndGame}">
-          <button @click=" showSettings=!showSettings">settings</button>
+          <button @click="showSettings=!showSettings">settings</button>
           <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
           <button v-if="dropTotalCount!=0" @click="showYesNo = true">quit</button>
         </header>
@@ -78,7 +78,7 @@
           </puck>
           <target :class="{disabled: showEndGame}"
             :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', height: targetHeight + 'px'}">
-            <value>
+            <value v-if="!showEndGame">
               <span v-if="!isSuccess">{{'dropzone: +' + targetValue}}</span>
               </span>
               <span v-if="isSuccess" class="fadeup">
@@ -124,7 +124,7 @@
           <button @click="showSettings = !showSettings">settings</button>
         </header>
         <h1>drop 'n stop
-          <subtitle>The Puck Stops Here</subtitle>
+          <subtitle>the puck stops here</subtitle>
         </h1>
 
         <controls class="endgame" v-if="dropTotalCount == 0">
@@ -196,10 +196,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.0.009" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.0.009" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.0.009" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.0.009" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.010" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.010" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.010" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.010" type='text/javascript'></script>
   </body>
 
 </html>

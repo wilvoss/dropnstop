@@ -510,7 +510,7 @@ info {
 info p {
   display: block;
   margin: 0;
-  line-height: 70%;
+  line-height: 150%;
   text-align: center;
 }
 
