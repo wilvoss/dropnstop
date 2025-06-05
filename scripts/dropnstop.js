@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.005',
+    version: '3.0.006',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -167,7 +167,9 @@ var app = new Vue({
       return Math.round((number / this.GetMisses()) * 100);
     },
     EndGame() {
-      // var confirmed = window.confirm('Are you sure you want to quit?');
+      if (this.results.length > 0 && this.results[this.results.length - 1].attempts === 4) {
+        this.results.pop();
+      }
       this.showYesNo = false;
       this.showSettings = false;
       this.dropTotalCount = 0;
