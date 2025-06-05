@@ -246,13 +246,20 @@ stat {
   align-items: end;
 }
 
+stats stat.emphasize {
+  border-bottom: 1px solid var(--appForeground);
+  margin-bottom: 4px;
+}
+
 stats stat.emphasize span {
+  font-family: var(--funfont);
   font-size: 1.7em;
+  font-weight: bold;
+  line-height: 100%;
 }
 
 stat span {
   float: right;
-  font-weight: bold;
 }
 
 puck {
@@ -285,6 +292,11 @@ modal puck,
 
 .stopped puck {
   transition: 0ms linear all;
+}
+
+.stopped puck.disabled,
+puck.disabled {
+  opacity: 0.3;
 }
 
 .stopped puck tail {
@@ -492,6 +504,7 @@ target value {
 
 info {
   display: block;
+  margin-bottom: 40px;
 }
 
 info p {
@@ -499,6 +512,12 @@ info p {
   margin: 0;
   line-height: 70%;
   text-align: center;
+}
+
+info.emphasize p {
+  font-family: var(--funfont);
+  font-size: 1.4em;
+  font-weight: bold;
 }
 
 controls {
@@ -567,6 +586,11 @@ theater controls button {
   border-radius: 50%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   pointer-events: all;
+}
+
+theater controls button.hide {
+  opacity: 0;
+  pointer-events: none;
 }
 
 theater controls button.highlight {

@@ -12,12 +12,14 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.007',
+    version: '3.0.008',
     displayMode: 'browser tab',
     isDropping: false,
-    isStopped: false,
-    isReady: true,
+    isStopped: true,
+    isReady: false,
     useDarkPuck: false,
+    isSuccess: false,
+    isPlaying: false,
     puckX: 0,
     puckY: 0,
     puckWidth: 20,
@@ -31,24 +33,25 @@ var app = new Vue({
     speed: 6,
     dropMaxCount: 3,
     dropCount: 0,
-    dropTotalCount: 100,
-    isSuccess: false,
+    dropTotalCount: 0,
+    startingDropCount: UseDebug ? 3 : 20,
     score: 0,
     showInstructions: true,
-    showGameEnd: false,
-    isPlaying: true,
+    showHome: true,
+    showEndGame: true,
     showSettings: false,
     showYesNo: false,
     results: [],
     modes: Modes,
-    currentMode: Modes[1],
+    currentMode: Modes[0],
     themes: Themes,
     puckElement: document.getElementsByTagName('puck')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
   },
   methods: {
-    ReadyTheater() {
+    ReadyStage() {
+      log('Ready stage');
       let stage = document.getElementsByTagName('stage')[0];
       let stageRect = stage.getBoundingClientRect();
       if (this.isSuccess) {
@@ -67,6 +70,7 @@ var app = new Vue({
       }
     },
     StopPuck() {
+      log('Stopping puck');
       if (this.dropTotalCount > 0) {
         this.puckElement = document.getElementsByTagName('puck')[0];
         const kStyle = window.getComputedStyle(this.puckElement);
@@ -100,26 +104,34 @@ var app = new Vue({
         currentResult.th = this.targetHeight;
 
         this.dropTotalCount--;
+        if (this.dropTotalCount === 0) {
+          this.showEndGame = true;
+          setTimeout(() => {
+            // this.EndGame();
+          }, 1000);
+        }
       }
     },
     SelectMode(incoming) {
-      this.modes.forEach((mode) => {
-        mode.selected = false;
-      });
-      incoming.selected = true;
-      this.trailHeight = incoming.height;
-      this.trailWidth = incoming.width;
-      this.puckHeight = incoming.height;
-      this.puckWidth = incoming.width;
-      localStorage.setItem('mode', JSON.stringify(incoming));
-      this.speed = incoming.speed;
-      this.currentMode = incoming;
-      if (this.isPlaying) {
+      log('Selecting mode: ' + incoming.name);
+      if (!this.isPlaying) {
+        log('Selected mode: ' + incoming.name);
+        this.modes.forEach((mode) => {
+          mode.selected = false;
+        });
+        incoming.selected = true;
+        this.trailHeight = incoming.height;
+        this.trailWidth = incoming.width;
+        this.puckHeight = incoming.height;
+        this.puckWidth = incoming.width;
+        localStorage.setItem('mode', JSON.stringify(incoming));
+        this.speed = incoming.speed;
+        this.currentMode = incoming;
+      } else if (this.isPlaying) {
         this.EndGame();
       }
     },
     ToggleInstructions() {
-      //this.showInstructions = !this.showInstructions;
       localStorage.setItem('showInstructions', this.showInstructions);
     },
     GetHitsOn(value) {
@@ -147,7 +159,8 @@ var app = new Vue({
         let baseValue = parseInt(30 + (100 - Number(result.th)) * Number(this.dropMaxCount));
         let bonus = 481 - result.ty;
 
-        highest = highest + (parseInt(baseValue + bonus) * difficulty.speed) / this.modes[0].speed;
+        let sum = baseValue ? (parseInt(baseValue + bonus) * difficulty.speed) / this.modes[0].speed : 0;
+        highest = highest + sum;
       });
       return highest;
     },
@@ -164,9 +177,14 @@ var app = new Vue({
           }
         }
       });
+      let misses = this.GetMisses();
+      if (misses === 0) {
+        return 0;
+      }
       return Math.round((number / this.GetMisses()) * 100);
     },
     EndGame() {
+      log('Ending game');
       if (this.results.length > 0 && this.results[this.results.length - 1].attempts === 4) {
         this.results.pop();
       }
@@ -177,12 +195,13 @@ var app = new Vue({
       this.isReady = false;
       this.isDropping = false;
       this.isPlaying = false;
-      this.showGameEnd = true;
+      this.showHome = true;
     },
     HandleActionButton(event, action) {
-      event.stopPropagation();
-      event.preventDefault();
-      log(action);
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       if (this.showYesNo && action == 'quit') {
         this.EndGame();
       } else if (this.isDropping && action == 'stop') {
@@ -191,7 +210,7 @@ var app = new Vue({
         this.isDropping = false;
         this.isStopped = true;
       } else if (this.isStopped && action == 'next') {
-        this.ReadyTheater();
+        this.ReadyStage();
         this.isStopped = false;
         this.isReady = true;
       } else if (this.isReady && action == 'drop') {
@@ -215,6 +234,7 @@ var app = new Vue({
       this.SelectGameTheme(theme.name);
     },
     SelectGameTheme(name) {
+      log('Selecting theme: ' + name);
       var theme;
       this.themes.forEach((t) => {
         t.selected = t.name == name;
@@ -235,18 +255,23 @@ var app = new Vue({
       if (this.isDropping) {
         this.puckY = Number(this.puckY) + this.speed;
       }
+      if (this.puckY > window.innerHeight) {
+        // this.puckY = -this.puckHeight;
+        this.HandleActionButton(event, 'stop');
+      }
     },
     RestartGame() {
       this.results = [];
       this.dropCount = this.dropMaxCount - 1;
-      this.dropTotalCount = 100;
+      this.dropTotalCount = this.startingDropCount;
       this.score = 0;
       this.isDropping = false;
       this.isStopped = false;
       this.isReady = true;
       this.isPlaying = true;
-      this.showGameEnd = false;
-      this.ReadyTheater();
+      this.showHome = false;
+      this.showEndGame = false;
+      this.ReadyStage();
     },
     GetSettings() {
       // this.showInstructions = localStorage.getItem('showInstructions') == 'false' ? false : true;
@@ -284,9 +309,15 @@ var app = new Vue({
       switch (event.code) {
         case 'ArrowRight':
           currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
+          if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
+            this.SelectGameTheme(this.themes[currentThemeIndex].name);
+          }
           break;
         case 'ArrowLeft':
           currentThemeIndex = currentThemeIndex == 0 ? this.themes.length - 1 : currentThemeIndex - 1;
+          if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
+            this.SelectGameTheme(this.themes[currentThemeIndex].name);
+          }
           break;
         case '1':
         case '2':
@@ -295,7 +326,7 @@ var app = new Vue({
           this.SelectMode(this.modes[event.key - 1]);
           break;
         case 'Enter':
-          if (this.showYesNo) {
+          if (this.showYesNo && !this.showEndGame) {
             this.EndGame();
           }
           break;
@@ -305,20 +336,17 @@ var app = new Vue({
           }
           break;
         case 'Space':
-          if (this.isDropping) {
+          if (this.isDropping && !this.showEndGame) {
             this.HandleActionButton(event, 'stop');
-          } else if (this.isReady || this.isStopped) {
+          } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame) {
             this.HandleActionButton(event, 'next');
           }
-      }
-      if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
-        this.SelectGameTheme(this.themes[currentThemeIndex].name);
       }
     },
     HandleKeyDown(event) {
       switch (event.code) {
         case 'Space':
-          if (!this.isDropping && this.isReady) {
+          if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped) {
             this.HandleActionButton(event, 'drop');
           }
           break;
@@ -363,6 +391,19 @@ var app = new Vue({
     },
     userLocale: function () {
       return navigator.language || 'en-US';
+    },
+    instructions: function () {
+      let text = this.dropTotalCount + (this.dropTotalCount === 1 ? ' drop left' : ' drops left');
+      switch (this.dropTotalCount) {
+        case 0:
+          text = 'Game Over!';
+          break;
+
+        case this.startingDropCount:
+          text = "Press and hold the 'drop' button.";
+          break;
+      }
+      return text;
     },
   },
 });
