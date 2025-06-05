@@ -289,6 +289,10 @@ puck.start:after {
   content: '↓';
 }
 
+.ended puck {
+  border-color: hsla(var(--hue), var(--saturation), 17%, 0.6);
+}
+
 puck tail {
   display: block;
   position: absolute;
@@ -503,6 +507,10 @@ target {
   background: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
 }
 
+.ended target {
+  border-color: hsla(var(--hue), var(--saturation), 17%, 0.4);
+}
+
 target value {
   display: block;
   font-family: var(--funfont);
@@ -512,7 +520,14 @@ target value {
   transition: 0ms ease-out;
 }
 
-.success target value {
+.ended target value {
+  opacity: 0;
+  transform: translateY(-150px) scale(1.4);
+  transition-property: transform, opacity;
+  transition: 0ms ease-in-out;
+}
+
+.ended.success target value {
   opacity: 0;
   transform: translateY(-150px) scale(1.4);
   transition-property: transform, opacity;
