@@ -43,7 +43,7 @@ var Themes = [
   new ThemeObject({
     name: 'p',
     h: 256,
-    s: 46,
+    s: 36,
     pl: 83,
   }),
   new ThemeObject({
