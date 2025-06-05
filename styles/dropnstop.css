@@ -16,12 +16,15 @@
   --funfont: 'Tektur';
   --stageWidth: 100%;
   --maxWidth: 500px;
+  --minWidth: 340px;
+  --maxHeight: 956px;
   --stageHeight: 481px;
   --dividerColor: hsl(var(--hue), var(--saturation), 100%, 0.3);
 }
 
 html,
 body {
+  display: flex;
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -29,6 +32,9 @@ body {
   padding: 0px;
   font-family: 'Courier New', Courier, monospace;
   color: var(--appForeground);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), 17%) 0px, hsl(var(--hue), var(--saturation), 17%) 40px, hsl(var(--hue), var(--saturation), 16%) 40px, hsl(var(--hue), var(--saturation), 16%) 80px);
   user-select: none;
   -webkit-user-select: none;
@@ -37,6 +43,18 @@ body {
 [v-cloak] {
   opacity: 0;
   transition: 250ms ease-out opacity;
+}
+
+app {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  max-width: var(--maxWidth);
+  min-width: var(--minWidth);
+  max-height: var(--maxHeight);
 }
 
 a {
@@ -76,6 +94,7 @@ h3 {
 }
 
 button {
+  user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -83,14 +102,18 @@ button {
 theater,
 modal {
   display: flex;
-  height: 100%;
+  width: 100%;
+  height: calc(100% - 20px - calc(0.5 * env(safe-area-inset-bottom)));
   margin: 0px auto;
   flex-direction: column;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
   gap: 0px;
-  max-width: 500px;
   background: var(--appBackground);
+  max-width: var(--maxWidth);
+  min-width: var(--minWidth);
+  max-height: var(--maxHeight);
+  padding-bottom: calc(20px + calc(0.5 * env(safe-area-inset-bottom)));
   /* transition: 100ms ease-in-out background-color; */
 }
 
@@ -105,7 +128,19 @@ theater header score {
 
 theater controls {
   position: absolute;
-  bottom: 0px;
+  height: calc(100% - 20px);
+  bottom: unset;
+  /* align-content: end; */
+  /* flex-direction: row; */
+  margin: 0;
+  align-items: flex-end;
+  max-height: calc(var(--maxHeight) - 20px - 0.5 * env(safe-area-inset-bottom));
+  pointer-events: none;
+  transition: 200ms ease-in-out opacity;
+}
+
+.dropping theater controls {
+  opacity: 0;
 }
 
 header {
@@ -254,8 +289,6 @@ modal {
   display: flex;
   position: absolute;
   z-index: 1000;
-  width: 100%;
-  margin: 0px auto;
   padding: 0;
   opacity: 0;
   transform: translateY(100%);
@@ -263,13 +296,9 @@ modal {
   justify-content: space-between;
   align-items: center;
   align-content: start;
-  min-height: 100%;
   gap: 20px;
-  max-width: 500px;
   pointer-events: none;
-  top: 0px;
   box-shadow: none;
-  margin-left: calc((100vw / 2) - 250px);
   row-gap: 0px;
   background: var(--appBackground);
 }
@@ -469,9 +498,9 @@ controls {
   margin: 20px 0px;
   justify-content: flex-end;
   max-width: calc(var(--maxWidth) - 0px);
-  bottom: 20px;
   row-gap: 10px;
   column-gap: 20px;
+  padding-bottom: calc(20px + calc(0.5 * env(safe-area-inset-bottom)));
 }
 
 controls.endgame {
@@ -517,6 +546,7 @@ theater controls button {
   opacity: 0.8;
   border-radius: 50%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  pointer-events: all;
 }
 
 theater controls button.highlight {

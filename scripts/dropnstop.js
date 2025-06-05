@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.002',
+    version: '3.0.003',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -224,6 +224,7 @@ var app = new Vue({
       }
       this.r.style.setProperty('--hue', theme.h);
       this.r.style.setProperty('--saturation', theme.s + '%');
+      document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, 61%)');
       localStorage.setItem('theme', theme.name);
     },
     UpdateApp() {

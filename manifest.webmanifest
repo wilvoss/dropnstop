@@ -1,36 +1,37 @@
 {
-    "name":"Drop 'n Stop!",
-    "lang":"en-us",
-    "short_name":"Drop",
-    "description":"The puck stops here.",
-    "start_url":"/",
-    "scope":"/",
-    "id":"/",
-    "display":"standalone",
-    "theme_color":"#333333",
-    "background_color":"#333333",
-    "orientation":"any",
-    "publisher": "Big Tent Games",
-    "icons":[
-        {
-            "src":"/images/icon120.png",
-            "sizes":"120x120",
-            "purpose":"any"
-        },
-        {
-            "src":"/images/icon180.png",
-            "sizes":"180x180",
-            "purpose":"any"
-        },
-        {
-            "src":"/images/icon192.png",
-            "sizes":"192x192",
-            "purpose":"any"
-        },
-        {
-            "src":"/images/icon512.png",
-            "sizes":"512x512",
-            "purpose":"any"
-        }
-    ]
- }
+  "name": "drop 'n stop!",
+  "lang": "en-us",
+  "short_name": "drop",
+  "description": "The puck stops here.",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "window-controls-overlay"],
+  "theme_color": "#333333",
+  "background_color": "#333333",
+  "orientation": "any",
+  "publisher": "Big Tent Games",
+  "icons": [
+    {
+      "src": "/images/icon120.png",
+      "sizes": "120x120",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon180.png",
+      "sizes": "180x180",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon192.png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon512.png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
+}
