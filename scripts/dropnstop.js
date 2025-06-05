@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.015',
+    version: '3.0.016',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -412,7 +412,7 @@ var app = new Vue({
     },
     isChromeAndiOSoriPadOS: function () {
       var userAgent = navigator.userAgent || window.opera;
-      var isChromeIOS = /CriOS/.test(userAgent) && /iPhone|iPad|iPod/.test(userAgent);
+      var isChromeIOS = /CriOS/.test(userAgent) || /iPhone|iPad|iPod/.test(userAgent);
       var isFirefoxAndroid = /Firefox/.test(userAgent) && /Android/.test(userAgent);
 
       return isChromeIOS || isFirefoxAndroid;
