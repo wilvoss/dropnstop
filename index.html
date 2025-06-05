@@ -47,12 +47,13 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.0.018" media="screen" />
-    <script src="helpers/console-enhancer.js?3.0.018" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.019" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.019" type='text/javascript'></script>
   </head>
 
   <body>
-    <app id="app" :class="{stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping}">
+    <app id="app"
+      :class="{stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndGame}">
       <audio id="themeMusic" loop>
         <source src="" id="themeSource" type="audio/aac">
       </audio>
@@ -64,14 +65,14 @@
         </header>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
         <stage>
-          <puck :class="{disabled: showEndGame}"
+          <puck :class="{disabled: showEndGame, start: isFirstRun}"
             :style=" {transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
             <tail v-if="!puckHitBottom" :style="{marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
             </tail>
           </puck>
           <target :class="{disabled: showEndGame}"
             :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', height: targetHeight + 'px'}">
-            <value v-if="!showEndGame">
+            <value>
               <span v-if="!isSuccess">{{'dropzone: +' + targetValue}}</span>
               </span>
               <span v-if="isSuccess" class="fadeup">
@@ -80,36 +81,38 @@
             </value>
           </target>
           <info :class="{emphasize: showEndGame}">
-            <p v-html="instructions"></p>
+            <stats v-if="results.length > 0 && showEndGame" @click="CreateConfetti">
+              <p v-html="instructions"></p>
+              <stat>Best possible <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span>
+              </stat>
+              <stat v-if="score > 0">Percent of best
+                <span>{{Math.round(100 * score/highestPossibleScore) + '%'}}</span>
+              </stat>
+              <stat>Hits in 1 <span>{{hitsOnOne}}</span></stat>
+              <stat>Hits in 2 <span>{{hitsOnTwo}}</span></stat>
+              <stat>Hits in 3 <span>{{hitsOnThree}}</span></stat>
+              <stat>Misses <span>{{misses}}</span></stat>
+              <stat>Missed
+                above<span>{{missedAbove}}</span>
+              </stat>
+              <stat>Missed
+                below<span>{{missedBelow}}</span>
+              </stat>
+              <stat>Difficulty <span>{{results[results.length - 1].difficulty}}</span></stat>
+            </stats>
           </info>
-          <stats v-if="results.length > 0 && showEndGame" @click="CreateConfetti">
-            <stat>Best possible <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span>
-            </stat>
-            <stat v-if="score > 0">Percent of best
-              <span>{{Math.round(100 * score/highestPossibleScore) + '%'}}</span>
-            </stat>
-            <stat>Hits in 1 <span>{{hitsOnOne}}</span></stat>
-            <stat>Hits in 2 <span>{{hitsOnTwo}}</span></stat>
-            <stat>Hits in 3 <span>{{hitsOnThree}}</span></stat>
-            <stat>Misses <span>{{misses}}</span></stat>
-            <stat>Missed
-              above<span>{{missedAbove}}</span>
-            </stat>
-            <stat>Missed
-              below<span>{{missedBelow}}</span>
-            </stat>
-            <stat>Difficulty <span>{{results[results.length - 1].difficulty}}</span></stat>
-          </stats>
         </stage>
         <controls>
           <button @pointerdown="HandleActionButton(event, 'next')" class="action"
             :class="{hide: showEndGame, disabled: !isStopped, highlight: dropCount >= 2 && isStopped || isSuccess}">
             {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
           </button>
+          <p v-if="!showEndGame" v-html="instructions"></p>
+
           <button @click="EndGame" v-if="dropTotalCount === 0">Okay</button>
-          <button :class="{hide: showEndGame, disabled: isStopped}" @pointerdown="HandleActionButton(event, 'drop')"
-            @pointerup="HandleActionButton(event, 'stop')" @pointerleave="HandleActionButton(event, 'stop')"
-            class="action">DROP</button>
+          <button :class="{hide: showEndGame, disabled: isStopped, blink: isFirstRun}"
+            @pointerdown="HandleActionButton(event, 'drop')" @pointerup="HandleActionButton(event, 'stop')"
+            @pointerleave="HandleActionButton(event, 'stop')" class="action">DROP</button>
         </controls>
       </theater>
       <modal :class="{show: showHome}">
@@ -189,10 +192,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.0.018" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.0.018" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.0.018" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.0.018" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.019" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.019" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.019" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.019" type='text/javascript'></script>
   </body>
 
 </html>

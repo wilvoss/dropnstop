@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.018',
+    version: '3.0.019',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -58,10 +58,10 @@ var app = new Vue({
         this.dropCount = this.dropMaxCount - 1;
       }
       this.isSuccess = false;
-      this.puckY = -this.puckHeight;
+      this.puckY = -this.puckHeight - 2;
       this.dropCount++;
       if (this.dropCount === this.dropMaxCount) {
-        this.puckY = -this.puckHeight;
+        this.puckY = -this.puckHeight - 2;
         this.puckX = getRandomInt(this.puckWidth, (window.innerWidth < stageRect.width ? window.innerWidth : stageRect.width) - this.puckWidth);
         this.targetHeight = getRandomInt(20, 100);
         this.targetY = getRandomInt(100 + this.puckHeight, stageRect.height - this.targetHeight);
@@ -80,7 +80,7 @@ var app = new Vue({
 
         let gain = this.score + this.targetValue;
 
-        if (Number(this.puckY) + Number(this.puckHeight) + 1 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.puckY) + Number(this.puckHeight) + 1 > Number(this.targetY)) {
+        if (Number(this.puckY) + Number(this.puckHeight) + 3 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.puckY) + Number(this.puckHeight) + 1 > Number(this.targetY)) {
           this.score = gain;
           this.isSuccess = true;
         }
@@ -106,9 +106,9 @@ var app = new Vue({
         this.dropTotalCount--;
         if (this.dropTotalCount === 0) {
           this.showEndGame = true;
-          requestAnimationFrame(() => {
+          setTimeout(() => {
             this.CreateConfetti();
-          });
+          }, 200);
         }
       }
     },
@@ -441,7 +441,7 @@ var app = new Vue({
           break;
 
         case this.startingDropCount:
-          text = this.isChromeAndiOSoriPadOS ? "Press and hold the 'drop' button. Release to hit the dropzone!" : "Press and hold the 'drop' button. Release to hit the dropzone! <br />Or use the space bar.";
+          text = 'hold drop →<br />release to stop';
           break;
       }
       return text;
@@ -466,6 +466,10 @@ var app = new Vue({
         theme.selected = true;
       }
       return theme;
+    },
+
+    isFirstRun: function () {
+      return !this.isDropping && this.dropTotalCount === this.startingDropCount;
     },
   },
 });
