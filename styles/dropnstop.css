@@ -8,7 +8,7 @@
   --saturation: 34%;
   --highlightHue: calc(var(--hue) + 180);
   --highlightSaturation: calc(var(--saturation) + 30%);
-  --puckLuminosity: 83%;
+  --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), 61%);
   --appForeground: hsl(var(--hue), var(--saturation), 17%);
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
