@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.023',
+    version: '3.0.024',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -228,7 +228,7 @@ var app = new Vue({
     },
     SetPuckColor(usedark) {
       this.useDarkPuck = usedark;
-      this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 17 : 100) + '%');
+      this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
       localStorage.setItem('useDarkPuck', usedark);
     },
     HandleThemeButton(event, theme) {
