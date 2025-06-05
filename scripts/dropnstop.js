@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.006',
+    version: '3.0.007',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -360,6 +360,9 @@ var app = new Vue({
     },
     missedBelow: function () {
       return this.GetMissedByDirection('below') + '%';
+    },
+    userLocale: function () {
+      return navigator.language || 'en-US';
     },
   },
 });

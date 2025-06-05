@@ -47,8 +47,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.0.006" media="screen" />
-    <script src="helpers/console-enhancer.js?3.0.006" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.007" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.007" type='text/javascript'></script>
     <script type="text/javascript">
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -113,8 +113,8 @@
           <subtitle v-if="results.length === 0">The Puck Stops Here</subtitle>
         </h1>
         <stats v-if="results.length > 0 && !isPlaying">
-          <stat class="emphasize">Final <span>{{score}}</span></stat>
-          <stat>Best possible <span>{{Intl.NumberFormat('en-US').format(highestPossibleScore)}}</span>
+          <stat class="emphasize">Final <span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
+          <stat>Best possible <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span>
           </stat>
           <stat v-if="score > 0">Percent of best
             <span>{{Math.round(100 * score/highestPossibleScore) + '%'}}</span>
@@ -133,7 +133,7 @@
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
           <!-- <h3 @pointerdown="showSettings = !showSettings">Current Mode: {{currentMode.name}}</h3> -->
-          <button @click="RestartGame">New {{currentMode.name}} Game</button>
+          <button @click="RestartGame">New Game <span>{{currentMode.name}} difficulty</span></button>
           <button class="secondary" @click="Share">Share </button>
           <button class="secondary action" @click="window.open('https://www.buymeacoffee.com/wilvoss')">buy me a
             coffee!</button>
@@ -147,7 +147,7 @@
         <h2>Settings</h2>
         <divider></divider>
         <section>
-          <h3>mode</h3>
+          <h3>difficulty mode</h3>
           <setting>
             <mode v-for="(mode) in modes" @pointerdown="SelectMode(mode)"
               :class="{selected: mode.selected, disabled: isPlaying && !mode.selected}">
@@ -159,7 +159,7 @@
         </section>
         <divider></divider>
         <section class="puck">
-          <h3>puck</h3>
+          <h3>puck color</h3>
           <setting>
             <puckcolor @pointerdown="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
             </puckcolor>
@@ -169,7 +169,7 @@
         </section>
         <divider></divider>
         <section>
-          <h3>theme</h3>
+          <h3>color theme</h3>
           <setting>
             <theme :class="{selected: theme.selected}" v-for="theme in themes"
               @pointerdown="HandleThemeButton(event, theme)">
@@ -200,10 +200,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.0.006" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.0.006" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.0.006" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.0.006" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.007" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.007" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.007" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.007" type='text/javascript'></script>
   </body>
 
 </html>
