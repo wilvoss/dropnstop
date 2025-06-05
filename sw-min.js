@@ -1,5 +1,5 @@
-const CACHE_VERSION = '3.0.013',
-  CURRENT_CACHE = 'main-3.0.013',
+const CACHE_VERSION = '3.0.014',
+  CURRENT_CACHE = 'main-3.0.014',
   cacheFiles = ['/', '', 'fonts/Tektur.ttf', 'helpers/vue.min.js', 'helpers/console-enhancer.js', 'images/big_tent_logo.svg', 'models/ModeObject.js', 'models/ThemeObject.js', 'models/ResultObject.js', 'scripts/dropnstop.js', 'styles/dropnstop.css', 'index.html'];
 self.addEventListener('activate', (e) =>
   e.waitUntil(
