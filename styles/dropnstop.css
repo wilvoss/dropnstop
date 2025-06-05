@@ -752,6 +752,10 @@ canvas {
     font-size: 1em;
   }
 
+  theater controls p {
+    font-size: 0.85em;
+  }
+
   theater {
     gap: 0px;
   }
