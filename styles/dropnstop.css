@@ -728,10 +728,6 @@ canvas {
   modal {
     margin: auto;
   }
-
-  theater controls button {
-    opacity: 0.8;
-  }
 }
 
 @media only screen and (max-height: 682px) {
@@ -770,6 +766,10 @@ canvas {
 
   info stats {
     margin-bottom: 80px;
+  }
+
+  theater controls button {
+    opacity: 0.8;
   }
 }
 
