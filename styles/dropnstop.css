@@ -747,7 +747,8 @@ canvas {
     display: block;
   }
 
-  theater header button {
+  theater header button,
+  modal header button {
     font-size: 1em;
   }
 
