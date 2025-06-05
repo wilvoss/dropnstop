@@ -121,6 +121,8 @@ modal {
 }
 
 theater {
+  justify-content: start;
+  gap: 40px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
@@ -183,7 +185,7 @@ stage {
   display: block;
   width: var(--stageWidth);
   height: var(--stageHeight);
-  /* border-bottom: 1px solid var(--appForeground); */
+  /* border: 1px solid var(--appForeground); */
   max-height: var(--stageHeight);
   min-height: var(--stageHeight);
   background: var(--appBackground);
@@ -619,7 +621,7 @@ theater controls button.highlight {
   }
 }
 
-@media only screen and (max-height: 600px) {
+@media only screen and (max-height: 682px) {
   theater score {
     display: none;
   }
@@ -638,6 +640,10 @@ theater controls button.highlight {
 
   theater header button {
     font-size: 1em;
+  }
+
+  theater {
+    gap: 0px;
   }
 }
 
