@@ -185,6 +185,11 @@ header button:nth-child(3) {
   justify-content: end;
 }
 
+header button.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
 stage {
   display: block;
   width: var(--stageWidth);

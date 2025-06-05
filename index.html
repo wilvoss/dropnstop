@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <meta content="x-content-type-options=nosniff" />
 
-    <title>Drop 'n Stop!</title>
-    <meta name="apple-mobile-web-app-title" content="Drop 'n Stop!" />
+    <title>drop 'n stop!</title>
+    <meta name="apple-mobile-web-app-title" content="drop 'n stop!" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-touch-fullscreen" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -18,15 +18,15 @@
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="expires" content="0" />
 
-    <meta name="keywords" content="Drop 'n Stop!, Drop, Stop, Big Tent Games, Games, Free, FullyFree" />
-    <meta name="description" content="The puck stops here." />
+    <meta name="keywords" content="drop 'n stop!, drop, stop, Big Tent Games, Games, Free" />
+    <meta name="description" content="the puck stops here" />
 
     <meta name="twitter:card" content="summary_large_image">
     </meta>
-    <meta property="og:title" content="Drop 'n Stop!" />
+    <meta property="og:title" content="drop 'n stop!" />
     <meta property="og:author" content="Wil Voss" />
     <meta property="og:site_name" content="Big Tent Games" />
-    <meta property="og:description" content="The puck stops here." />
+    <meta property="og:description" content="the puck stops here" />
     <meta property="og:type" content="photo" />
     <meta property="og:url" content="https://dropnstop.games" />
     <meta property="og:image" content="https://dropnstop.games/images/dropnstop_og.png" />
@@ -35,13 +35,13 @@
 
     <link id="appleicon" rel="apple-touch-icon" sizes="180x180" href="/images/icon180.png">
 
-    <link rel="icon alternate" type="image/png" href="https://bigtentgames.com/favicon.png">
+    <link rel="icon alternate" type="image/png" href="https://bigtentgames.com/favicon-alt.png">
     <link rel="icon" type="image/svg+xml" href="https://bigtentgames.com/favicon.svg">
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.0.028" media="screen" />
-    <script src="helpers/console-enhancer.js?3.0.028" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.029" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.029" type='text/javascript'></script>
   </head>
 
   <body>
@@ -51,10 +51,10 @@
         <source src="" id="themeSource" type="audio/aac">
       </audio>
       <theater v-cloak>
-        <header :class="{disabled: showEndGame}">
-          <button @click="showSettings=!showSettings">settings</button>
-          <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
-          <button :class="{hide: dropTotalCount === 0}" @click="showYesNo = true">quit</button>
+        <header>
+          <button :class="{hide: showEndGame}" @click="showSettings=!showSettings">settings</button>
+          <score>{{(showEndGame ? 'final score - ' : '') + Intl.NumberFormat('en-US').format(score)}}</score>
+          <button :class="{hide: showEndGame}" @click="showYesNo = true">quit</button>
         </header>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
         <stage>
@@ -184,10 +184,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.0.028" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.0.028" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.0.028" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.0.028" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.029" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.029" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.029" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.029" type='text/javascript'></script>
   </body>
 
 </html>
