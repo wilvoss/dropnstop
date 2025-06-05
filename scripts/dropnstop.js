@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.025',
+    version: '3.0.026',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -130,8 +130,6 @@ var app = new Vue({
         localStorage.setItem('mode', JSON.stringify(incoming));
         this.speed = incoming.speed;
         this.currentMode = incoming;
-      } else if (this.isPlaying) {
-        this.EndGame();
       }
     },
     ToggleInstructions() {
