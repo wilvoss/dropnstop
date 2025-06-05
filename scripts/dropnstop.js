@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.004',
+    version: '3.0.005',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -88,17 +88,16 @@ var app = new Vue({
         } else if (Number(this.puckY) + Number(this.puckHeight) + 1 < Number(this.targetY)) {
           currentResult.deltas.push(Number(this.puckY) + Number(this.puckHeight) + 1 - Number(this.targetY));
         }
-        if (this.isSuccess || this.dropCount == 2) {
-          currentResult.count = this.dropTotalCount;
-          currentResult.attempts = this.dropCount;
-          currentResult.success = this.isSuccess;
-          currentResult.value = gain;
-          currentResult.ky = this.puckY;
-          currentResult.kx = this.puckX;
-          currentResult.kh = this.puckHeight;
-          currentResult.ty = this.targetY;
-          currentResult.th = this.targetHeight;
-        }
+
+        currentResult.count = this.dropTotalCount;
+        currentResult.attempts = this.dropCount;
+        currentResult.success = this.isSuccess;
+        currentResult.value = gain;
+        currentResult.ky = this.puckY;
+        currentResult.kx = this.puckX;
+        currentResult.kh = this.puckHeight;
+        currentResult.ty = this.targetY;
+        currentResult.th = this.targetHeight;
 
         this.dropTotalCount--;
       }
@@ -142,10 +141,13 @@ var app = new Vue({
     GetHighestPossibleScore() {
       let highest = 0;
       this.results.forEach((result) => {
-        if (result.th != undefined) {
-          let value = 30 + (100 - Number(result.th)) * 3;
-          highest = highest + value;
-        }
+        let difficulty = this.modes.find((r) => {
+          return r.name === result.difficulty;
+        });
+        let baseValue = parseInt(30 + (100 - Number(result.th)) * Number(this.dropMaxCount));
+        let bonus = 481 - result.ty;
+
+        highest = highest + (parseInt(baseValue + bonus) * difficulty.speed) / this.modes[0].speed;
       });
       return highest;
     },
@@ -332,7 +334,7 @@ var app = new Vue({
   computed: {
     targetValue: function () {
       let baseValue = parseInt(30 + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount)));
-      let bonus = (500 - this.targetY) / Number(this.dropCount + 1);
+      let bonus = (481 - this.targetY) / Number(this.dropCount + 1);
 
       return (parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed;
     },
