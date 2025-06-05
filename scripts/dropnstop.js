@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.016',
+    version: '3.0.017',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -106,9 +106,9 @@ var app = new Vue({
         this.dropTotalCount--;
         if (this.dropTotalCount === 0) {
           this.showEndGame = true;
-          setTimeout(() => {
-            // this.EndGame();
-          }, 1000);
+          requestAnimationFrame(() => {
+            this.CreateConfetti();
+          });
         }
       }
     },
@@ -270,6 +270,7 @@ var app = new Vue({
       this.isPlaying = true;
       this.showHome = false;
       this.showEndGame = false;
+      this.RemoveConfetti();
       this.ReadyStage();
     },
     GetSettings() {
@@ -290,6 +291,47 @@ var app = new Vue({
       if (localStorage.getItem('useDarkPuck') != null) {
         this.SetPuckColor(localStorage.getItem('useDarkPuck') == 'true');
       }
+    },
+
+    RemoveConfetti() {
+      note('RemoveConfetti() called');
+      let allConfetti = document.getElementsByTagName('confetti');
+      for (let _x = allConfetti.length - 1; _x >= 0; _x--) {
+        document.body.removeChild(allConfetti[_x]);
+      }
+    },
+
+    CreateConfetti(_hue = null, _rank = null) {
+      note('CreateConfetti() called');
+      this.RemoveConfetti();
+      _rank = _rank === null ? this.userRank : _rank;
+      let domApp = document.getElementsByTagName('app')[0];
+      let count = domApp.clientWidth;
+
+      for (let x = 0; x < count; x++) {
+        let confetti = document.createElement('confetti');
+        let lightness = getRandomInt(1, 30);
+
+        confetti.style.setProperty('left', getRandomInt(0, domApp.clientWidth) + (window.innerWidth - domApp.clientWidth) / 2 + 'px');
+        confetti.style.setProperty('transition-duration', getRandomInt(1600, 3001) + 'ms');
+        confetti.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + 0) + ', ' + (this.currentTheme.s + 0) + '%, ' + lightness + '%)');
+
+        confetti.style.setProperty('transition-delay', getRandomInt(0, 800) + 'ms');
+        confetti.style.setProperty('rotate', +'deg');
+        let width = getRandomInt(40, 100) / 10;
+        let height = getRandomInt(40, 100) / 10;
+        confetti.style.setProperty('width', width + 'px');
+        confetti.style.setProperty('height', height + 'px');
+        document.body.appendChild(confetti);
+      }
+      window.setTimeout(function () {
+        let allConfetti = document.getElementsByTagName('confetti');
+        for (let _x = 0; _x < allConfetti.length; _x++) {
+          const confetti = allConfetti[_x];
+          confetti.style.setProperty('transform', 'translate(' + parseInt(getRandomInt(-20, 20)) + 'px, ' + parseInt(document.body.clientHeight - confetti.clientHeight + 20) + 'px) rotate(' + getRandomInt(-360, 360) + 'deg)');
+          confetti.className = 'drop';
+        }
+      });
     },
     Share() {
       navigator.share({
@@ -399,7 +441,7 @@ var app = new Vue({
           break;
 
         case this.startingDropCount:
-          text = this.isChromeAndiOSoriPadOS ? "Press and hold the 'drop' button." : "Press and hold the 'drop' button. <br />Or use the space bar.";
+          text = this.isChromeAndiOSoriPadOS ? "Press and hold the 'drop' button. Release to hit the dropzone!" : "Press and hold the 'drop' button. Release to hit the dropzone! <br />Or use the space bar.";
           break;
       }
       return text;
@@ -416,6 +458,14 @@ var app = new Vue({
       var isFirefoxAndroid = /Firefox/.test(userAgent) && /Android/.test(userAgent);
 
       return isChromeIOS || isFirefoxAndroid;
+    },
+    currentTheme: function () {
+      let theme = this.themes.find((t) => t.selected);
+      if (theme === undefined) {
+        theme = this.themes[1];
+        theme.selected = true;
+      }
+      return theme;
     },
   },
 });

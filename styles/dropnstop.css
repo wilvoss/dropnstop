@@ -238,6 +238,8 @@ stats {
   align-items: center;
   align-content: center;
   max-width: 500px;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 stat {
@@ -609,6 +611,22 @@ theater controls button.highlight {
 
 .browseronly {
   display: none;
+}
+
+confetti,
+canvas {
+  display: block;
+  position: fixed;
+  z-index: 3000;
+  width: 10px;
+  height: 10px;
+  opacity: 8;
+  transform: translate(0px -10px) rotate(0deg);
+  transition-property: transform, opacity;
+  transition-timing-function: ease-in;
+  pointer-events: none;
+  top: -20px;
+  background: var(--appForeground);
 }
 
 @media only screen and (max-width: 500px) {
