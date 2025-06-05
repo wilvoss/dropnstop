@@ -637,7 +637,7 @@ theater controls button {
   margin: 0 0 0 20px;
   font-size: 1.25em;
   font-weight: normal;
-  opacity: 0.8;
+  opacity: 1;
   max-width: 80px;
   min-width: 80px;
   max-height: 80px;
@@ -727,6 +727,10 @@ canvas {
 
   modal {
     margin: auto;
+  }
+
+  theater controls button {
+    opacity: 0.8;
   }
 }
 
