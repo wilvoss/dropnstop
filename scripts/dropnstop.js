@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.027',
+    version: '3.0.028',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -34,13 +34,15 @@ var app = new Vue({
     dropMaxCount: 3,
     dropCount: 0,
     dropTotalCount: 0,
-    startingDropCount: UseDebug ? 3 : 20,
+    startingDropCount: UseDebug ? 20 : 20,
     score: 0,
     showInstructions: true,
     showHome: true,
     showEndGame: true,
     showSettings: false,
     showYesNo: false,
+    hasUsedSpaceBar: false,
+    spaceBarInUse: false,
     results: [],
     modes: Modes,
     currentMode: Modes[0],
@@ -378,6 +380,8 @@ var app = new Vue({
           }
           break;
         case 'Space':
+          this.spaceBarInUse = false;
+
           if (this.isDropping && !this.showEndGame) {
             this.HandleActionButton(event, 'stop');
           } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame) {
@@ -389,6 +393,8 @@ var app = new Vue({
       switch (event.code) {
         case 'Space':
           if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped) {
+            this.spaceBarInUse = true;
+            this.hasUsedSpaceBar = true;
             this.HandleActionButton(event, 'drop');
           }
           break;
@@ -443,6 +449,12 @@ var app = new Vue({
 
         case this.startingDropCount:
           text = 'hold drop →<br />release to stop';
+          break;
+
+        default:
+          if (!this.hasUsedSpaceBar && !this.isChromeAndiOSoriPadOS && this.dropTotalCount % 4 === 0 && this.isReady) {
+            text = text + '<br />(the space bar works too)';
+          }
           break;
       }
       return text;

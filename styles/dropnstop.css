@@ -139,7 +139,11 @@ theater controls {
   bottom: unset;
   max-height: calc(var(--maxHeight) - 20px - 0.5 * env(safe-area-inset-bottom));
   pointer-events: none;
-  transition: 120ms ease-in-out opacity;
+  transition: 100ms ease-in-out opacity;
+}
+
+.keyboard.dropping theater controls {
+  opacity: 1;
 }
 
 .dropping theater controls {
