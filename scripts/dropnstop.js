@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.008',
+    version: '3.0.009',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -252,12 +252,11 @@ var app = new Vue({
       localStorage.setItem('theme', theme.name);
     },
     UpdateApp() {
-      if (this.isDropping) {
+      let stage = document.getElementsByTagName('stage')[0];
+      let stageRect = stage.getBoundingClientRect();
+
+      if (this.isDropping && !this.puckHitBottom) {
         this.puckY = Number(this.puckY) + this.speed;
-      }
-      if (this.puckY > window.innerHeight) {
-        // this.puckY = -this.puckHeight;
-        this.HandleActionButton(event, 'stop');
       }
     },
     RestartGame() {
@@ -404,6 +403,12 @@ var app = new Vue({
           break;
       }
       return text;
+    },
+    puckHitBottom: function () {
+      let stage = document.getElementsByTagName('stage')[0];
+      let stageRect = stage.getBoundingClientRect();
+
+      return this.puckY + this.puckHeight >= stageRect.height - 2;
     },
   },
 });

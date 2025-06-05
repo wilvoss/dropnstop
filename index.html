@@ -47,8 +47,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.0.008" media="screen" />
-    <script src="helpers/console-enhancer.js?3.0.008" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.009" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.009" type='text/javascript'></script>
     <script type="text/javascript">
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -73,7 +73,7 @@
         <stage>
           <puck :class="{disabled: showEndGame}"
             :style=" {transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
-            <tail :style=" { marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
+            <tail v-if="!puckHitBottom" :style="{marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
             </tail>
           </puck>
           <target :class="{disabled: showEndGame}"
@@ -196,10 +196,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.0.008" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.0.008" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.0.008" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.0.008" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.009" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.009" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.009" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.009" type='text/javascript'></script>
   </body>
 
 </html>
