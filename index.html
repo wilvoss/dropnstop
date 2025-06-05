@@ -43,8 +43,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?1.0.1" media="screen" />
-    <script src="helpers/console-enhancer.js?1.0.1" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.0.002" media="screen" />
+    <script src="helpers/console-enhancer.js?3.0.002" type='text/javascript'></script>
     <script type="text/javascript">
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
@@ -61,9 +61,9 @@
       </audio>
       <theater v-cloak>
         <header>
-          <button @pointerdown="showSettings = !showSettings">settings</button>
+          <button @click="showSettings = !showSettings">settings</button>
           <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
-          <button v-if="dropTotalCount!=0" @pointerdown="showYesNo = true">quit</button>
+          <button v-if="dropTotalCount!=0" @click="showYesNo = true">quit</button>
         </header>
         <score>{{Intl.NumberFormat('en-US').format(score)}}</score>
         <stage>
@@ -103,7 +103,7 @@
       </theater>
       <modal :class="{show: showGameEnd}">
         <header>
-          <button @pointerdown="showSettings = !showSettings">settings</button>
+          <button @click="showSettings = !showSettings">settings</button>
         </header>
         <h1>drop 'n stop<subtitle>{{results.length > 0 ? 'The Puck Stopped' : 'The Puck Stops Here'}}</subtitle>
         </h1>
@@ -130,16 +130,16 @@
         </stats>
         <controls class="endgame" v-if="dropTotalCount == 0">
           <!-- <h3 @pointerdown="showSettings = !showSettings">Current Mode: {{currentMode.name}}</h3> -->
-          <button @pointerdown="RestartGame">New {{currentMode.name}} Game</button>
-          <button class="secondary" @pointerdown="Share">Share </button>
+          <button @click="RestartGame">New {{currentMode.name}} Game</button>
+          <button class="secondary" @click="Share">Share </button>
           <button class="secondary action" @click="window.open('https://www.buymeacoffee.com/wilvoss')">buy me a
             coffee!</button>
         </controls>
       </modal>
       <modal :class="{show: showSettings}">
         <header>
-          <button @pointerdown="showSettings = !showSettings">close</button>
-          <button v-if="isPlaying" @pointerdown="showYesNo = true">quit</button>
+          <button @click="showSettings = !showSettings">close</button>
+          <button v-if="isPlaying" @click="showYesNo = true">quit</button>
         </header>
         <h1>Settings</h1>
         <divider></divider>
@@ -178,7 +178,7 @@
         <divider></divider>
         <!-- <h1>published by</h1> -->
         <version>
-          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v3.0.001
+          &copy;2023 <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
 
       </modal>
@@ -194,10 +194,10 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/ResultObject.js?1.0.1" type='text/javascript'></script>
-    <script src="models/ModeObject.js?1.0.1" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?1.0.1" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?1.0.1" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.0.002" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.0.002" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.0.002" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.0.002" type='text/javascript'></script>
   </body>
 
 </html>

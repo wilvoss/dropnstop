@@ -75,6 +75,11 @@ h3 {
   cursor: pointer;
 }
 
+button {
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 theater,
 modal {
   display: flex;
@@ -118,6 +123,7 @@ header button {
   border: none;
   font-family: var(--funfont);
   font-size: 1.35em;
+  color: var(--appForeground);
   justify-content: start;
   align-items: center;
   min-width: 124px;

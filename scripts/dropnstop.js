@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '1.0.1',
+    version: '3.0.002',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: false,
@@ -311,8 +311,6 @@ var app = new Vue({
       }
     },
     HandleKeyDown(event) {
-      highlight('"' + event.key + '"');
-      console.log(event);
       switch (event.code) {
         case 'Space':
           if (!this.isDropping && this.isReady) {
