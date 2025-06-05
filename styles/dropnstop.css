@@ -486,15 +486,14 @@ target {
   display: flex;
   position: fixed;
   width: var(--stageWidth);
-  border: 1px solid;
+  border: 1px solid var(--appForeground);
   text-align: center;
   color: var(--appForeground);
   background-image: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), 17%, 0), hsla(var(--hue), var(--saturation), 17%, 0.2) 25px);
   background-position: var(--targetX);
   justify-content: center;
-  align-content: flex-start;
-  /* background: repeating-linear-gradient(45deg, hsla(var(--hue), var(--saturation), 17%, 0.2), hsla(var(--hue), var(--saturation), 17%, 0.2) 1px, var(--appBackground) 2px, var(--appBackground) 10px); */
   align-items: flex-start;
+  align-content: flex-start;
   transition: 150ms ease-out all;
   max-width: 500px;
   border-width: 1px 0px;
@@ -502,7 +501,6 @@ target {
 
 .success target {
   background: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
-  border-color: var(--appForeground);
 }
 
 target value {
@@ -685,7 +683,7 @@ canvas {
   z-index: 3000;
   width: 10px;
   height: 10px;
-  opacity: 8;
+  opacity: 1;
   transform: translate(0px -10px) rotate(0deg);
   transition-property: transform, opacity;
   transition-timing-function: ease-in;

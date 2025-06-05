@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.021',
+    version: '3.0.022',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -51,7 +51,7 @@ var app = new Vue({
   },
   methods: {
     ReadyStage() {
-      log('Ready stage');
+      note('Ready stage');
       let stage = document.getElementsByTagName('stage')[0];
       let stageRect = stage.getBoundingClientRect();
       if (this.isSuccess) {
@@ -68,9 +68,13 @@ var app = new Vue({
         this.dropCount = 0;
         this.results.push(new ResultObject({ count: this.dropTotalCount, difficulty: this.currentMode.name }));
       }
+      if (this.isFirstRun && window.innerHeight - this.targetY - this.targetHeight - 2 < 180) {
+        note('Adjusting target Y position for first run');
+        this.targetY = stageRect.height - this.targetHeight - 170;
+      }
     },
     StopPuck() {
-      log('Stopping puck');
+      note('Stopping puck');
       if (this.dropTotalCount > 0) {
         this.puckElement = document.getElementsByTagName('puck')[0];
         const kStyle = window.getComputedStyle(this.puckElement);
@@ -113,9 +117,8 @@ var app = new Vue({
       }
     },
     SelectMode(incoming) {
-      log('Selecting mode: ' + incoming.name);
+      note('Selected mode: ' + incoming.name);
       if (!this.isPlaying) {
-        log('Selected mode: ' + incoming.name);
         this.modes.forEach((mode) => {
           mode.selected = false;
         });
@@ -184,7 +187,7 @@ var app = new Vue({
       return Math.round((number / this.GetMisses()) * 100);
     },
     EndGame() {
-      log('Ending game');
+      note('Ending game');
       if (this.results.length > 0 && this.results[this.results.length - 1].attempts === 4) {
         this.results.pop();
       }
@@ -234,7 +237,7 @@ var app = new Vue({
       this.SelectGameTheme(theme.name);
     },
     SelectGameTheme(name) {
-      log('Selecting theme: ' + name);
+      note('Selecting theme: ' + name);
       var theme;
       this.themes.forEach((t) => {
         t.selected = t.name == name;
@@ -310,11 +313,11 @@ var app = new Vue({
 
       for (let x = 0; x < count; x++) {
         let confetti = document.createElement('confetti');
-        let lightness = getRandomInt(1, 30);
+        let lightness = getRandomInt(76, 94);
 
         confetti.style.setProperty('left', getRandomInt(0, domApp.clientWidth) + (window.innerWidth - domApp.clientWidth) / 2 + 'px');
         confetti.style.setProperty('transition-duration', getRandomInt(1600, 3001) + 'ms');
-        confetti.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + 0) + ', ' + (this.currentTheme.s + 0) + '%, ' + lightness + '%)');
+        confetti.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + 0) + ', ' + (this.currentTheme.s + 40) + '%, ' + lightness + '%)');
 
         confetti.style.setProperty('transition-delay', getRandomInt(0, 800) + 'ms');
         confetti.style.setProperty('rotate', +'deg');
@@ -467,7 +470,6 @@ var app = new Vue({
       }
       return theme;
     },
-
     isFirstRun: function () {
       return !this.isDropping && this.dropTotalCount === this.startingDropCount;
     },
