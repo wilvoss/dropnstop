@@ -24,7 +24,7 @@ var Themes = [
   new ThemeObject({
     name: 'y',
     h: 52,
-    s: 60,
+    s: 50,
     pl: 17,
   }),
   new ThemeObject({
@@ -37,7 +37,7 @@ var Themes = [
   new ThemeObject({
     name: 'b',
     h: 200,
-    s: 54,
+    s: 44,
     pl: 83,
   }),
   new ThemeObject({
