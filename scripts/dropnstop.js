@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.034',
+    version: '3.0.035',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
