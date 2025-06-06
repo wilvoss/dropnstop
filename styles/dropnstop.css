@@ -262,7 +262,8 @@ stat {
 
 stats stat.emphasize {
   border-bottom: 1px solid var(--appForeground);
-  margin-bottom: 4px;
+  margin-bottom: 9px;
+  padding-bottom: 7px;
 }
 
 stats stat.emphasize span {
