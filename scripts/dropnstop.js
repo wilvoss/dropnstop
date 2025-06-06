@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.038',
+    version: '3.0.039',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -70,9 +70,9 @@ var app = new Vue({
         this.dropCount = 0;
         this.results.push(new ResultObject({ count: this.dropTotalCount, difficulty: this.currentMode.name }));
       }
-      if (this.isFirstRun && window.innerHeight - this.targetY - this.targetHeight - 2 < 180) {
+      if (this.isFirstRun && window.innerHeight - stageRect.y - this.targetY - this.targetHeight - 2 < 140) {
         note('Adjusting target Y position for first run');
-        this.targetY = stageRect.height - this.targetHeight - 170;
+        this.targetY = stageRect.height - this.targetHeight - 140;
       }
     },
     StopPuck() {
@@ -112,9 +112,10 @@ var app = new Vue({
         this.dropTotalCount--;
         if (this.dropTotalCount === 0) {
           this.showEndGame = true;
-          setTimeout(() => {
-            this.CreateConfetti();
-          }, 200);
+          if (this.percentOfHitsIn1Drop >= 80)
+            setTimeout(() => {
+              this.CreateConfetti();
+            }, 200);
         }
       }
     },
@@ -461,7 +462,7 @@ var app = new Vue({
           break;
 
         case this.startingDropCount:
-          text = 'hold drop →<br />release to stop';
+          text = 'press and hold "drop" →';
           break;
 
         default:
@@ -495,6 +496,12 @@ var app = new Vue({
     },
     isFirstRun: function () {
       return !this.isDropping && this.dropTotalCount === this.startingDropCount;
+    },
+    percentScored: function () {
+      return Math.round((100 * this.score) / this.highestPossibleScore);
+    },
+    percentOfHitsIn1Drop: function () {
+      return Math.round((100 * (this.hitsOnOne + this.hitsOnTwo + this.hitsOnThree)) / this.results.length);
     },
   },
 });
