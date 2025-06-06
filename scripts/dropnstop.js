@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.033',
+    version: '3.0.034',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -372,27 +372,35 @@ var app = new Vue({
         case 'Enter':
           if (this.showYesNo && !this.showEndGame) {
             this.EndGame();
+          } else if (this.showEndGame && !this.showHome && !this.showSettings) {
+            this.EndGame();
           }
           break;
         case 'Escape':
           if (this.showYesNo) {
             this.showYesNo = false;
+          } else if (this.showSettings) {
+            this.showSettings = false;
+          } else if (this.showHome) {
+            this.showSettings = true;
           }
           break;
         case 'Space':
           this.spaceBarInUse = false;
 
-          if (this.isDropping && !this.showEndGame) {
+          if (this.isDropping && !this.showEndGame && !this.showHome && !this.showSettings) {
             this.HandleActionButton(event, 'stop');
-          } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame) {
+          } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame && !this.showHome && !this.showSettings) {
             this.HandleActionButton(event, 'next');
+          } else if (this.showHome && !this.showSettings) {
+            this.RestartGame();
           }
       }
     },
     HandleKeyDown(event) {
       switch (event.code) {
         case 'Space':
-          if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped) {
+          if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped && !this.showHome && !this.showSettings) {
             this.spaceBarInUse = true;
             this.hasUsedSpaceBar = true;
             this.HandleActionButton(event, 'drop');
