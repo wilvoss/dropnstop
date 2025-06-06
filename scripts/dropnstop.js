@@ -12,12 +12,12 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.035',
+    version: '3.0.036',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
     isReady: false,
-    useDarkPuck: false,
+    useDarkPuck: true,
     isSuccess: false,
     isPlaying: false,
     puckX: 0,
@@ -408,11 +408,16 @@ var app = new Vue({
           break;
       }
     },
+    HandleResize() {
+      note('Handling resize');
+      this.RemoveConfetti();
+    },
   },
 
   mounted() {
     window.addEventListener('keyup', this.HandleKeyUp);
     window.addEventListener('keydown', this.HandleKeyDown);
+    window.addEventListener('resize', this.HandleResize);
     this.GetSettings();
     this.updateInterval = window.setInterval(this.UpdateApp, 1);
   },
