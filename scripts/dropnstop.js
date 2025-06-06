@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.040',
+    version: '3.0.041',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -71,7 +71,7 @@ var app = new Vue({
         this.results.push(new ResultObject({ count: this.dropTotalCount, difficulty: this.currentMode.name }));
       }
       if (this.isFirstRun && window.innerHeight - stageRect.y - this.targetY - this.targetHeight - 2 < 140) {
-        note('Adjusting target Y position for first run');
+        log('Adjusting target Y position for first run');
         this.targetY = stageRect.height - this.targetHeight - 140;
       }
     },
