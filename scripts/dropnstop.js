@@ -12,7 +12,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.042',
+    version: '3.0.043',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -34,7 +34,7 @@ var app = new Vue({
     dropMaxCount: 3,
     dropCount: 0,
     dropTotalCount: 0,
-    startingDropCount: UseDebug ? 3 : 20,
+    startingDropCount: UseDebug ? 20 : 20,
     score: 0,
     showInstructions: true,
     showHome: true,
@@ -431,13 +431,16 @@ var app = new Vue({
       return (parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed;
     },
     hitsOnOne: function () {
-      return this.GetHitsOn(0);
+      return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(0)) / this.results.length) + '%';
     },
     hitsOnTwo: function () {
-      return this.GetHitsOn(1);
+      return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(1)) / this.results.length) + '%';
     },
     hitsOnThree: function () {
-      return this.GetHitsOn(2);
+      return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(2)) / this.results.length) + '%';
+    },
+    totalZonesClearedSucccessfully: function () {
+      return this.GetHitsOn(0) + this.GetHitsOn(1) + this.GetHitsOn(2);
     },
     misses: function () {
       return this.GetMisses();
@@ -458,7 +461,7 @@ var app = new Vue({
       let text = this.dropTotalCount + (this.dropTotalCount === 1 ? ' drop left' : ' drops left');
       switch (this.dropTotalCount) {
         case 0:
-          text = 'Game Over!';
+          text = 'game over!';
           break;
 
         case this.startingDropCount:
@@ -498,10 +501,39 @@ var app = new Vue({
       return !this.isDropping && this.dropTotalCount === this.startingDropCount;
     },
     percentScored: function () {
-      return Math.round((100 * this.score) / this.highestPossibleScore);
+      return this.score / this.highestPossibleScore;
     },
     percentOfHitsIn1Drop: function () {
-      return Math.round((100 * (this.hitsOnOne + this.hitsOnTwo + this.hitsOnThree)) / this.results.length);
+      return Math.round((100 * this.GetHitsOn(0)) / this.results.length);
+    },
+    finalScore: function () {
+      let levelFactor = this.results.length / 3; // Normalize grading for smaller runs
+      let missRate = (this.startingDropCount - this.misses) / this.startingDropCount;
+      let modifiedPercentScored = 100 * ((this.percentScored + missRate) / 2);
+
+      return modifiedPercentScored;
+    },
+    weightedScore: function () {
+      return this.finalScore * this.percentScored;
+    },
+    finalGrade: function () {
+      let levelFactor = this.results.length / 3; // Normalize grading for smaller runs
+      let missRate = Math.round((100 * this.misses) / this.startingDropCount);
+      let modifiedPercentScored = (this.percentScored + missRate) / 2;
+
+      if (modifiedPercentScored >= 95) {
+        return 'S';
+      } else if (modifiedPercentScored >= 70) {
+        return 'A';
+      } else if (modifiedPercentScored >= 50) {
+        return 'B';
+      } else if (modifiedPercentScored >= 30) {
+        return 'C';
+      } else if (modifiedPercentScored >= 20) {
+        return 'D';
+      } else {
+        return 'F';
+      }
     },
   },
 });

@@ -259,6 +259,10 @@ stats {
   -webkit-user-select: text;
 }
 
+stats h3 {
+  margin: 20px 0 4px 0;
+}
+
 stat {
   display: flex;
   width: 260px;
@@ -275,9 +279,8 @@ stats stat.emphasize {
 
 stats stat.emphasize span {
   font-family: var(--funfont);
-  font-size: 1.7em;
   font-weight: bold;
-  line-height: 100%;
+  text-transform: uppercase;
 }
 
 stat span {
@@ -585,7 +588,7 @@ info p {
 
 info.emphasize p {
   font-family: var(--funfont);
-  font-size: 1.4em;
+  /* font-size: 1.4em; */
   font-weight: bold;
 }
 
