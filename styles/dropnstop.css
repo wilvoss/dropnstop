@@ -53,6 +53,7 @@ app {
   height: 100%;
   justify-content: center;
   align-items: start;
+  border-top: 1px solid var(--appForeground);
   max-width: var(--maxWidth);
   min-width: var(--minWidth);
   max-height: var(--maxHeight);
@@ -165,7 +166,7 @@ header button {
   display: flex;
   width: 124px;
   height: 100%;
-  padding: 12px 12px 14px 12px;
+  padding: 12px 18px 14px 18px;
   border: none;
   font-family: var(--funfont);
   font-size: 1.35em;
@@ -746,6 +747,10 @@ canvas {
   modal {
     margin: auto;
   }
+
+  app {
+    border: none;
+  }
 }
 
 @media only screen and (max-height: 682px) {
@@ -767,7 +772,8 @@ canvas {
 
   theater header button,
   modal header button {
-    font-size: 1em;
+    font-size: 1.1em;
+    padding: 12px 14px 14px 14px;
   }
 
   theater controls p {
