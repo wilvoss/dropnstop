@@ -10,7 +10,6 @@
   --highlightSaturation: calc(var(--saturation) + 30%);
   --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), 61%);
-  --appBackgroundDesaturated: hsl(var(--hue), 25%, 61%);
   --appForeground: hsl(var(--hue), var(--saturation), 17%);
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), 17%, 0.5);
@@ -142,7 +141,7 @@ theater {
 }
 
 .lock theater {
-  background: var(--appBackgroundDesaturated);
+  background: var(--appBackground);
 }
 
 .ended theater info,
@@ -230,7 +229,7 @@ stage {
 }
 
 .lock stage {
-  background: var(--appBackgroundDesaturated);
+  background: var(--appBackground);
 }
 
 version {
@@ -281,6 +280,7 @@ stats {
   -webkit-user-select: text;
   padding-bottom: 30px;
   padding-top: 30px;
+  cursor: pointer;
   /* mask-image: linear-gradient(180deg, transparent 10px, red calc(30px), red calc(100% - 30px), transparent calc(100% - 10px)); */
 }
 
@@ -839,6 +839,11 @@ canvas {
   modal header button {
     font-size: 1.1em;
     padding: 12px 14px 14px 14px;
+  }
+
+  theater header button.hide {
+    opacity: 0;
+    pointer-events: none;
   }
 
   theater controls p {

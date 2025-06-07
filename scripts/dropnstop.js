@@ -13,7 +13,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.1.000',
+    version: '3.1.001',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -25,6 +25,7 @@ var app = new Vue({
     puckY: 0,
     puckWidth: 20,
     puckHeight: 10,
+    goodGradeThreshold: 84,
     trailWidth: 20,
     trailHeight: 10,
     targetX: 0,
@@ -126,7 +127,7 @@ var app = new Vue({
       if (this.lock) {
         this.lock = false;
         this.showEndGame = true;
-        if (this.finalGrade.threshold > 84) {
+        if (this.finalGrade.threshold > this.goodGradeThreshold) {
           setTimeout(() => {
             this.CreateConfetti(true);
           }, 200);

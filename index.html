@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.1.000" media="screen" />
-    <script src="helpers/console-enhancer.js?3.1.000" type='text/javascript'></script>
+    <link rel="stylesheet" href="styles/dropnstop.css?3.1.001" media="screen" />
+    <script src="helpers/console-enhancer.js?3.1.001" type='text/javascript'></script>
   </head>
 
   <body>
@@ -52,11 +52,11 @@
       </audio>
       <theater v-cloak>
         <header :class="{hide: showEndGame}">
-          <button @click="showSettings=!showSettings">settings</button>
+          <button :class="{hide: lock}" @click="showSettings=!showSettings">settings</button>
           <score v-if="!lock">{{(showEndGame ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
           </score>
           <score v-if="lock">game over</score>
-          <button @click="showYesNo = true">quit</button>
+          <button :class="{hide: lock}" @click="showYesNo = true">quit</button>
         </header>
         <!-- <score :class="{hide: showEndGame}">{{Intl.NumberFormat(userLocale).format(score)}}</score> -->
         <stage>
@@ -76,7 +76,8 @@
             </value>
           </target>
           <info>
-            <stats v-if="results.length > 0 && showEndGame" @click="CreateConfetti">
+            <stats v-if="results.length > 0 && showEndGame"
+              @click="CreateConfetti(finalGrade.threshold > goodGradeThreshold)">
 
               <grade>{{finalGrade.grade}}</grade>
               <h2> {{finalGrade.title}}
@@ -200,11 +201,11 @@
       </modal>
     </app>
     <script id="vue-framework" src="helpers/vue.min.js" type='text/javascript'></script>
-    <script src="models/GradeObject.js?3.1.000" type='text/javascript'></script>
-    <script src="models/ResultObject.js?3.1.000" type='text/javascript'></script>
-    <script src="models/ModeObject.js?3.1.000" type='text/javascript'></script>
-    <script src="models/ThemeObject.js?3.1.000" type='text/javascript'></script>
-    <script src="scripts/dropnstop.js?3.1.000" type='text/javascript'></script>
+    <script src="models/GradeObject.js?3.1.001" type='text/javascript'></script>
+    <script src="models/ResultObject.js?3.1.001" type='text/javascript'></script>
+    <script src="models/ModeObject.js?3.1.001" type='text/javascript'></script>
+    <script src="models/ThemeObject.js?3.1.001" type='text/javascript'></script>
+    <script src="scripts/dropnstop.js?3.1.001" type='text/javascript'></script>
   </body>
 
 </html>
