@@ -140,6 +140,11 @@ theater {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
+theater header button.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .lock theater {
   background: var(--appBackground);
 }
@@ -839,11 +844,6 @@ canvas {
   modal header button {
     font-size: 1.1em;
     padding: 12px 14px 14px 14px;
-  }
-
-  theater header button.hide {
-    opacity: 0;
-    pointer-events: none;
   }
 
   theater controls p {
