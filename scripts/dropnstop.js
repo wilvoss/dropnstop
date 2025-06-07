@@ -1,3 +1,4 @@
+/// <reference path="../models/GradeObject.js" />
 /// <reference path="../models/ResultObject.js" />
 /// <reference path="../models/ModeObject.js" />
 
@@ -12,7 +13,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.0.043',
+    version: '3.1.000',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -34,8 +35,9 @@ var app = new Vue({
     dropMaxCount: 3,
     dropCount: 0,
     dropTotalCount: 0,
-    startingDropCount: UseDebug ? 20 : 20,
+    startingDropCount: UseDebug ? 5 : 20,
     score: 0,
+    lock: false,
     showInstructions: true,
     showHome: true,
     showEndGame: true,
@@ -47,6 +49,7 @@ var app = new Vue({
     modes: Modes,
     currentMode: Modes[0],
     themes: Themes,
+    grades: Grades,
     puckElement: document.getElementsByTagName('puck')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
@@ -111,12 +114,25 @@ var app = new Vue({
 
         this.dropTotalCount--;
         if (this.dropTotalCount === 0) {
-          this.showEndGame = true;
-          if (this.percentOfHitsIn1Drop >= 80)
-            setTimeout(() => {
-              this.CreateConfetti();
-            }, 200);
+          this.lock = true;
+
+          setTimeout(() => {
+            this.CreateConfetti();
+          }, 200);
         }
+      }
+    },
+    HandleOkayButtonClick() {
+      if (this.lock) {
+        this.lock = false;
+        this.showEndGame = true;
+        if (this.finalGrade.threshold > 84) {
+          setTimeout(() => {
+            this.CreateConfetti(true);
+          }, 200);
+        }
+      } else {
+        this.EndGame();
       }
     },
     SelectMode(incoming) {
@@ -189,6 +205,8 @@ var app = new Vue({
     },
     EndGame() {
       note('Ending game');
+
+      this.RemoveConfetti();
       if (this.results.length > 0 && this.results[this.results.length - 1].attempts === 4) {
         this.results.pop();
       }
@@ -305,20 +323,19 @@ var app = new Vue({
       }
     },
 
-    CreateConfetti(_hue = null, _rank = null) {
+    CreateConfetti(_highlight = false) {
       note('CreateConfetti() called');
       this.RemoveConfetti();
-      _rank = _rank === null ? this.userRank : _rank;
       let domApp = document.getElementsByTagName('app')[0];
       let count = domApp.clientWidth;
 
       for (let x = 0; x < count; x++) {
         let confetti = document.createElement('confetti');
-        let lightness = getRandomInt(76, 94);
+        let lightness = _highlight ? getRandomInt(66, 84) : getRandomInt(76, 94);
 
         confetti.style.setProperty('left', getRandomInt(0, domApp.clientWidth) + (window.innerWidth - domApp.clientWidth) / 2 + 'px');
         confetti.style.setProperty('transition-duration', getRandomInt(1600, 3001) + 'ms');
-        confetti.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + 0) + ', ' + (this.currentTheme.s + 40) + '%, ' + lightness + '%)');
+        confetti.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + (_highlight ? 180 : 0)) + ', ' + (this.currentTheme.s + 40) + '%, ' + lightness + '%)');
 
         confetti.style.setProperty('transition-delay', getRandomInt(0, 800) + 'ms');
         confetti.style.setProperty('rotate', +'deg');
@@ -345,68 +362,74 @@ var app = new Vue({
       });
     },
     HandleKeyUp(event) {
-      let currentThemeIndex;
-      this.themes.forEach((theme, i) => {
-        if (theme.selected) {
-          currentThemeIndex = i;
-        }
-      });
-      switch (event.code) {
-        case 'ArrowRight':
-          currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
-          if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
-            this.SelectGameTheme(this.themes[currentThemeIndex].name);
+      if (!this.lock) {
+        let currentThemeIndex;
+        this.themes.forEach((theme, i) => {
+          if (theme.selected) {
+            currentThemeIndex = i;
           }
-          break;
-        case 'ArrowLeft':
-          currentThemeIndex = currentThemeIndex == 0 ? this.themes.length - 1 : currentThemeIndex - 1;
-          if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
-            this.SelectGameTheme(this.themes[currentThemeIndex].name);
-          }
-          break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-          this.SelectMode(this.modes[event.key - 1]);
-          break;
-        case 'Enter':
-          if (this.showYesNo && !this.showEndGame) {
-            this.EndGame();
-          } else if (this.showEndGame && !this.showHome && !this.showSettings) {
-            this.EndGame();
-          }
-          break;
-        case 'Escape':
-          if (this.showYesNo) {
-            this.showYesNo = false;
-          } else if (this.showSettings) {
-            this.showSettings = false;
-          } else if (this.showHome) {
-            this.showSettings = true;
-          }
-          break;
-        case 'Space':
-          this.spaceBarInUse = false;
+        });
+        switch (event.code) {
+          case 'ArrowRight':
+            currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
+            if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
+              this.SelectGameTheme(this.themes[currentThemeIndex].name);
+            }
+            break;
+          case 'ArrowLeft':
+            currentThemeIndex = currentThemeIndex == 0 ? this.themes.length - 1 : currentThemeIndex - 1;
+            if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
+              this.SelectGameTheme(this.themes[currentThemeIndex].name);
+            }
+            break;
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+            this.SelectMode(this.modes[event.key - 1]);
+            break;
+          case 'Enter':
+            if (this.showYesNo && !this.showEndGame) {
+              this.EndGame();
+            } else if (this.showEndGame && !this.showHome && !this.showSettings) {
+              this.EndGame();
+            }
+            break;
+          case 'Escape':
+            if (this.showYesNo) {
+              this.showYesNo = false;
+            } else if (this.showSettings) {
+              this.showSettings = false;
+            } else if (this.showHome) {
+              this.showSettings = true;
+            }
+            break;
+          case 'Space':
+            this.spaceBarInUse = false;
 
-          if (this.isDropping && !this.showEndGame && !this.showHome && !this.showSettings) {
-            this.HandleActionButton(event, 'stop');
-          } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame && !this.showHome && !this.showSettings) {
-            this.HandleActionButton(event, 'next');
-          } else if (this.showHome && !this.showSettings) {
-            this.RestartGame();
-          }
+            if (this.isDropping && !this.showEndGame && !this.showHome && !this.showSettings) {
+              this.HandleActionButton(event, 'stop');
+            } else if ((this.isReady || (this.isStopped && !this.showEndGame)) && !this.showEndGame && !this.showHome && !this.showSettings) {
+              this.HandleActionButton(event, 'next');
+            } else if (this.showHome && !this.showSettings) {
+              this.RestartGame();
+            }
+        }
+      } else if (event.code === 'Enter') {
+        this.HandleOkayButtonClick();
       }
     },
     HandleKeyDown(event) {
-      switch (event.code) {
-        case 'Space':
-          if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped && !this.showHome && !this.showSettings) {
-            this.spaceBarInUse = true;
-            this.hasUsedSpaceBar = true;
-            this.HandleActionButton(event, 'drop');
-          }
-          break;
+      if (!this.lock) {
+        switch (event.code) {
+          case 'Space':
+            if (!this.isDropping && this.isReady && !this.showEndGame && !this.isStopped && !this.showHome && !this.showSettings) {
+              this.spaceBarInUse = true;
+              this.hasUsedSpaceBar = true;
+              this.HandleActionButton(event, 'drop');
+            }
+            break;
+        }
       }
     },
     HandleResize() {
@@ -516,24 +539,19 @@ var app = new Vue({
     weightedScore: function () {
       return this.finalScore * this.percentScored;
     },
+    bonusPoints: function () {},
     finalGrade: function () {
-      let levelFactor = this.results.length / 3; // Normalize grading for smaller runs
-      let missRate = Math.round((100 * this.misses) / this.startingDropCount);
-      let modifiedPercentScored = (this.percentScored + missRate) / 2;
+      let clearRate = this.totalZonesClearedSucccessfully / this.results.length;
+      let hitRate = (this.startingDropCount - this.misses) / this.startingDropCount;
+      let modifiedPercentScored = (this.percentScored + clearRate + hitRate) / 3;
+      let finalGrade = 100 * (modifiedPercentScored > this.percentScored ? modifiedPercentScored : this.percentScored);
+      // error('clearRate = ' + clearRate);
+      // error('hitRate = ' + hitRate);
+      // error('percentScored = ' + this.percentScored);
+      // error('modifiedPercentScored = ' + modifiedPercentScored);
+      // error('finalGrade = ' + finalGrade);
 
-      if (modifiedPercentScored >= 95) {
-        return 'S';
-      } else if (modifiedPercentScored >= 70) {
-        return 'A';
-      } else if (modifiedPercentScored >= 50) {
-        return 'B';
-      } else if (modifiedPercentScored >= 30) {
-        return 'C';
-      } else if (modifiedPercentScored >= 20) {
-        return 'D';
-      } else {
-        return 'F';
-      }
+      return this.grades.find((g) => finalGrade >= g.threshold) || this.grades[this.grades.length - 1];
     },
   },
 });

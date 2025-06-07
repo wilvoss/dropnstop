@@ -10,6 +10,7 @@
   --highlightSaturation: calc(var(--saturation) + 30%);
   --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), 61%);
+  --appBackgroundDesaturated: hsl(var(--hue), 25%, 61%);
   --appForeground: hsl(var(--hue), var(--saturation), 17%);
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), 17%, 0.5);
@@ -70,6 +71,7 @@ h3 {
   font-family: var(--funfont);
   line-height: 100%;
   text-align: center;
+  text-transform: lowercase;
   margin-top: 20px;
   margin-bottom: 20px;
   padding-top: 0px;
@@ -80,10 +82,21 @@ h1 {
   font-size: 2.75em;
 }
 
-h1 subtitle {
+subtitle {
   display: block;
-  font-size: 0.4em;
   font-weight: normal;
+}
+
+h1 subtitle {
+  font-size: 0.4em;
+}
+
+h2 subtitle {
+  font-size: 0.6em;
+}
+
+h3 subtitle {
+  font-size: 0.8em;
 }
 
 h2 {
@@ -124,8 +137,12 @@ modal {
 
 theater {
   justify-content: start;
-  gap: 40px;
+  /* gap: 40px; */
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+}
+
+.lock theater {
+  background: var(--appBackgroundDesaturated);
 }
 
 .ended theater info,
@@ -134,8 +151,11 @@ theater {
 }
 
 theater header score {
-  display: none;
+  display: block;
+  position: relative;
+  font-size: 1.38em;
   font-weight: bold;
+  margin-top: 0px;
 }
 
 theater controls {
@@ -207,7 +227,10 @@ stage {
   min-height: var(--stageHeight);
   background: var(--appBackground);
   margin-bottom: env(safe-area-inset-bottom);
-  /* border-width: 1px; */
+}
+
+.lock stage {
+  background: var(--appBackgroundDesaturated);
 }
 
 version {
@@ -241,11 +264,10 @@ score {
   display: block;
   width: 100%;
   font-family: var(--funfont);
-  font-size: 4.5em;
+  font-size: 1.35em;
   line-height: 100%;
   text-align: center;
   pointer-events: none;
-  max-width: 460px;
 }
 
 stats {
@@ -257,6 +279,18 @@ stats {
   max-width: 500px;
   user-select: text;
   -webkit-user-select: text;
+  padding-bottom: 30px;
+  padding-top: 30px;
+  /* mask-image: linear-gradient(180deg, transparent 10px, red calc(30px), red calc(100% - 30px), transparent calc(100% - 10px)); */
+}
+
+stats grade {
+  font-family: var(--funfont);
+  font-size: 4em;
+  font-weight: bold;
+  text-align: center;
+  color: hsl(var(--hue), var(--saturation), 100%);
+  margin-bottom: 10px;
 }
 
 stats h3 {
@@ -294,8 +328,12 @@ puck {
   height: 10px;
   border: 1px hsl(var(--hue), var(--saturation), calc(100% - var(--puckLuminosity))) solid;
   background-color: hsl(var(--hue), var(--saturation), var(--puckLuminosity));
-  opacity: 1;
+  opacity: 0;
   border-radius: 33%;
+}
+
+puck.start {
+  /* opacity: 1; */
 }
 
 puck.start:after {
@@ -343,7 +381,7 @@ modal puck,
 
 .stopped puck.disabled,
 puck.disabled {
-  opacity: 0.3;
+  opacity: 0;
 }
 
 .stopped puck tail {
@@ -534,7 +572,12 @@ target {
 }
 
 .ended target {
+  opacity: 0;
   border-color: hsla(var(--hue), var(--saturation), 17%, 0.4);
+}
+
+.ended score {
+  display: none;
 }
 
 target value {
@@ -699,10 +742,6 @@ theater controls p {
   text-shadow: var(--whiteTextShadow);
 }
 
-theater controls p puck {
-  /*  */
-}
-
 .blink {
   animation: 500ms ease-in-out 0s 0.5 blink;
   animation-iteration-count: infinite;
@@ -788,20 +827,12 @@ canvas {
 }
 
 @media only screen and (max-height: 682px) {
-  theater score {
-    display: none;
-  }
-
   section h3 {
     display: none;
   }
 
   divider {
     display: none;
-  }
-
-  theater header score {
-    display: block;
   }
 
   theater header button,
@@ -823,7 +854,7 @@ canvas {
   }
 
   info stats {
-    margin-bottom: 80px;
+    padding-top: 0px;
   }
 }
 
