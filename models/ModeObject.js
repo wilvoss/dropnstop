@@ -14,26 +14,26 @@ const Modes = [
   new ModeObject({
     name: 'Easy',
     height: 20,
-    speed: 3,
+    speed: 900,
   }),
   new ModeObject({
     name: 'Normal',
     height: 12,
     width: 15,
-    speed: 6,
+    speed: 1800,
     selected: true,
   }),
   new ModeObject({
     name: 'Hard',
     height: 8,
     width: 10,
-    speed: 12,
+    speed: 3600,
   }),
   new ModeObject({
     name: 'Ultra',
     height: 4,
     width: 5,
-    speed: 12,
+    speed: 4000,
   }),
 ];
 

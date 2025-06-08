@@ -15,12 +15,13 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.1.005',
+    version: '3.1.006',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
     isReady: false,
     useDarkPuck: true,
+    lastUpdate: null,
     isSuccess: false,
     isPlaying: false,
     puckX: 0,
@@ -53,15 +54,15 @@ var app = new Vue({
     currentMode: Modes[0],
     themes: Themes,
     grades: Grades,
-    puckElement: document.getElementsByTagName('puck')[0],
+    stageElement: null,
+    puckElement: null,
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
   },
   methods: {
     ReadyStage() {
       note('Ready stage');
-      let stage = document.getElementsByTagName('stage')[0];
-      let stageRect = stage.getBoundingClientRect();
+      let stageRect = this.stageElement.getBoundingClientRect();
       if (this.isSuccess) {
         this.dropCount = this.dropMaxCount - 1;
       }
@@ -84,7 +85,6 @@ var app = new Vue({
     StopPuck() {
       note('Stopping puck');
       if (this.dropTotalCount > 0) {
-        this.puckElement = document.getElementsByTagName('puck')[0];
         const kStyle = window.getComputedStyle(this.puckElement);
         const kMatrix = kStyle.transform;
         const kMatrixValues = kMatrix.match(/matrix.*\((.+)\)/)[1].split(', ');
@@ -92,7 +92,11 @@ var app = new Vue({
 
         let gain = this.score + this.targetValue;
 
-        if (Number(this.puckY) + Number(this.puckHeight) + 3 <= Number(this.targetHeight) + Number(this.targetY) + 2 && Number(this.puckY) + Number(this.puckHeight) + 1 > Number(this.targetY)) {
+        const puckBottom = Number(this.puckY) + Number(this.puckHeight);
+        const targetTop = Number(this.targetY);
+        const targetBottom = Number(this.targetY) + Number(this.targetHeight);
+
+        if (puckBottom >= targetTop - 2 && puckBottom <= targetBottom + 2) {
           this.score = gain;
           this.isSuccess = true;
         }
@@ -276,12 +280,13 @@ var app = new Vue({
       document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, 61%)');
       await saveData('theme', theme.name);
     },
-    UpdateApp() {
-      let stage = document.getElementsByTagName('stage')[0];
-      let stageRect = stage.getBoundingClientRect();
+    UpdateApp(now) {
+      if (!this.lastUpdate) this.lastUpdate = now;
+      const deltaSeconds = (now - this.lastUpdate) / 1000;
+      this.lastUpdate = now;
 
       if (this.isDropping && !this.puckHitBottom) {
-        this.puckY = Number(this.puckY) + this.speed;
+        this.puckY = Number(this.puckY) + this.speed * deltaSeconds;
       }
     },
     RestartGame() {
@@ -451,11 +456,25 @@ var app = new Vue({
   },
 
   mounted() {
+    this.stageElement = document.getElementsByTagName('stage')[0];
+    this.puckElement = document.getElementsByTagName('puck')[0];
+
     window.addEventListener('keyup', this.HandleKeyUp);
     window.addEventListener('keydown', this.HandleKeyDown);
     window.addEventListener('resize', this.HandleResize);
     this.GetSettings();
-    this.updateInterval = window.setInterval(this.UpdateApp, 1);
+    const update = (now) => {
+      this.UpdateApp(now);
+      this._animationFrame = requestAnimationFrame(update);
+    };
+    this._animationFrame = requestAnimationFrame(update);
+  },
+
+  beforeDestroy() {
+    cancelAnimationFrame(this._animationFrame);
+    window.removeEventListener('keyup', this.HandleKeyUp);
+    window.removeEventListener('keydown', this.HandleKeyDown);
+    window.removeEventListener('resize', this.HandleResize);
   },
 
   computed: {
@@ -463,7 +482,7 @@ var app = new Vue({
       let baseValue = parseInt(30 + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount)));
       let bonus = (481 - this.targetY) / Number(this.dropCount + 1);
 
-      return (parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed;
+      return Math.round((parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed);
     },
     hitsOnOne() {
       return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(0)) / this.results.length) + '%';
@@ -512,8 +531,7 @@ var app = new Vue({
       return text;
     },
     puckHitBottom() {
-      let stage = document.getElementsByTagName('stage')[0];
-      let stageRect = stage.getBoundingClientRect();
+      let stageRect = this.stageElement.getBoundingClientRect();
 
       return this.puckY + this.puckHeight >= stageRect.height - 2;
     },
