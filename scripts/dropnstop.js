@@ -15,7 +15,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.1.006',
+    version: '3.1.007',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -54,8 +54,8 @@ var app = new Vue({
     currentMode: Modes[0],
     themes: Themes,
     grades: Grades,
-    stageElement: null,
-    puckElement: null,
+    stageElement: document.getElementsByTagName('stage')[0],
+    puckElement: document.getElementsByTagName('puck')[0],
     r: document.querySelector(':root'),
     c: window.getComputedStyle(document.querySelector(':root')),
   },
