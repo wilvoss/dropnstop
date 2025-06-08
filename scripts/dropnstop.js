@@ -15,7 +15,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.1.004',
+    version: '3.1.005',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -459,40 +459,40 @@ var app = new Vue({
   },
 
   computed: {
-    targetValue: function () {
+    targetValue() {
       let baseValue = parseInt(30 + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - Number(this.dropCount)));
       let bonus = (481 - this.targetY) / Number(this.dropCount + 1);
 
       return (parseInt(baseValue + bonus) * this.currentMode.speed) / this.modes[0].speed;
     },
-    hitsOnOne: function () {
+    hitsOnOne() {
       return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(0)) / this.results.length) + '%';
     },
-    hitsOnTwo: function () {
+    hitsOnTwo() {
       return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(1)) / this.results.length) + '%';
     },
-    hitsOnThree: function () {
+    hitsOnThree() {
       return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(2)) / this.results.length) + '%';
     },
-    totalZonesClearedSucccessfully: function () {
+    totalZonesClearedSucccessfully() {
       return this.GetHitsOn(0) + this.GetHitsOn(1) + this.GetHitsOn(2);
     },
-    misses: function () {
+    misses() {
       return this.GetMisses();
     },
-    highestPossibleScore: function () {
+    highestPossibleScore() {
       return this.GetHighestPossibleScore();
     },
-    missedAbove: function () {
+    missedAbove() {
       return this.GetMissedByDirection('above') + '%';
     },
-    missedBelow: function () {
+    missedBelow() {
       return this.GetMissedByDirection('below') + '%';
     },
-    userLocale: function () {
+    userLocale() {
       return navigator.language || 'en-US';
     },
-    instructions: function () {
+    instructions() {
       let text = this.dropTotalCount + (this.dropTotalCount === 1 ? ' drop left' : ' drops left');
       switch (this.dropTotalCount) {
         case 0:
@@ -511,20 +511,20 @@ var app = new Vue({
       }
       return text;
     },
-    puckHitBottom: function () {
+    puckHitBottom() {
       let stage = document.getElementsByTagName('stage')[0];
       let stageRect = stage.getBoundingClientRect();
 
       return this.puckY + this.puckHeight >= stageRect.height - 2;
     },
-    isChromeAndiOSoriPadOS: function () {
+    isChromeAndiOSoriPadOS() {
       var userAgent = navigator.userAgent || window.opera;
       var isChromeIOS = /CriOS/.test(userAgent) || /iPhone|iPad|iPod/.test(userAgent);
       var isFirefoxAndroid = /Firefox/.test(userAgent) && /Android/.test(userAgent);
 
       return isChromeIOS || isFirefoxAndroid;
     },
-    currentTheme: function () {
+    currentTheme() {
       let theme = this.themes.find((t) => t.selected);
       if (theme === undefined) {
         theme = this.themes[1];
@@ -532,38 +532,32 @@ var app = new Vue({
       }
       return theme;
     },
-    isFirstRun: function () {
+    isFirstRun() {
       return !this.isDropping && this.dropTotalCount === this.startingDropCount;
     },
-    percentScored: function () {
+    percentScored() {
       return this.score / this.highestPossibleScore;
     },
-    percentOfHitsIn1Drop: function () {
+    percentOfHitsIn1Drop() {
       return Math.round((100 * this.GetHitsOn(0)) / this.results.length);
     },
-    finalScore: function () {
+    finalScore() {
       let levelFactor = this.results.length / 3; // Normalize grading for smaller runs
       let missRate = (this.startingDropCount - this.misses) / this.startingDropCount;
       let modifiedPercentScored = 100 * ((this.percentScored + missRate) / 2);
 
       return modifiedPercentScored;
     },
-    weightedScore: function () {
-      return this.finalScore * this.percentScored;
-    },
-    bonusPoints: function () {},
-    finalGrade: function () {
+    finalGrade() {
       let clearRate = this.totalZonesClearedSucccessfully / this.results.length;
       let hitRate = (this.startingDropCount - this.misses) / this.startingDropCount;
       let modifiedPercentScored = (this.percentScored + clearRate + hitRate) / 3;
       let finalGrade = 100 * (modifiedPercentScored > this.percentScored ? modifiedPercentScored : this.percentScored);
-      // error('clearRate = ' + clearRate);
-      // error('hitRate = ' + hitRate);
-      // error('percentScored = ' + this.percentScored);
-      // error('modifiedPercentScored = ' + modifiedPercentScored);
-      // error('finalGrade = ' + finalGrade);
 
       return this.grades.find((g) => finalGrade >= g.threshold) || this.grades[this.grades.length - 1];
+    },
+    thisYear() {
+      return new Date().getFullYear();
     },
   },
 });
