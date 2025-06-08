@@ -1,6 +1,8 @@
-/// <reference path="../models/GradeObject.js" />
-/// <reference path="../models/ResultObject.js" />
-/// <reference path="../models/ModeObject.js" />
+import { saveData, getData, removeData, clearStore } from '../helpers/db-helper.min.js';
+import { ModeObject, Modes } from '../models/ModeObject.min.js';
+import { Grades } from '../models/GradeObject.min.js';
+import { ResultObject } from '../models/ResultObject.min.js';
+import { Themes } from '../models/ThemeObject.min.js';
 
 // if (!UseDebug) {
 Vue.config.devtools = false;
@@ -13,7 +15,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 var app = new Vue({
   el: '#app',
   data: {
-    version: '3.1.003',
+    version: '3.1.004',
     displayMode: 'browser tab',
     isDropping: false,
     isStopped: true,
@@ -136,7 +138,7 @@ var app = new Vue({
         this.EndGame();
       }
     },
-    SelectMode(incoming) {
+    async SelectMode(incoming) {
       note('Selected mode: ' + incoming.name);
       if (!this.isPlaying) {
         this.modes.forEach((mode) => {
@@ -147,13 +149,13 @@ var app = new Vue({
         this.trailWidth = incoming.width;
         this.puckHeight = incoming.height;
         this.puckWidth = incoming.width;
-        localStorage.setItem('mode', JSON.stringify(incoming));
+        await saveData('mode', JSON.stringify(incoming));
         this.speed = incoming.speed;
         this.currentMode = incoming;
       }
     },
-    ToggleInstructions() {
-      localStorage.setItem('showInstructions', this.showInstructions);
+    async ToggleInstructions() {
+      await saveData('showInstructions', this.showInstructions);
     },
     GetHitsOn(value) {
       let hitcount = 0;
@@ -246,17 +248,17 @@ var app = new Vue({
       event.preventDefault();
       this.SetPuckColor(usedark);
     },
-    SetPuckColor(usedark) {
+    async SetPuckColor(usedark) {
       this.useDarkPuck = usedark;
       this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
-      localStorage.setItem('useDarkPuck', usedark);
+      await saveData('useDarkPuck', usedark);
     },
     HandleThemeButton(event, theme) {
       event.stopPropagation();
       event.preventDefault();
       this.SelectGameTheme(theme.name);
     },
-    SelectGameTheme(name) {
+    async SelectGameTheme(name) {
       note('Selecting theme: ' + name);
       var theme;
       this.themes.forEach((t) => {
@@ -272,7 +274,7 @@ var app = new Vue({
       this.r.style.setProperty('--hue', theme.h);
       this.r.style.setProperty('--saturation', theme.s + '%');
       document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, 61%)');
-      localStorage.setItem('theme', theme.name);
+      await saveData('theme', theme.name);
     },
     UpdateApp() {
       let stage = document.getElementsByTagName('stage')[0];
@@ -296,23 +298,32 @@ var app = new Vue({
       this.RemoveConfetti();
       this.ReadyStage();
     },
-    GetSettings() {
-      // this.showInstructions = localStorage.getItem('showInstructions') == 'false' ? false : true;
-      if (localStorage.getItem('mode') != null) {
-        var incoming = new ModeObject(JSON.parse(localStorage.getItem('mode')));
+    async GetSettings() {
+      const migrationKeys = ['mode', 'theme', 'useDarkPuck'];
+
+      for (const key of migrationKeys) {
+        let value = localStorage.getItem(key);
+        if (value !== null) {
+          await saveData(key, value);
+          localStorage.removeItem(key); // Remove old data
+        }
+      }
+
+      if ((await getData('mode')) != null) {
+        var incoming = new ModeObject(JSON.parse(await getData('mode')));
         this.modes.forEach((mode) => {
           if (mode.name == incoming.name) {
             this.SelectMode(mode);
           }
         });
       } else {
-        this.SelectMode(Modes[1]);
+        this.SelectMode(this.modes[1]);
       }
-      if (localStorage.getItem('theme') != null) {
-        this.SelectGameTheme(localStorage.getItem('theme'));
+      if ((await getData('theme')) != null) {
+        this.SelectGameTheme(await getData('theme'));
       }
-      if (localStorage.getItem('useDarkPuck') != null) {
-        this.SetPuckColor(localStorage.getItem('useDarkPuck') == 'true');
+      if ((await getData('useDarkPuck')) != null) {
+        this.SetPuckColor((await getData('useDarkPuck')) == 'true');
       }
     },
 

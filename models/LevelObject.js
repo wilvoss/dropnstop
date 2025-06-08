@@ -1,17 +1,18 @@
 class LevelObject {
-  constructor(spec) {
-    this.name = spec.name == undefined ? '' : spec.name;
-    this.kx = spec.kx == undefined ? 0 : spec.kx;
-    this.kw = spec.kw == undefined ? 0 : spec.kw;
-    this.kh = spec.kh == undefined ? 0 : spec.kh;
-    this.tx = spec.tx == undefined ? 0 : spec.tx;
-    this.ty = spec.ty == undefined ? 0 : spec.ty;
-    this.tw = spec.kx == undefined ? 0 : spec.tw;
-    this.th = spec.kx == undefined ? 0 : spec.th;
+  constructor(spec = {}) {
+    this.name = spec.name ?? '';
+    this.kx = spec.kx ?? 0;
+    this.kw = spec.kw ?? 0;
+    this.kh = spec.kh ?? 0;
+    this.tx = spec.tx ?? 0;
+    this.ty = spec.ty ?? 0;
+    this.tw = spec.tw ?? 0;
+    this.th = spec.th ?? 0;
   }
 }
 
-var Levels = [
+// prettier-ignore
+var Levels = Array.from({ length: 100 }, () => 
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
@@ -126,4 +127,7 @@ var Levels = [
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
   new LevelObject({ kw: 20, kh: 20, ty: 50, th: 100 }),
-];
+);
+
+// Export the class and Levels array for use in other modules
+export { LevelObject, Levels };

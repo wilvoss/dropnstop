@@ -1,5 +1,6 @@
+// Define the GradeObject class
 class GradeObject {
-  constructor(spec) {
+  constructor(spec = {}) {
     this.threshold = spec.threshold ?? 0;
     this.grade = spec.grade ?? 'Z';
     this.title = spec.title ?? 'Title';
@@ -21,3 +22,6 @@ const Grades = [
   new GradeObject({ threshold: 55, grade: 'D',  title: 'Chaotic Clicker',   description: 'More luck than skill',                   emoji: '🎲' }),
   new GradeObject({ threshold: 0, grade: 'F',   title: 'Miserable Masher',  description: 'Drop Disaster!',                         emoji: '💥' }),
 ];
+
+// Export the class and Grades array for use in other modules
+export { GradeObject, Grades };
