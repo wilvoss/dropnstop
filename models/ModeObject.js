@@ -1,41 +1,16 @@
-// Define the ModeObject class
-class ModeObject {
-  constructor(spec = {}) {
-    this.name = spec.name ?? '';
-    this.height = spec.height ?? 100;
-    this.width = spec.width ?? 20;
-    this.selected = spec.selected ?? false;
-    this.speed = spec.speed ?? 6;
+// models/mode-object.js
+export default class ModeObject {
+  constructor({ name, campaignList, stageGenerationMethod }) {
+    this.name = name;
+    this.campaignList = campaignList;
+    this.stageGenerationMethod = stageGenerationMethod; // How stages are handled per mode
+  }
+
+  getNextCampaign(currentCampaignIndex) {
+    return this.campaignList[currentCampaignIndex + 1] || null;
+  }
+
+  generateStageData() {
+    return this.stageGenerationMethod ? this.stageGenerationMethod() : null;
   }
 }
-
-// Define an array of Modes
-const Modes = [
-  new ModeObject({
-    name: 'Easy',
-    height: 20,
-    speed: 900,
-  }),
-  new ModeObject({
-    name: 'Normal',
-    height: 12,
-    width: 15,
-    speed: 1800,
-    selected: true,
-  }),
-  new ModeObject({
-    name: 'Hard',
-    height: 8,
-    width: 10,
-    speed: 3600,
-  }),
-  new ModeObject({
-    name: 'Ultra',
-    height: 4,
-    width: 5,
-    speed: 4000,
-  }),
-];
-
-// Export the class and Modes array for use in other modules
-export { ModeObject, Modes };

@@ -40,7 +40,7 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.1.007" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?3.1.009" media="screen" />
   </head>
 
   <body>
@@ -132,8 +132,8 @@
         </ohno>
 
         <controls class="endgame" v-if="dropTotalCount == 0">
-          <!-- <h3 @click="showSettings = !showSettings">Current Mode: {{currentMode.name}}</h3> -->
-          <button @click="RestartGame">New Game <span>'{{currentMode.name}}' mode</span></button>
+          <!-- <h3 @click="showSettings = !showSettings">Current Mode: {{currentDifficulty.name}}</h3> -->
+          <button @click="RestartGame">New Game <span>'{{currentDifficulty.name}}' difficulty</span></button>
           <button class="secondary" @click="Share">Share </button>
           <button class="secondary action" @click="window.open('https://www.buymeacoffee.com/wilvoss')">buy me a
             coffee!</button>
@@ -147,14 +147,14 @@
         <h2>Settings</h2>
         <divider></divider>
         <section>
-          <h3>difficulty mode</h3>
+          <h3>difficulty</h3>
           <setting>
-            <mode v-for="(mode) in modes" @click="SelectMode(mode)"
-              :class="{selected: mode.selected, disabled: isPlaying && !mode.selected}">
-              <puck :style="{width: mode.width + 'px', height: mode.height + 'px'}">
+            <difficulty v-for="(difficulty) in difficulties" @click="SelectDifficulty(difficulty)"
+              :class="{selected: difficulty.selected, disabled: isPlaying && !difficulty.selected}">
+              <puck :style="{width: difficulty.width + 'px', height: difficulty.height + 'px'}">
               </puck>
-              <value>{{mode.name}}</value>
-            </mode>
+              <value>{{difficulty.name}}</value>
+            </difficulty>
           </setting>
         </section>
         <divider></divider>
@@ -199,8 +199,8 @@
       </modal>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js"></script>
-    <script type="module" src="/scripts/dropnstop.js?3.1.007"></script>
+    <script src="/helpers/console-enhancer.js?3.1.009"></script>
+    <script type="module" src="/scripts/dropnstop.js?3.1.009"></script>
   </body>
 
 </html>

@@ -1,0 +1,24 @@
+import { DifficultyObject } from '../models/DifficultyObject.min.js';
+import { ThemeObject } from '../models/ThemeObject.min.js';
+
+// prettier-ignore
+const difficulties = [
+  new DifficultyObject({ name: 'Easy', height: 20, speed: 900, }),
+  new DifficultyObject({ name: 'Normal', height: 12, width: 15, speed: 1800, selected: true, }),
+  new DifficultyObject({ name: 'Hard', height: 8, width: 10, speed: 3600, }),
+  new DifficultyObject({ name: 'Ultra', height: 4, width: 5, speed: 4000, }),
+];
+
+// prettier-ignore
+const themes = [
+    new ThemeObject({ name: 'r', h: 360, s: 38, pl: 83 }),
+    new ThemeObject({ name: '0', h: 27, s: 46, pl: 17 }),
+    new ThemeObject({ name: 'y', h: 52, s: 50, pl: 17 }),
+    new ThemeObject({ name: 'g', h: 148, s: 34, pl: 83, selected: true }),
+    new ThemeObject({ name: 'b', h: 200, s: 44, pl: 83 }),
+    new ThemeObject({ name: 'p', h: 256, s: 36, pl: 83 }),
+    new ThemeObject({ name: 'm', h: 300, s: 38, pl: 83 }),
+  ];
+
+// Export the class and Modes array for use in other modules
+export { difficulties, themes };
