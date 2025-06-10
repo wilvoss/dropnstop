@@ -1,4 +1,4 @@
-const version = '3.1.011';
+const version = '3.1.012';
 
 //#region MODULE HANDLING
 async function loadModels() {

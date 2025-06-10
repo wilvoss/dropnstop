@@ -1,7 +1,7 @@
-import { GradeObject } from '../models/GradeObject.min';
-import { StageObject } from '../models/StageObject';
-import { StageSetObject } from '../models/StageSetObject';
-import { StageCampaignObject } from '../models/StageCampaignObject';
+import { GradeObject } from '../models/GradeObject.min.js';
+import { StageObject } from '../models/StageObject.min.js';
+import { StageSetObject } from '../models/StageSetObject.min.js';
+import { StageCampaignObject } from '../models/StageCampaignObject.min.js';
 
 const grades = [
   new GradeObject({ threshold: 95, grade: 'S', title: 'Drop Dynamo', description: 'Flawless timing—unstoppable precision!', emoji: '🎯' }),
