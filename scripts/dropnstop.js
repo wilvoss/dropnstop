@@ -1,6 +1,4 @@
-import { difficulties } from '../constants/settings';
-
-const version = '3.1.010';
+const version = '3.1.011';
 
 //#region MODULE HANDLING
 async function loadModels() {
