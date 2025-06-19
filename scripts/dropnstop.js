@@ -1,4 +1,4 @@
-const version = '3.1.013';
+const version = '3.1.014';
 
 //#region MODULE HANDLING
 async function loadModels() {
@@ -12,13 +12,14 @@ async function loadModels() {
 }
 
 async function loadConstants() {
-  const { themes, difficulties } = await import(`../constants/settings.min.js?${version}`);
-  const { grades } = await import(`../constants/gameplay.min.js?${version}`);
+  const { themes } = await import(`../constants/settings.min.js?${version}`);
+  const { difficulties, grades, campaigns } = await import(`../constants/gameplay.min.js?${version}`);
 
   return {
     themes,
     difficulties,
     grades,
+    campaigns,
   };
 }
 
@@ -65,6 +66,10 @@ LoadAllModules().then((modules) => {
         lastUpdate: null,
         isSuccess: false,
         isPlaying: false,
+        stageScale: 1,
+        campaigns: modules.campaigns,
+        currentCampaign: null,
+        currentSet: null,
         puckX: 0,
         puckY: 0,
         puckWidth: 20,
@@ -95,12 +100,14 @@ LoadAllModules().then((modules) => {
         currentDifficulty: modules.difficulties[0],
         themes: modules.themes,
         grades: modules.grades,
+        resizeDebounceTimer: null,
         stageElement: document.getElementsByTagName('stage')[0],
         puckElement: document.getElementsByTagName('puck')[0],
         r: document.querySelector(':root'),
         c: window.getComputedStyle(document.querySelector(':root')),
       };
     },
+
     methods: {
       ReadyStage() {
         note('Ready stage');
@@ -124,6 +131,8 @@ LoadAllModules().then((modules) => {
           this.targetY = stageRect.height - this.targetHeight - 140;
         }
       },
+      ReadySet(_set) {},
+      ReadyCampaign(_campaign) {},
       StopPuck() {
         note('Stopping puck');
         if (this.dropTotalCount > 0) {
@@ -169,6 +178,12 @@ LoadAllModules().then((modules) => {
               this.CreateConfetti();
             }, 200);
           }
+        }
+      },
+      SetScale() {
+        note('Set stage scale');
+        if (window.innerWidth < 500) {
+          this.stageScale = window.innerWidth / 500;
         }
       },
       HandleOkayButtonClick() {
@@ -346,6 +361,40 @@ LoadAllModules().then((modules) => {
         this.RemoveConfetti();
         this.ReadyStage();
       },
+      SelectCampaign(_campaign) {
+        this.campaigns.forEach((campaign) => {
+          campaign.selected = false;
+        });
+        this.currentCampaign = _campaign;
+        let setIndex = 0;
+        this.currentCampaign.sets.forEach((set) => {
+          if (!set.finished) {
+            this.currentSet = set;
+            return setIndex;
+          }
+          setIndex++;
+        });
+        this.currentCampaign.selected = true;
+      },
+      async GetCurrentGameState() {
+        if ((await modules.GetData('currentGameState')) !== null) {
+          return JSON.parse(await modules.GetData('currentGameState'));
+        } else {
+          this.SelectCampaign(this.campaigns[0]);
+        }
+      },
+      ApplyDifficultyInerhitance() {
+        note('Applying difficulty inheritance');
+        this.campaigns.forEach((campaign) => {
+          campaign.sets.forEach((set) => {
+            set.stages.forEach((stage) => {
+              if (stage.difficulty == null || stage.difficulty == '') {
+                stage.difficulty = this.set.difficulty;
+              }
+            });
+          });
+        });
+      },
       async GetSettings() {
         const migrationKeys = ['difficulty', 'theme', 'useDarkPuck'];
 
@@ -378,7 +427,6 @@ LoadAllModules().then((modules) => {
           this.SetPuckColor(false);
         }
       },
-
       RemoveConfetti() {
         note('Remove confetti');
         let allConfetti = document.getElementsByTagName('confetti');
@@ -386,7 +434,6 @@ LoadAllModules().then((modules) => {
           document.body.removeChild(allConfetti[_x]);
         }
       },
-
       CreateConfetti(_highlight = false) {
         note('Create confetti');
         this.RemoveConfetti();
@@ -498,6 +545,7 @@ LoadAllModules().then((modules) => {
       },
       HandleResize() {
         note('Handling resize');
+        this.SetScale();
         this.RemoveConfetti();
       },
     },

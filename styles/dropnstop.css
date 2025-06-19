@@ -17,11 +17,11 @@
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.5);
   --targetX: 50%;
   --funfont: 'Tektur';
-  --stageWidth: 100%;
+  --stageWidth: 500px;
+  --stageHeight: 481px;
   --maxWidth: 500px;
   --minWidth: 340px;
   --maxHeight: 956px;
-  --stageHeight: 481px;
   --dividerColor: hsl(var(--hue), var(--saturation), 100%, 0.3);
   --whiteTextShadow: 0px -1px 0px hsl(var(--hue), var(--saturation), 35%);
   --shadow: 2px 2px 0px hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.1);
@@ -839,10 +839,6 @@ canvas {
 }
 
 @media only screen and (max-width: 500px) {
-  :root {
-    --stageWidth: 100%;
-  }
-
   info {
     max-width: var(--stageWidth);
   }

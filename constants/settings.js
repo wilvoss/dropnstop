@@ -1,13 +1,4 @@
-import { DifficultyObject } from '../models/DifficultyObject.min.js';
 import { ThemeObject } from '../models/ThemeObject.min.js';
-
-// prettier-ignore
-const difficulties = [
-  new DifficultyObject({ name: 'Easy', height: 20, speed: 900, }),
-  new DifficultyObject({ name: 'Normal', height: 12, width: 15, speed: 1800, selected: true, }),
-  new DifficultyObject({ name: 'Hard', height: 8, width: 10, speed: 3600, }),
-  new DifficultyObject({ name: 'Ultra', height: 4, width: 5, speed: 4000, }),
-];
 
 // prettier-ignore
 const themes = [
@@ -21,4 +12,4 @@ const themes = [
   ];
 
 // Export the class and Modes array for use in other modules
-export { difficulties, themes };
+export { themes };
