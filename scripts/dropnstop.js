@@ -557,6 +557,7 @@ LoadAllModules().then((modules) => {
       window.addEventListener('keyup', this.HandleKeyUp);
       window.addEventListener('keydown', this.HandleKeyDown);
       window.addEventListener('resize', this.HandleResize);
+      this.SetScale();
       this.GetSettings();
       this.GetCurrentGameState();
       const update = (now) => {
