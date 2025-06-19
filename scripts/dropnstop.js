@@ -1,25 +1,12 @@
-const version = '3.1.015';
+import { loadGameplayModules } from '../constants/gameplay.js';
+import { version } from '/constants/version.js';
 
 //#region MODULE HANDLING
-async function loadModels() {
-  const { ResultObject } = await import(`../models/ResultObject.min.js?${version}`);
-  const { DifficultyObject } = await import(`../models/DifficultyObject.min.js?${version}`);
-
-  return {
-    ResultObject,
-    DifficultyObject,
-  };
-}
-
 async function loadConstants() {
   const { themes } = await import(`../constants/settings.min.js?${version}`);
-  const { difficulties, grades, campaigns } = await import(`../constants/gameplay.min.js?${version}`);
 
   return {
     themes,
-    difficulties,
-    grades,
-    campaigns,
   };
 }
 
@@ -35,10 +22,11 @@ async function loadHelpers() {
 }
 
 async function LoadAllModules() {
-  const models = await loadModels(version);
+  const gameplayModules = await loadGameplayModules();
+
   const helpers = await loadHelpers(version);
   const constants = await loadConstants(version);
-  return { ...models, ...helpers, ...constants };
+  return { ...helpers, ...constants, ...gameplayModules };
 }
 //#endregion
 
@@ -70,6 +58,7 @@ LoadAllModules().then((modules) => {
         campaigns: modules.campaigns,
         currentCampaign: null,
         currentSet: null,
+        currentStage: null,
         puckX: 0,
         puckY: 0,
         puckWidth: 20,
@@ -362,22 +351,30 @@ LoadAllModules().then((modules) => {
         this.ReadyStage();
       },
       SelectCampaign(_campaign) {
+        note('Select campaign: ' + _campaign.name);
         this.campaigns.forEach((campaign) => {
           campaign.selected = false;
         });
         this.currentCampaign = _campaign;
-        let setIndex = 0;
         this.currentCampaign.sets.forEach((set) => {
           if (!set.finished) {
             this.currentSet = set;
-            return setIndex;
+            return;
           }
-          setIndex++;
+        });
+
+        this.currentSet.stages.forEach((stage) => {
+          if (!stage.results) {
+            this.currensstStage = stage;
+            return;
+          }
         });
         this.currentCampaign.selected = true;
       },
       async GetCurrentGameState() {
-        if ((await modules.GetData('currentGameState')) !== null) {
+        note('Get current game state');
+        const currentGameStateData = await modules.GetData('currentGameState');
+        if (typeof currentGameStateData === 'string' && currentGameStateData.trim() !== '' && currentGameStateData !== 'undefined') {
           return JSON.parse(await modules.GetData('currentGameState'));
         } else {
           this.SelectCampaign(this.campaigns[0]);
@@ -406,8 +403,9 @@ LoadAllModules().then((modules) => {
           }
         }
 
-        if ((await modules.GetData('difficulty')) != null) {
-          var incoming = new modules.DifficultyObject(JSON.parse(await modules.GetData('difficulty')));
+        const difficultyData = await modules.GetData('difficulty');
+        if (typeof difficultyData === 'string' && difficultyData.trim() !== '' && difficultyData !== 'undefined') {
+          var incoming = new modules.DifficultyObject(JSON.parse(difficultyData));
           this.difficulties.forEach((difficulty) => {
             if (difficulty.name == incoming.name) {
               this.SelectDifficulty(difficulty);
@@ -416,13 +414,15 @@ LoadAllModules().then((modules) => {
         } else {
           this.SelectDifficulty(this.difficulties[0]);
         }
-        if ((await modules.GetData('theme')) != null) {
-          this.SelectGameTheme(await modules.GetData('theme'));
+        const themeData = await modules.GetData('theme');
+        if (typeof themeData === 'string' && themeData.trim() !== '' && themeData !== 'undefined') {
+          this.SelectGameTheme(themeData);
         } else {
           this.SelectGameTheme(this.themes[3].name);
         }
-        if ((await modules.GetData('useDarkPuck')) != null) {
-          this.SetPuckColor(await modules.GetData('useDarkPuck'));
+        const useDarkPuckData = await modules.GetData('useDarkPuck');
+        if (typeof useDarkPuckData === 'string' && useDarkPuckData.trim() !== '' && useDarkPuckData !== 'undefined') {
+          this.SetPuckColor(useDarkPuckData);
         } else {
           this.SetPuckColor(false);
         }
@@ -558,6 +558,7 @@ LoadAllModules().then((modules) => {
       window.addEventListener('keydown', this.HandleKeyDown);
       window.addEventListener('resize', this.HandleResize);
       this.GetSettings();
+      this.GetCurrentGameState();
       const update = (now) => {
         this.UpdateApp(now);
         this._animationFrame = requestAnimationFrame(update);
