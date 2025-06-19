@@ -2,6 +2,7 @@ import { GradeObject } from '../models/GradeObject.min.js';
 import { StageObject } from '../models/StageObject.min.js';
 import { StageSetObject } from '../models/StageSetObject.min.js';
 import { StageCampaignObject } from '../models/StageCampaignObject.min.js';
+import { DifficultyObject } from '../models/DifficultyObject.js';
 
 const grades = [
   new GradeObject({ threshold: 95, grade: 'S', title: 'Drop Dynamo', description: 'Flawless timing—unstoppable precision!', emoji: '🎯' }),
@@ -21,20 +22,24 @@ var campaigns = Array.from(
   () =>
     new StageCampaignObject({
       name: 'Tutorial',
+      description: `Welcome to drop 'n stop, let's get started with the basics.`,
+      selected: true,
       sets: [
         new StageSetObject({
           name: 'The Basics',
+          description: `The goal is to move the puck into the zone down below,`,
+          difficulty: new DifficultyObject({ name: 'Easy', height: 20, speed: 900 }),
           stages: [
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
-            new StageObject({ kx: 0, kw: 0, kh: 0, tx: 0, ty: 0, tw: 0, th: 0 }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 1`, description: `A` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `B` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `C` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `D` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `E` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `F` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `G` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `H` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `I` }),
+            new StageObject({ kx: 0, tx: 0, ty: 0, tw: 0, th: 0, speed: 900, name: `Stage 2`, description: `J` }),
           ],
         }),
       ],

@@ -1,4 +1,4 @@
-const version = '3.1.012';
+const version = '3.1.013';
 
 //#region MODULE HANDLING
 async function loadModels() {
@@ -61,7 +61,7 @@ LoadAllModules().then((modules) => {
         isDropping: false,
         isStopped: true,
         isReady: false,
-        useDarkPuck: true,
+        useDarkPuck: false,
         lastUpdate: null,
         isSuccess: false,
         isPlaying: false,
@@ -295,6 +295,7 @@ LoadAllModules().then((modules) => {
         this.SetPuckColor(usedark);
       },
       async SetPuckColor(usedark) {
+        note('Set puck dark: ' + usedark);
         this.useDarkPuck = usedark;
         this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
         await modules.SaveData('useDarkPuck', usedark);
@@ -368,9 +369,13 @@ LoadAllModules().then((modules) => {
         }
         if ((await modules.GetData('theme')) != null) {
           this.SelectGameTheme(await modules.GetData('theme'));
+        } else {
+          this.SelectGameTheme(this.themes[3].name);
         }
         if ((await modules.GetData('useDarkPuck')) != null) {
-          this.SetPuckColor((await modules.GetData('useDarkPuck')) == 'true');
+          this.SetPuckColor(await modules.GetData('useDarkPuck'));
+        } else {
+          this.SetPuckColor(false);
         }
       },
 
