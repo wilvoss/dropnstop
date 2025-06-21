@@ -12,13 +12,18 @@
   --oppositeLuminosity: 17%;
   --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), var(--mainLuminosity));
+  --appBackgroundSemiTransparent: hsla(var(--hue), var(--saturation), var(--mainLuminosity), 0.4);
   --appForeground: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.5);
+  --highlightColor: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
   --targetX: 50%;
   --funfont: 'Tektur';
+  --defaultGap: 20px;
+  --bigGap: calc(2 * var(--defaultGap));
+  --hugeGap: calc(4 * var(--defaultGap));
   --stageWidth: 500px;
-  --stageHeight: 481px;
+  --stageHeight: 500px;
   --maxWidth: 500px;
   --minWidth: 340px;
   --maxHeight: 956px;
@@ -37,11 +42,12 @@ body {
   margin: 0px;
   padding: 0px;
   font-family: 'Courier New', Courier, monospace;
+  text-transform: lowercase;
   color: var(--appForeground);
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 40px, hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) 40px, hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) 80px);
+  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
   user-select: none;
   -webkit-user-select: none;
   text-shadow: var(--shadow);
@@ -71,13 +77,14 @@ a {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: var(--funfont);
   line-height: 100%;
   text-align: center;
   text-transform: lowercase;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: var(--defaultGap);
+  margin-bottom: var(--defaultGap);
   padding-top: 0px;
   text-shadow: var(--shadowAlt);
 }
@@ -133,7 +140,7 @@ h3 pretitle {
 h2 {
   margin: 0;
   font-size: 1.5em;
-  padding-bottom: 20px;
+  padding-bottom: var(--defaultGap);
 }
 
 h3 {
@@ -151,7 +158,8 @@ button {
 }
 
 theater,
-modal {
+modal,
+overlay {
   display: flex;
   width: 100%;
   height: calc(100%);
@@ -169,7 +177,7 @@ modal {
 
 theater {
   justify-content: start;
-  /* gap: 40px; */
+  gap: 10px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
 }
 
@@ -198,11 +206,11 @@ theater header score {
 
 theater controls {
   position: absolute;
-  height: calc(100% - 40px);
+  height: calc(100% - var(--bigGap));
   margin: 0;
   align-items: flex-end;
   bottom: unset;
-  max-height: calc(var(--maxHeight) - 20px - 0.5 * env(safe-area-inset-bottom));
+  max-height: calc(var(--maxHeight) - var(--defaultGap) - 0.5 * env(safe-area-inset-bottom));
   pointer-events: none;
   transition: 100ms ease-in-out opacity;
 }
@@ -260,8 +268,10 @@ stage {
   display: block;
   width: var(--stageWidth);
   height: var(--stageHeight);
-  /* border-top: 1px solid var(--appForeground); */
-  border-width: 1px 0px;
+  border: 0px solid var(--appForeground);
+  transform-origin: top;
+  /* border-bottom: 1px solid var(--appForeground); */
+  /* border-width: 1px 0px; */
   max-height: var(--stageHeight);
   min-height: var(--stageHeight);
   background: var(--appBackground);
@@ -276,7 +286,7 @@ version {
   display: block;
   font-size: 0.7em;
   opacity: 0.8;
-  margin-bottom: 20px;
+  margin-bottom: var(--defaultGap);
 }
 
 version a {
@@ -325,16 +335,24 @@ stats {
 }
 
 stats grade {
+  display: flex;
   font-family: var(--funfont);
-  font-size: 4em;
+  font-size: 3em;
   font-weight: bold;
   text-align: center;
   color: hsl(var(--hue), var(--saturation), 100%);
-  margin-bottom: 10px;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: var(--bigGap);
+  gap: var(--defaultGap);
+}
+
+stats h1 {
+  margin: var(--defaultGap) 0;
 }
 
 stats h3 {
-  margin: 20px 0 4px 0;
+  margin: var(--defaultGap) 0 4px 0;
 }
 
 stat {
@@ -373,22 +391,8 @@ puck {
   /* box-shadow: var(--shadow); */
 }
 
-puck.start {
-  opacity: 0;
-}
-
-puck.start:after {
-  display: flex;
-  position: absolute;
-  width: 100%;
-  height: 20px;
-  font-family: var(--funfont);
-  font-size: 1.2em;
-  color: hsl(var(--hue), var(--saturation), 100%);
-  transform: translateY(18px);
-  justify-content: center;
-  content: '↓';
-  text-shadow: none;
+puck.show {
+  opacity: 1;
 }
 
 .ended puck {
@@ -423,14 +427,15 @@ modal puck,
 
 .stopped puck.disabled,
 puck.disabled {
-  opacity: 0;
+  opacity: 0.3;
 }
 
 .stopped puck tail {
   transform: scaleY(0);
 }
 
-modal {
+modal,
+overlay {
   display: flex;
   position: absolute;
   z-index: 1000;
@@ -441,7 +446,7 @@ modal {
   justify-content: space-between;
   align-items: center;
   align-content: start;
-  gap: 20px;
+  gap: var(--defaultGap);
   pointer-events: none;
   box-shadow: none;
   row-gap: 0px;
@@ -463,14 +468,121 @@ modal ohno {
   display: none;
 }
 
+overlay {
+  opacity: 1;
+  transform: none;
+  justify-content: center;
+  align-items: center;
+  background: none;
+}
+
 section {
   display: flex;
-  width: 100%;
-  padding: 28px 0px 40px;
+  width: calc(100% - var(--hugeGap));
+  padding: 28px var(--bigGap) var(--bigGap);
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;
+}
+
+leftright {
+  display: flex;
+  width: calc(100%);
+  margin: 0px;
+  padding: 0px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: calc(0.5 * var(--defaultGap));
+}
+
+leftright:first-of-type {
+  margin-top: var(--bigGap);
+}
+
+campaigns,
+sets {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+}
+
+campaign,
+set {
+  display: flex;
+  width: calc(100% - var(--bigGap));
+  padding: 14px var(--defaultGap) 10px;
+  border: 1px solid var(--appForeground);
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  align-content: center;
+  gap: 2px;
+  cursor: pointer;
+  box-shadow: var(--shadow), inset var(--shadow);
+  text-shadow: var(--shadow);
+}
+
+campaign.locked,
+set.locked {
+  opacity: 0.8;
+  border-style: dashed;
+  pointer-events: none;
+}
+
+campaign h4,
+campaign p,
+set h4,
+set p {
+  margin: 0;
+}
+
+campaign h4,
+set h4 {
+  display: flex;
+  width: 100%;
+  line-height: 1.1em;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+  gap: 4px;
+}
+
+campaign h4 name,
+set h4 name {
+  display: flex;
+  width: 100%;
+  font-weight: 800;
+  justify-content: space-between;
+  align-self: center;
+  gap: 2px;
+}
+
+campaign h4 status,
+set h4 status {
+  display: flex;
+  font-weight: 100;
+  white-space: nowrap;
+}
+
+campaign.finished h4 name,
+set.finished h4 name,
+campaign.locked h4 name,
+set.locked h4 name {
+  font-weight: 100;
+}
+
+campaign.finished h4 status,
+set.finished h4 status {
+  font-weight: 800;
+}
+
+campaign p,
+set p {
+  font-size: 0.9em;
+  font-weight: 100;
 }
 
 divider {
@@ -485,10 +597,10 @@ divider {
 
 setting {
   display: flex;
-  width: calc(100% - 40px);
+  width: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-content: flex-start;
   /* margin-bottom: 100px; */
 }
@@ -617,12 +729,16 @@ target {
   border-width: 1px 0px;
 }
 
+target.hide {
+  opacity: 0;
+}
+
 .success target {
-  background: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
+  background: var(--highlightColor);
 }
 
 .ended target {
-  opacity: 0;
+  opacity: 0.3;
   border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.4);
 }
 
@@ -664,6 +780,7 @@ info {
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  pointer-events: none;
   max-height: var(--stageHeight);
   min-height: var(--stageHeight);
   margin-bottom: env(safe-area-inset-bottom);
@@ -688,13 +805,13 @@ info.emphasize p {
 
 controls {
   display: flex;
-  width: calc(100% - 80px);
-  margin: 20px 0px;
+  width: calc(100% - 2 * var(--bigGap));
+  margin: var(--defaultGap) 0px;
   justify-content: flex-end;
   max-width: calc(var(--maxWidth) - 0px);
   row-gap: 10px;
-  column-gap: 20px;
-  padding-bottom: calc(20px + calc(0.5 * env(safe-area-inset-bottom)));
+  column-gap: var(--defaultGap);
+  padding-bottom: calc(var(--defaultGap) + calc(0.5 * env(safe-area-inset-bottom)));
 }
 
 controls.endgame {
@@ -704,6 +821,7 @@ controls.endgame {
 theater controls {
   width: 100%;
   justify-content: space-between;
+  gap: 0;
 }
 
 controls button {
@@ -711,7 +829,7 @@ controls button {
   width: 100%;
   /* height: 60px; */
   margin: 0px;
-  padding: 10px;
+  padding: 12px 10px;
   border: 1px solid var(--appForeground);
   font-family: var(--funfont);
   font-size: 1.5em;
@@ -734,11 +852,17 @@ controls button span {
   color: var(--appBackground);
 }
 
-controls button.secondary {
+controls button.secondary,
+controls button.tertiary {
+  padding: 10px;
   font-weight: normal;
   color: var(--appForeground);
   background: var(--appBackground);
   box-shadow: inset var(--shadow), var(--shadow);
+}
+
+controls button.tertiary {
+  font-size: 1.3em;
 }
 
 controls button:active,
@@ -749,7 +873,7 @@ controls button:focus {
 theater controls button {
   width: 80px;
   height: 80px;
-  margin: 0 20px 0 20px;
+  margin: 0 var(--defaultGap);
   font-size: 1.25em;
   font-weight: normal;
   opacity: 1;
@@ -763,11 +887,11 @@ theater controls button {
 }
 
 theater controls button:first-child {
-  margin: 0 0 0 20px;
+  margin: 0 0 0 var(--defaultGap);
 }
 
 theater controls button:last-child {
-  margin: 0 20px 0 0;
+  margin: 0 var(--defaultGap) 0 0;
 }
 
 theater controls button.hide {
@@ -781,19 +905,53 @@ theater controls button.highlight {
   border-color: hsl(var(--hue), var(--saturation), 100%);
 }
 
-theater controls p {
+overlay {
+  justify-content: end;
+  pointer-events: none;
+}
+
+overlay instructions,
+overlay announcement {
   display: flex;
-  height: 80px;
-  margin: 0;
+  width: 100%;
+  padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
   font-family: var(--funfont);
   font-weight: bold;
   text-align: center;
   color: hsl(var(--hue), 80%, 100%);
-  justify-content: center;
+  flex-direction: column;
+  justify-content: end;
   align-items: center;
-  max-height: 80px;
-  min-height: 80px;
-  text-shadow: var(--whiteTextShadow);
+  gap: 4px;
+  /* color: var(--highlightColor); */
+  max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
+  /* min-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap))); */
+  /* color: var(--appBackground); */
+  box-shadow: var(--shadow);
+  background: var(--appForeground);
+  border-radius: 10px;
+  text-shadow: none;
+}
+
+overlay announcement {
+  pointer-events: all;
+  bottom: unset;
+}
+
+overlay instructions {
+  margin-bottom: calc(2 * var(--hugeGap));
+}
+
+overlay instructions span,
+overlay announcement span {
+  font-weight: 100;
+}
+
+overlay.meta {
+  justify-content: center;
+  background: var(--appBackgroundSemiTransparent);
+  margin-bottom: unset;
+  pointer-events: all;
 }
 
 .blink {
@@ -822,7 +980,15 @@ theater controls p {
   display: none;
 }
 
-confetti,
+confetti {
+  display: block;
+  position: absolute;
+  width: var(--maxWidth);
+  height: var(--maxHeight);
+  pointer-events: none;
+}
+
+confetto,
 canvas {
   display: block;
   position: fixed;
@@ -839,6 +1005,10 @@ canvas {
 }
 
 @media only screen and (max-width: 500px) {
+  :root {
+    --maxWidth: 100%;
+  }
+
   info {
     max-width: var(--stageWidth);
   }
@@ -850,12 +1020,17 @@ canvas {
   app {
     border: none;
   }
+
+  theater instructions {
+    max-width: calc(100% - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
+    min-width: calc(100% - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
+  }
 }
 
 @media only screen and (max-width: 339px) {
   modal {
     justify-content: center;
-    gap: 40px;
+    gap: var(--bigGap);
   }
 
   modal header,
@@ -864,7 +1039,7 @@ canvas {
   }
 
   modal ohno {
-    margin: 0px 40px;
+    margin: 0px var(--bigGap);
     text-align: center;
     display: block;
   }
@@ -882,7 +1057,7 @@ canvas {
   }
 
   divider {
-    display: none;
+    /* display: none; */
   }
 
   theater header button,

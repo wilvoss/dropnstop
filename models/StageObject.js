@@ -1,7 +1,7 @@
 export function StageObject(spec = {}) {
   return {
-    name: spec.name ?? 'Stage',
-    description: spec.description ?? 'Stage description',
+    name: spec.name ?? '',
+    description: spec.description ?? '',
     kx: spec.kx ?? 0,
     tx: spec.tx ?? 0,
     ty: spec.ty ?? 0,
@@ -12,5 +12,8 @@ export function StageObject(spec = {}) {
     difficulty: spec.difficulty ?? null,
     score: spec.score ?? 0,
     result: spec.result ?? null,
+    finished: spec.finished ?? false,
+    showPuck: spec.showPuck ?? false,
+    hideTarget: spec.hideTarget ?? false,
   };
 }

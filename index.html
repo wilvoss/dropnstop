@@ -40,31 +40,31 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?3.1.017" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.000" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.000" media="screen" />
   </head>
 
   <body>
     <app id="app"
-      :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndGame, keyboard: spaceBarInUse}">
-      <audio id="themeMusic" loop>
-        <source src="" id="themeSource" type="audio/aac">
-      </audio>
+      :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
       <theater v-cloak>
-        <header :class="{hide: showEndGame}">
+        <header>
           <button :class="{hide: lock}" @click="showSettings=!showSettings">settings</button>
-          <score v-if="!lock">{{(showEndGame ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
+          <score v-if="!lock">{{(showEndSet ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
           </score>
-          <score v-if="lock">game over</score>
+          <score v-if="lock">set complete!</score>
           <button :class="{hide: lock}" @click="showYesNo = true">quit</button>
         </header>
-        <!-- <score :class="{hide: showEndGame}">{{Intl.NumberFormat(userLocale).format(score)}}</score> -->
+        <!-- <score :class="{hide: showEndSet}">{{Intl.NumberFormat(userLocale).format(score)}}</score> -->
         <stage :style="{scale: stageScale}">
-          <puck :class="{disabled: showEndGame, start: isFirstRun}"
+          <puck
+            :class="{disabled: showEndSet || (currentSet && currentSet.finished), show: currentStage && currentStage.showPuck}"
             :style=" {transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
             <tail v-if="!puckHitBottom" :style="{marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
             </tail>
           </puck>
-          <target :class="{disabled: showEndGame}"
+          <target
+            :class="{disabled: showEndSet || (currentSet && currentSet.finished), hide: dropCount === 0 && !isDropping && currentStage && currentStage.hideTarget}"
             :style="{transform: 'translate(' + targetX + 'px, ' + targetY + 'px)', height: targetHeight + 'px'}">
             <value>
               <span v-if="!isSuccess && !lock">{{'dropzone: +' + targetValue}}</span>
@@ -75,19 +75,23 @@
             </value>
           </target>
           <info>
-            <stats v-if="results.length > 0 && showEndGame"
+            <stats v-if="results.length > 0 && showEndSet"
               @click="CreateConfetti(finalGrade.threshold > goodGradeThreshold)">
-
-              <grade>{{finalGrade.grade}}</grade>
-              <h2> {{finalGrade.title}}
-                <subtitle>{{finalGrade.description}}</subtitle>
+              <h3>{{currentSet.name}}</h3>
+              <grade>
+                complete!
+                <!-- <icon class="check"></icon> -->
+              </grade>
+              <h1>{{currentCampaign.isTutorial ? '🏆' : finalGrade.emoji}}</h1>
+              <h2>{{currentCampaign.isTutorial ? 'bravo!' :finalGrade.title}}
+                <subtitle>{{currentCampaign.isTutorial ? 'You\'ve completed the tutorial' : finalGrade.description}}
+                </subtitle>
               </h2>
+              <stat>grade<span>{{finalGrade.grade}}</span></stat>
               <stat>points earned<span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
               <stat>possible points <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat>
 
               <!-- <h3>levels</h3> -->
-              <stat>levels attempted<span>{{results.length }} </span></stat>
-              <stat>levels cleared<span>{{totalZonesClearedSucccessfully }} </span></stat>
               <stat>on 1st try<span>{{hitsOnOne}}</span></stat>
               <stat>on 2nd try<span>{{hitsOnTwo}}</span></stat>
               <stat>on 3rd try<span>{{hitsOnThree}}</span></stat>
@@ -101,31 +105,32 @@
 
         <controls>
           <button @pointerdown="HandleActionButton(event, 'next')" class="action"
-            :class="{hide: showEndGame || lock, disabled: !isStopped, highlight: dropCount >= 2 && isStopped || isSuccess}">
+            :class="{hide: showEndSet || lock, disabled: !isStopped, highlight: currentStage && currentStage.finished}">
             {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
           </button>
-          <p v-if="!showEndGame && !lock" v-html="instructions"></p>
-          <button @click="HandleOkayButtonClick" v-if="dropTotalCount === 0">Okay</button>
-          <button :class="{hide: showEndGame || lock, disabled: isStopped, blink: isFirstRun}"
+          <button @click="HandleQuitButtonClick" v-if="currentSet && currentSet.finished">quit</button>
+          <button @click="HandleNextButtonClick"
+            v-if="showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
+          <button :class="{hide: showEndSet || lock, disabled: isStopped, blink: isFirstRun}"
             @pointerdown="HandleActionButton(event, 'drop')" @pointerup="HandleActionButton(event, 'stop')"
             @pointerleave="HandleActionButton(event, 'stop')" class="action">DROP</button>
         </controls>
       </theater>
+      <overlay @click="HandleAnnouncementClick"
+        :class="{meta: showAnnouncement , show: !showEndSet && !lock && !isDropping && dropCount === 0 && (announcement !== '' || instructions !== '')}">
+        <announcement v-if="showAnnouncement && announcement !== ''" v-html="announcement">
+        </announcement>
+        <instructions v-if="!showAnnouncement && instructions !== ''" v-html="instructions">
+        </instructions>
+      </overlay>
       <modal :class="{show: showHome}">
         <header>
-          <button @click="showSettings = !showSettings">settings</button>
         </header>
         <h1>
           <pretitle>Big Tent Games presents</pretitle>
           drop 'n stop
-          <subtitle>the puck stops here</subtitle>
+          <subtitle>= the puck stops here =</subtitle>
         </h1>
-
-        <!-- <p>
-          test your reaction time<br />
-          drop the puck<br />
-        </p> -->
-
         <ohno>
           <h3>oh no!</h3>
           <p>
@@ -135,30 +140,25 @@
 
         <controls class="endgame" v-if="dropTotalCount == 0">
           <!-- <h3 @click="showSettings = !showSettings">Current Mode: {{currentDifficulty.name}}</h3> -->
-          <button @click="RestartGame">New Game <span>'{{currentDifficulty.name}}' difficulty</span></button>
-          <button class="secondary" @click="Share">Share </button>
-          <button class="secondary action" @click="window.open('https://www.buymeacoffee.com/wilvoss')">buy me a
-            coffee!</button>
+          <button @click="showCampaigns = true">Play</button>
+          <button class="secondary" @click="RestartGame(campaigns[1])">Zen Mode</button>
+          <leftright>
+            <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
+            <button class="tertiary" @click="showSettings = !showSettings">Settings</button>
+          </leftright>
+          <leftright>
+            <button class="tertiary" @click="Share">Share</button>
+            <button class="tertiary action"
+              @click="window.open('https://www.buymeacoffee.com/wilvoss')">Donate!</button>
+          </leftright>
         </controls>
       </modal>
       <modal :class="{show: showSettings}">
         <header>
-          <button @click="showSettings = !showSettings">close</button>
+          <button @click="showSettings = !showSettings">← back</button>
           <button v-if="isPlaying" @click="showYesNo = true">quit</button>
         </header>
         <h2>Settings</h2>
-        <divider></divider>
-        <section>
-          <h3>difficulty</h3>
-          <setting>
-            <difficulty v-for="(difficulty) in difficulties" @click="SelectDifficulty(difficulty)"
-              :class="{selected: difficulty.selected, disabled: isPlaying && !difficulty.selected}">
-              <puck :style="{width: difficulty.width + 'px', height: difficulty.height + 'px'}">
-              </puck>
-              <value>{{difficulty.name}}</value>
-            </difficulty>
-          </setting>
-        </section>
         <divider></divider>
         <section class="puck">
           <h3>puck color</h3>
@@ -183,11 +183,54 @@
         <controls v-if="!isPlaying">
           <button class="secondary" @click="location.reload()">Reload App</button>
         </controls>
-        <!-- <h1>published by</h1> -->
         <version>
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
-
+      </modal>
+      <modal v-if="currentCampaign" :class="{show: showCampaigns}">
+        <header>
+          <button @click="showCampaigns = false">← back</button>
+        </header>
+        <section>
+          <h2>Campaigns</h2>
+          <campaigns>
+            <campaign v-for="(campaign, index) in campaigns" :key="index"
+              v-if="!campaign.isTutorial && !campaign.isEndless"
+              :class="{locked: campaign.locked, finished: campaign.finished}" @click="StartCampaign(campaign)">
+              <h4>
+                <name>
+                  {{campaign.name}}
+                  <icon class="lock tiny" v-if="campaign.locked"></icon>
+                </name>
+                <status>{{campaign.finished ? 'Done!' : ''}}</status>
+              </h4>
+              <p>{{campaign.subtitle}}</p>
+            </campaign>
+          </campaigns>
+        </section>
+        <controls></controls>
+      </modal>
+      <modal v-if="currentCampaign" :class="{show: showSets}">
+        <header>
+          <button @click="showSets = false; showCampaigns = true">← back</button>
+        </header>
+        <section>
+          <h2>{{currentCampaign.name}}</h2>
+          <sets v-if="currentCampaign.sets && currentCampaign.sets.length > 0">
+            <set v-for="(set, index) in currentCampaign.sets" :key="index" @click="SelectSet(set)"
+              :class="{selected: currentSet && currentSet.id == set.id, locked: set.locked, finished: set.finished}">
+              <h4>
+                <name>
+                  {{set.name}}
+                  <icon class="lock tiny" v-if="set.locked"></icon>
+                </name>
+                <status>{{set.finished ? 'Done!' : set.stages.length +' levels'}}</status>
+              </h4>
+              <p>{{set.subtitle}}</p>
+            </set>
+          </sets>
+        </section>
+        <controls></controls>
       </modal>
       <modal :class="{show: showYesNo}" class="center">
         <h1>quit
@@ -199,10 +242,11 @@
         </controls>
 
       </modal>
+      <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?3.1.017"></script>
-    <script type="module" src="/scripts/dropnstop.js?3.1.017"></script>
+    <script src="/helpers/console-enhancer.js?4.0.000"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.000"></script>
   </body>
 
 </html>
