@@ -371,6 +371,7 @@ stats stat.emphasize span {
   font-family: var(--funfont);
   font-weight: bold;
   text-transform: uppercase;
+  text-shadow: var(--shadowAlt);
 }
 
 stat span {
@@ -380,6 +381,7 @@ stat span {
 puck {
   display: flex;
   position: fixed;
+  z-index: 1;
   height: 10px;
   border: 1px hsl(var(--hue), var(--saturation), calc(100% - var(--puckLuminosity))) solid;
   background-color: hsl(var(--hue), var(--saturation), var(--puckLuminosity));
@@ -773,6 +775,7 @@ target value {
 info {
   display: flex;
   position: absolute;
+  z-index: 2;
   width: var(--maxWidth);
   height: var(--stageHeight);
   color: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
@@ -931,7 +934,7 @@ overlay announcement {
 
 overlay announcement {
   pointer-events: all;
-  bottom: unset;
+  margin-bottom: calc(2 * var(--hugeGap));
 }
 
 overlay instructions span,

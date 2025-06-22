@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.004" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.004" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.005" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.005" media="screen" />
   </head>
 
   <body>
@@ -182,8 +182,9 @@
           </setting>
         </section>
         <divider></divider>
-        <controls v-if="!isPlaying">
+        <controls v-if="!isPlaying" style="flex-direction: column;">
           <button class="secondary" @click="location.reload()">Reload App</button>
+          <button class="secondary" @click="ClearAllData">Clear game data</button>
         </controls>
         <version>
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
@@ -247,8 +248,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.004"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.004"></script>
+    <script src="/helpers/console-enhancer.js?4.0.005"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.005"></script>
   </body>
 
 </html>

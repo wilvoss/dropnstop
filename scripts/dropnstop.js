@@ -972,6 +972,49 @@ LoadAllModules().then((modules) => {
           }
         });
       },
+      async ClearAllData() {
+        let confirm = window.confirm('Are you sure you want to clear all game data? This will reset all scores and campaign locks.');
+        if (!confirm) {
+          return;
+        }
+        note('Clearing all game data');
+
+        this.campaigns.forEach((campaign, cIdx) => {
+          // Determine unlock status
+          const isTutorial = campaign.isTutorial;
+          const isEndless = campaign.isEndless;
+          const isFirstCampaign = cIdx === 0;
+
+          // Unlock tutorial, endless, and first campaign
+          campaign.locked = !(isTutorial || isEndless || isFirstCampaign);
+          campaign.finished = false;
+          campaign.score = 0;
+          campaign.grade = null;
+
+          campaign.sets.forEach((set, sIdx) => {
+            // Unlock all sets in tutorial, all in endless, and first set in first campaign
+            const unlockSet = isTutorial || isEndless || (isFirstCampaign && sIdx === 2);
+
+            set.locked = !unlockSet;
+            set.finished = false;
+            set.score = 0;
+            set.grade = null;
+
+            set.stages.forEach((stage) => {
+              stage.finished = false;
+              stage.success = false;
+              stage.attempts = 0;
+              stage.score = 0;
+              stage.grade = null;
+            });
+          });
+        });
+
+        this.EndGame();
+        this.HideAllModalsAndOverlays();
+        this.showHome = true;
+        await modules.RemoveData('gameState');
+      },
     },
 
     async mounted() {
