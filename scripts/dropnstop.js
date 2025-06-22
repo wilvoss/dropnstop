@@ -584,6 +584,7 @@ LoadAllModules().then((modules) => {
       },
       RestartGame(_campaign = null) {
         note('Restarting game');
+        this.isSuccess = false;
         this.lock = false;
         this.results = [];
         this.dropCount = 3;
@@ -622,10 +623,10 @@ LoadAllModules().then((modules) => {
         this.showAnnouncement = true;
         this.currentCampaign.finished = false;
 
-        this.ClearSet(_set);
-
         this.currentSet = _set;
         this.currentSet.selected = true;
+
+        this.ClearSet(_set);
         this.QueueSet();
         this.RestartGame();
       },
@@ -641,6 +642,7 @@ LoadAllModules().then((modules) => {
         _set.finished = false;
         _set.score = 0;
         _set.grade = null;
+        _set.locked = false;
         this.results = [];
       },
       SelectCampaign(_campaign) {
@@ -995,7 +997,7 @@ LoadAllModules().then((modules) => {
 
           campaign.sets.forEach((set, sIdx) => {
             // Unlock all sets in tutorial, all in endless, and first set in first campaign
-            const unlockSet = isTutorial || isEndless || (isFirstCampaign && sIdx === 0);
+            const unlockSet = isTutorial || isEndless || (!isTutorial && isEndless && isFirstCampaign && sIdx === 0);
 
             set.locked = !unlockSet;
             set.finished = false;
