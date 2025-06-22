@@ -1002,6 +1002,10 @@ canvas {
     --maxWidth: 100%;
   }
 
+  body {
+    background: var(--appBackground);
+  }
+
   info {
     max-width: var(--stageWidth);
   }

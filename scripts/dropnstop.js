@@ -241,11 +241,13 @@ LoadAllModules().then((modules) => {
           this.score = gain;
           this.isSuccess = true;
           this.currentStage.finished = true;
+          this.SaveGameState();
         }
 
         if (!this.currentCampaign.isEndless) {
           if (this.dropCount === 3 && !this.isSuccess) {
             this.currentStage.finished = true;
+            this.SaveGameState();
           }
         }
 
@@ -288,7 +290,7 @@ LoadAllModules().then((modules) => {
 
           const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
 
-          setTimeout(() => this.CreateConfetti(colorConfetti), 200);
+          setTimeout(() => this.CreateConfetti(colorConfetti), 300);
         }
       },
       SetScale() {
