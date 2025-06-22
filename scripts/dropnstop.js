@@ -131,8 +131,6 @@ LoadAllModules().then((modules) => {
         const stageComplete = this.currentStage.finished || this.dropCount >= this.dropMaxCount;
 
         if (stageComplete) {
-          this.SaveGameState();
-          note('Stage complete, saving state');
           // Record result for the stage
           if (this.results.length > 0) {
             const result = this.results[this.results.length - 1];
@@ -289,6 +287,7 @@ LoadAllModules().then((modules) => {
           }
 
           const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
+          this.SaveGameState();
 
           setTimeout(() => this.CreateConfetti(colorConfetti), 300);
         }
