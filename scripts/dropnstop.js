@@ -240,10 +240,7 @@ LoadAllModules().then((modules) => {
         }
 
         if (!this.currentCampaign.isEndless) {
-          const isLastSet = this.currentCampaign.sets.indexOf(this.currentSet) === this.currentCampaign.sets.length - 1;
-          const isLastStage = this.currentSet.stages.indexOf(this.currentStage) === this.currentSet.stages.length - 1;
-
-          if (this.dropCount === 3 && !this.isSuccess && isLastStage) {
+          if (this.dropCount === 3 && !this.isSuccess) {
             this.currentStage.finished = true;
           }
         }
