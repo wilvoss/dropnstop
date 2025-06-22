@@ -40,12 +40,12 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.003" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.003" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.004" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.004" media="screen" />
   </head>
 
   <body>
-    <app id="app"
+    <app id="app" v-cloak
       :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
       <theater v-cloak>
         <header :class="{hide: isFirstRun}">
@@ -247,8 +247,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.003"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.003"></script>
+    <script src="/helpers/console-enhancer.js?4.0.004"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.004"></script>
   </body>
 
 </html>

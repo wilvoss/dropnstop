@@ -919,13 +919,14 @@ LoadAllModules().then((modules) => {
           try {
             const parsed = JSON.parse(saved);
             if (parsed.campaigns) {
-              // Replace campaigns with saved data
-              this.campaigns = parsed.campaigns;
+              // Merge progress fields from saved campaigns into code-defined campaigns
+              this.MergeCampaignProgress(this.campaigns, parsed.campaigns);
+
               // Optionally, re-select the first campaign as current
               this.currentCampaign = this.campaigns[0];
               this.currentSet = this.currentCampaign.sets ? this.currentCampaign.sets[0] : null;
               this.currentStage = this.currentSet && this.currentSet.stages ? this.currentSet.stages[0] : null;
-              note('Game state restored from IndexedDB');
+              note('Game state merged from IndexedDB');
             }
           } catch (e) {
             console.error('Failed to parse saved game state:', e);
@@ -933,6 +934,43 @@ LoadAllModules().then((modules) => {
         } else {
           note('No saved game state found');
         }
+      },
+      MergeCampaignProgress(codeCampaigns, savedCampaigns) {
+        codeCampaigns.forEach((codeCampaign) => {
+          const savedCampaign = savedCampaigns.find((c) => c.name === codeCampaign.name);
+          if (savedCampaign) {
+            // Merge progress fields
+            codeCampaign.locked = savedCampaign.locked;
+            codeCampaign.finished = savedCampaign.finished;
+            codeCampaign.score = savedCampaign.score;
+            codeCampaign.grade = savedCampaign.grade;
+            // Merge sets
+            if (codeCampaign.sets && savedCampaign.sets) {
+              codeCampaign.sets.forEach((codeSet, setIdx) => {
+                const savedSet = savedCampaign.sets[setIdx];
+                if (savedSet) {
+                  codeSet.locked = savedSet.locked;
+                  codeSet.finished = savedSet.finished;
+                  codeSet.score = savedSet.score;
+                  codeSet.grade = savedSet.grade;
+                  // Merge stages
+                  if (codeSet.stages && savedSet.stages) {
+                    codeSet.stages.forEach((codeStage, stageIdx) => {
+                      const savedStage = savedSet.stages[stageIdx];
+                      if (savedStage) {
+                        codeStage.finished = savedStage.finished;
+                        codeStage.success = savedStage.success;
+                        codeStage.attempts = savedStage.attempts;
+                        codeStage.score = savedStage.score;
+                        codeStage.grade = savedStage.grade;
+                      }
+                    });
+                  }
+                }
+              });
+            }
+          }
+        });
       },
     },
 

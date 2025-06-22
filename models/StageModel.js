@@ -12,6 +12,7 @@ export function StageModel(spec = {}) {
     hideTarget: spec.hideTarget ?? false,
     startVisible: spec.startVisible ?? false,
     showPuck: spec.showPuck ?? false,
+    // this data is restored from the game state database
     finished: spec.finished ?? false,
     score: spec.score ?? 0,
     attempts: spec.attempts ?? 3,

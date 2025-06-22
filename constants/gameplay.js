@@ -46,8 +46,8 @@ export async function loadGameplayModules() {
           stages: [
               new StageModel({ kx: 215, ty: 50, th: 190, showPuck: true, name: `you control the puck`, description: `the puck only falls while you press the "drop" button` }),
               new StageModel({ kx: 0, ty: 200, th: 40, showPuck: true, description: `You get 3 chances per level, each miss lowers the dropzone value` }),
-            new StageModel({ kx: 420, ty: 100, th: 120, description: `Sometimes the puck won't appear until you press "drop"` }),
-            new StageModel({ kx: 420, ty: 220, th: 170, showPuck: true, hideTarget: true, description:`Sometimes the dropzone won't appear until you press "drop"` }),
+            new StageModel({ kx: 420, ty: 100, th: 120, description: `As an added challenge, sometimes the puck won't appear unless you are pressing "drop"` }),
+            new StageModel({ kx: 420, ty: 220, th: 170, showPuck: true, hideTarget: true, description:`Likewise, sometimes the dropzone won't appear unless you are pressing "drop"` }),
             ],
         }),
       ],
