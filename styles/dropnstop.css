@@ -105,6 +105,7 @@ pretitle {
   font-family: 'Courier New', Courier, monospace;
   font-size: 0.3em;
   font-weight: normal;
+  text-transform: capitalize;
 }
 
 h1 subtitle {
@@ -172,7 +173,6 @@ overlay {
   max-width: var(--maxWidth);
   min-width: var(--minWidth);
   max-height: var(--maxHeight);
-  /* transition: 100ms ease-in-out background-color; */
 }
 
 theater {
@@ -250,7 +250,6 @@ header button {
 }
 
 header score {
-  /* display: none; */
   font-size: 1em;
 }
 
@@ -297,7 +296,7 @@ version a {
 logo {
   width: 100%;
   height: 100px;
-  mask-image: url(../images/big_tent_logo.svg);
+  mask-image: url(../*images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
   background: var(--appForeground);
   max-width: 500px;
@@ -325,13 +324,12 @@ stats {
   flex-direction: column;
   align-items: center;
   align-content: center;
-  max-width: 500px;
+  max-width: 300px;
   user-select: text;
   -webkit-user-select: text;
   padding-bottom: 30px;
   padding-top: 30px;
   cursor: pointer;
-  /* mask-image: linear-gradient(180deg, transparent 10px, red calc(30px), red calc(100% - 30px), transparent calc(100% - 10px)); */
 }
 
 stats grade {
@@ -357,7 +355,7 @@ stats h3 {
 
 stat {
   display: flex;
-  width: 260px;
+  width: 100%;
   text-transform: lowercase;
   justify-content: space-between;
   align-items: end;
@@ -380,19 +378,31 @@ stat span {
 }
 
 puck {
-  display: block;
+  display: flex;
   position: fixed;
   z-index: 100;
   height: 10px;
   border: 1px hsl(var(--hue), var(--saturation), calc(100% - var(--puckLuminosity))) solid;
   background-color: hsl(var(--hue), var(--saturation), var(--puckLuminosity));
   opacity: 0;
+  justify-content: start;
+  align-items: center;
   border-radius: 33%;
-  /* box-shadow: var(--shadow); */
 }
 
 puck.show {
   opacity: 1;
+}
+
+puck.start::after {
+  display: block;
+  position: absolute;
+  font-family: var(--funfont);
+  font-weight: 800;
+  transform: translateX(30px);
+  white-space: nowrap;
+  content: '← the puck';
+  text-shadow: var(--shadowAlt);
 }
 
 .ended puck {
@@ -602,7 +612,6 @@ setting {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-content: flex-start;
-  /* margin-bottom: 100px; */
 }
 
 section.puck setting {
@@ -625,7 +634,6 @@ difficulty puck {
   display: flex;
   position: relative;
   width: 20px;
-  /* height: 16px; */
   margin: 12px 0 12px 0;
   opacity: 1;
   flex-direction: column;
@@ -662,19 +670,10 @@ puckcolor {
   box-shadow: inset var(--shadow), var(--shadow);
 }
 
-/* puckcolor.selected:before {
-  content: '✔ ';
-  color: var(--appBackground);
-} */
-
 puckcolor.selected {
   color: white;
   background-color: var(--appForeground);
 }
-
-/* puckcolor.selected:before {
-  color: white;
-} */
 
 theme {
   display: flex;
@@ -748,9 +747,10 @@ target.hide {
 
 target value {
   display: block;
+  height: 100%;
   font-family: var(--funfont);
   font-weight: bold;
-  transform: translateY(-24px);
+  transform: translateY(calc(100% + 4px));
   transition-property: transform, opacity;
   transition: 0ms ease-out;
   text-shadow: var(--shadowAlt);
@@ -799,7 +799,6 @@ info p {
 
 info.emphasize p {
   font-family: var(--funfont);
-  /* font-size: 1.4em; */
   font-weight: bold;
 }
 
@@ -824,10 +823,10 @@ theater controls {
   gap: 0;
 }
 
-controls button {
+controls button,
+announcement button {
   z-index: 1000;
   width: 100%;
-  /* height: 60px; */
   margin: 0px;
   padding: 12px 10px;
   border: 1px solid var(--appForeground);
@@ -852,6 +851,7 @@ controls button span {
   color: var(--appBackground);
 }
 
+announcement button.secondary,
 controls button.secondary,
 controls button.tertiary {
   padding: 10px;
@@ -859,6 +859,13 @@ controls button.tertiary {
   color: var(--appForeground);
   background: var(--appBackground);
   box-shadow: inset var(--shadow), var(--shadow);
+}
+
+announcement button.secondary {
+  width: auto;
+  padding: 4px 14px;
+  font-size: 1em;
+  margin-top: 10px;
 }
 
 controls button.tertiary {
@@ -886,14 +893,6 @@ theater controls button {
   pointer-events: all;
 }
 
-theater controls button:first-child {
-  margin: 0 0 0 var(--defaultGap);
-}
-
-theater controls button:last-child {
-  margin: 0 var(--defaultGap) 0 0;
-}
-
 theater controls button.hide {
   opacity: 0;
   pointer-events: none;
@@ -915,22 +914,20 @@ overlay announcement {
   display: flex;
   width: 100%;
   padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
-  font-family: var(--funfont);
   font-weight: bold;
+  line-height: 1.3em;
   text-align: center;
-  color: hsl(var(--hue), 80%, 100%);
   flex-direction: column;
   justify-content: end;
   align-items: center;
   gap: 4px;
-  /* color: var(--highlightColor); */
+  color: var(--highlightColor);
   max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
-  /* min-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap))); */
-  /* color: var(--appBackground); */
-  box-shadow: var(--shadow);
-  background: var(--appForeground);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
   border-radius: 10px;
   text-shadow: none;
+  margin-bottom: calc(1.75 * var(--hugeGap));
 }
 
 overlay announcement {
@@ -938,19 +935,13 @@ overlay announcement {
   bottom: unset;
 }
 
-overlay instructions {
-  margin-bottom: calc(2 * var(--hugeGap));
-}
-
 overlay instructions span,
 overlay announcement span {
   font-weight: 100;
+  color: hsl(var(--hue), 80%, 100%);
 }
 
 overlay.meta {
-  justify-content: center;
-  background: var(--appBackgroundSemiTransparent);
-  margin-bottom: unset;
   pointer-events: all;
 }
 
@@ -1054,10 +1045,6 @@ canvas {
 @media only screen and (max-height: 682px) {
   section h3 {
     display: none;
-  }
-
-  divider {
-    /* display: none; */
   }
 
   theater header button,

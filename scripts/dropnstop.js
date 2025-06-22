@@ -71,7 +71,7 @@ LoadAllModules().then((modules) => {
         trailHeight: 10,
         targetX: 0,
         targetY: 0,
-        targetWidth: 100,
+        targetWidth: 500,
         targetHeight: 100,
         speed: 6,
         dropMaxCount: 3,
@@ -257,11 +257,14 @@ LoadAllModules().then((modules) => {
         currentResult.attempts = this.dropCount;
         currentResult.success = this.isSuccess;
         currentResult.value = gain;
+        currentResult.speed = this.currentDifficulty.speed;
         currentResult.py = this.puckY;
         currentResult.px = this.puckX;
         currentResult.ph = this.puckHeight;
+        currentResult.pw = this.puckWidth;
         currentResult.ty = this.targetY;
         currentResult.th = this.targetHeight;
+        currentResult.tw = this.targetWidth;
 
         this.dropTotalCount++;
 
@@ -280,7 +283,9 @@ LoadAllModules().then((modules) => {
             this.UnlockNextCampaign(this.currentCampaign);
           }
 
-          setTimeout(() => this.CreateConfetti(), 200);
+          const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
+
+          setTimeout(() => this.CreateConfetti(colorConfetti), 200);
         }
       },
       SetScale() {
@@ -356,7 +361,7 @@ LoadAllModules().then((modules) => {
         });
         return misscount;
       },
-      GetHighestPossibleScore() {
+      GetHighestPossibleScore2() {
         let highest = 0;
         this.results.forEach((result) => {
           let difficulty = this.difficulties.find((r) => {
@@ -369,6 +374,32 @@ LoadAllModules().then((modules) => {
           highest = highest + sum;
         });
         return highest;
+      },
+      GetHighestPossibleScore() {
+        let highest = 0;
+        this.results.forEach((result) => {
+          const stageSize = (500 * 500) / 2;
+          const attemptPenalty = 1; // 0 for first attempt, 1 for second, etc.
+          const targetArea = (Number(result.th) * Number(result.tw)) / 2;
+          const targetSizeBonus = (stageSize - targetArea) / 20; // Scale down the bonus
+          const yBonus = 500 - Number(result.ty);
+          const puckArea = (Number(result.pw) * Number(result.ph)) / 2;
+          const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
+          const speedBonus = result.speed;
+
+          let baseValue =
+            targetSizeBonus + // bonus for smaller target
+            speedBonus + // bonus for higher speed
+            yBonus; // penalize for lower Y position
+
+          baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
+
+          baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
+          baseValue = Math.max(10, baseValue);
+
+          highest += baseValue;
+        });
+        return Math.round(highest);
       },
       GetMissedByDirection(direction) {
         let number = 0;
@@ -769,7 +800,9 @@ LoadAllModules().then((modules) => {
         }
       },
       HandleKeyDown(event) {
-        if (!this.lock) {
+        if (this.showAnnouncement) {
+          this.HandleAnnouncementClick();
+        } else if (!this.lock) {
           switch (event.code) {
             case 'Space':
               if (!this.spaceBarCooldown && !this.isDropping && this.isReady && !this.showEndSet && !this.isStopped && !this.showHome && !this.showSettings) {
@@ -824,11 +857,38 @@ LoadAllModules().then((modules) => {
 
     computed: {
       targetValue() {
-        let countModifier = this.dropCount === 0 ? 1 : this.dropCount;
-        let baseValue = parseInt(30 + (100 - Number(this.targetHeight)) * (Number(this.dropMaxCount) - countModifier));
-        let bonus = (500 - this.targetY) / countModifier;
+        const stageSize = (500 * 500) / 2;
+        // Only decrease value after a failed attempt and reset (i.e., when dropCount > 0 and isReady)
+        // dropCount increments on each new attempt, so use dropCount as a penalty multiplier
+        const attemptPenalty = this.isReady ? this.dropCount + 1 : this.dropCount; // 0 for first attempt, 1 for second, etc.
 
-        return Math.round((parseInt(baseValue + bonus) * this.currentDifficulty.speed) / this.difficulties[0].speed);
+        // Target size bonus: smaller target = more value
+        const targetArea = (Number(this.targetHeight) * Number(this.targetWidth)) / 2;
+        const targetSizeBonus = (stageSize - targetArea) / 20; // Scale down the bonus
+
+        // Target Y bonus: higher up = more value (relative to 500px stage)
+        const yBonus = 500 - Number(this.targetY);
+
+        // Puck size penalty: smaller puck = more value
+        const puckArea = (Number(this.puckHeight) * Number(this.puckWidth)) / 2;
+        const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
+
+        // Puck speed penalty: faster = less value
+        const speedBonus = this.currentDifficulty.speed;
+
+        // Base value calculation
+        let baseValue =
+          targetSizeBonus + // bonus for smaller target
+          speedBonus + // bonus for higher speed
+          yBonus; // penalize for lower Y position
+
+        baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
+
+        baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
+        // Clamp to minimum value
+        baseValue = Math.max(10, baseValue);
+
+        return Math.round(baseValue);
       },
       hitsOnOne() {
         return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(0)) / this.results.length) + '%';
@@ -859,13 +919,17 @@ LoadAllModules().then((modules) => {
       },
       instructions() {
         if (this.currentStage && this.currentStage.description && this.dropCount === 0) {
-          return this.currentStage.description;
+          // return this.currentStage.description;
+          if (!this.currentStage.name) {
+            return `<span>${this.currentStage.description}</span>`;
+          }
+          return `${this.currentStage.name}<br /><span>${this.currentStage.description}</span>`;
         }
         return '';
       },
       announcement() {
         if (this.currentSet && this.currentSet.name && this.dropCount === 0) {
-          return this.currentCampaign.name + ' — ' + this.currentSet.name + '<br /><span>' + this.currentSet.description + '</span>';
+          return `${this.currentCampaign.name} — ${this.currentSet.name}<br /><span>${this.currentSet.description}</span>`;
         }
         return '';
       },
@@ -949,6 +1013,9 @@ LoadAllModules().then((modules) => {
       },
       nextCampaign() {
         return this.UnlockNextCampaign(this.currentCampaign);
+      },
+      fontScale() {
+        return `${1 / this.stageScale}`;
       },
     },
   });

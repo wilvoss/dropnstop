@@ -38,16 +38,16 @@ export async function loadGameplayModules() {
       locked: false,
       sets: [
         new StageSetObject({
-          name: `Let's get started!`,
-          description: `The goal is to move the puck into the dropzone`,
+          name: `The basics`,
+          description: `Your goal is to stop the puck within the dropzone`,
           difficulty: difficulties[0],
           locked: false,
           // prettier-ignore
           stages: [
-              new StageObject({ kx: 215, ty: 220, th: 80, showPuck: true, description: `Press and hold, then release "drop"` }),
-              new StageObject({ kx: 0, ty: 200, th: 40, showPuck: true, description: `You get 3 chances to hit the target` }),
-            new StageObject({ kx: 420, ty: 400, th: 20, description: `Sometimes the puck won't show until you press "drop"` }),
-            new StageObject({ kx: 420, ty: 400, th: 20, showPuck: true, hideTarget: true, description:`Sometimes the target won't show until you press "drop"` }),
+              new StageObject({ kx: 215, ty: 50, th: 190, showPuck: true, name: `you control the puck`, description: `the puck only falls while you press the "drop" button` }),
+              new StageObject({ kx: 0, ty: 200, th: 40, showPuck: true, description: `You get 3 chances per level, each miss lowers the dropzone value` }),
+            new StageObject({ kx: 420, ty: 100, th: 120, description: `Sometimes the puck won't appear until you press "drop"` }),
+            new StageObject({ kx: 420, ty: 220, th: 170, showPuck: true, hideTarget: true, description:`Sometimes the dropzone won't appear until you press "drop"` }),
             ],
         }),
       ],
@@ -70,15 +70,11 @@ export async function loadGameplayModules() {
           description: ``,
           difficulty: difficulties[0],
           locked: false,
+          // prettier-ignore
           stages: [
             new StageObject({ kx: 240, ty: 420, th: 80 }),
-            new StageObject({ kx: 80, ty: 430, th: 80 }),
             new StageObject({ kx: 400, ty: 430, th: 80 }),
-            new StageObject({ kx: 240, ty: 440, th: 60 }),
             new StageObject({ kx: 120, ty: 445, th: 60 }),
-            new StageObject({ kx: 360, ty: 445, th: 60 }),
-            new StageObject({ kx: 240, ty: 450, th: 40 }),
-            new StageObject({ kx: 60, ty: 455, th: 40 }),
             new StageObject({ kx: 420, ty: 455, th: 40 }),
             new StageObject({ kx: 300, ty: 470, th: 20 }),
           ],

@@ -1,6 +1,7 @@
 export function StageObject(spec = {}) {
   return {
     name: spec.name ?? '',
+    subtitle: spec.subtitle ?? '',
     description: spec.description ?? '',
     kx: spec.kx ?? 0,
     tx: spec.tx ?? 0,
