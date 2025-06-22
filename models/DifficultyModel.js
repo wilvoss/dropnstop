@@ -1,4 +1,4 @@
-export function DifficultyObject(spec = {}) {
+export function DifficultyModel(spec = {}) {
   return {
     name: spec.name ?? '',
     height: spec.height ?? 20,

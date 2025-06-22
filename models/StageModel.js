@@ -1,20 +1,21 @@
-export function StageObject(spec = {}) {
+export function StageModel(spec = {}) {
   return {
     name: spec.name ?? '',
     subtitle: spec.subtitle ?? '',
     description: spec.description ?? '',
+    difficulty: spec.difficulty ?? null,
     kx: spec.kx ?? 0,
     tx: spec.tx ?? 0,
     ty: spec.ty ?? 0,
     tw: spec.tw ?? 500,
     th: spec.th ?? 0,
-    startVisible: spec.startVisible ?? false,
-    grade: spec.grade ?? null,
-    difficulty: spec.difficulty ?? null,
-    score: spec.score ?? 0,
-    result: spec.result ?? null,
-    finished: spec.finished ?? false,
-    showPuck: spec.showPuck ?? false,
     hideTarget: spec.hideTarget ?? false,
+    startVisible: spec.startVisible ?? false,
+    showPuck: spec.showPuck ?? false,
+    finished: spec.finished ?? false,
+    score: spec.score ?? 0,
+    attempts: spec.attempts ?? 3,
+    success: spec.success ?? false,
+    grade: spec.grade ?? null,
   };
 }

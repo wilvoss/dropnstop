@@ -1,4 +1,4 @@
-export function ThemeObject(spec = {}) {
+export function ThemeModel(spec = {}) {
   return {
     name: spec.name ?? '',
     h: spec.h ?? 100,

@@ -1,4 +1,4 @@
-export function StageSetObject(spec = {}) {
+export function SetModel(spec = {}) {
   return {
     id: spec.id,
     name: spec.name ?? '',

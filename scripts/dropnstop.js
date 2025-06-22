@@ -47,6 +47,7 @@ LoadAllModules().then((modules) => {
     data() {
       return {
         version: version,
+        isLoading: false,
         isDropping: false,
         isStopped: true,
         isReady: false,
@@ -112,6 +113,8 @@ LoadAllModules().then((modules) => {
        */
       CompleteStageAndReadyNext() {
         note('Ready stage');
+        this.RemoveConfetti();
+
         let stageRect = this.stageElement.getBoundingClientRect();
         const endless = this.currentCampaign.isEndless;
 
@@ -130,7 +133,9 @@ LoadAllModules().then((modules) => {
         if (stageComplete) {
           // Record result for the stage
           if (this.results.length > 0) {
-            this.currentStage.result = this.results[this.results.length - 1];
+            const result = this.results[this.results.length - 1];
+            this.currentStage.success = result.success;
+            this.currentStage.attempts = result.attempts;
           }
           // If not endless, queue the next set and reset difficulty
           if (!endless) {
@@ -144,7 +149,7 @@ LoadAllModules().then((modules) => {
           this.targetY = endless ? getRandomInt(100 + this.puckHeight, stageRect.height - this.targetHeight) : this.currentStage.ty;
           this.dropCount = 0;
           this.results.push(
-            new modules.ResultObject({
+            new modules.ResultModel({
               count: this.dropTotalCount,
               difficulty: this.currentDifficulty.name,
             }),
@@ -170,11 +175,10 @@ LoadAllModules().then((modules) => {
           // Optionally: this.QueueCampaign(); or show end screen, etc.
           return;
         }
-        highlight(this.currentSet.name);
 
         this.currentSet.locked = false;
 
-        const unfinishedDropCount = this.currentSet.stages.filter((stage) => stage.result == null).length;
+        const unfinishedDropCount = this.currentSet.stages.filter((stage) => !stage.finished).length;
 
         if (unfinishedDropCount === 0) {
           this.currentSet.finished = true;
@@ -186,7 +190,7 @@ LoadAllModules().then((modules) => {
 
       QueueStage() {
         note('Queue stage');
-        this.currentStage = this.currentSet.stages.find((stage) => stage.result == null) || this.currentSet.stages[0];
+        this.currentStage = this.currentSet.stages.find((stage) => !stage.finished) || this.currentSet.stages[0];
       },
 
       /**
@@ -253,7 +257,6 @@ LoadAllModules().then((modules) => {
           currentResult.deltas.push(Number(this.puckY) + Number(this.puckHeight) + 1 - Number(this.targetY));
         }
 
-        currentResult.count = this.dropTotalCount;
         currentResult.attempts = this.dropCount;
         currentResult.success = this.isSuccess;
         currentResult.value = gain;
@@ -326,20 +329,20 @@ LoadAllModules().then((modules) => {
         this.ResetTheater();
         this.CompleteStageAndReadyNext();
       },
-      async SelectDifficulty(incoming) {
-        note('Selected difficulty: ' + incoming.name);
+      async SelectDifficulty(_incoming) {
+        note('Selected difficulty: ' + _incoming.name);
         // if (!this.isPlaying) {
         this.difficulties.forEach((difficulty) => {
           difficulty.selected = false;
         });
-        incoming.selected = true;
-        this.trailHeight = incoming.height;
-        this.trailWidth = incoming.width;
-        this.puckHeight = incoming.height;
-        this.puckWidth = incoming.width;
-        await modules.SaveData('difficulty', JSON.stringify(incoming));
-        this.speed = incoming.speed;
-        this.currentDifficulty = incoming;
+        _incoming.selected = true;
+        this.trailHeight = _incoming.height;
+        this.trailWidth = _incoming.width;
+        this.puckHeight = _incoming.height;
+        this.puckWidth = _incoming.width;
+        await modules.SaveData('difficulty', JSON.stringify(_incoming));
+        this.speed = _incoming.speed;
+        this.currentDifficulty = _incoming;
         // }
       },
       async ToggleInstructions() {
@@ -361,55 +364,70 @@ LoadAllModules().then((modules) => {
         });
         return misscount;
       },
-      GetHighestPossibleScore2() {
-        let highest = 0;
-        this.results.forEach((result) => {
-          let difficulty = this.difficulties.find((r) => {
-            return r.name === result.difficulty;
-          });
-          let baseValue = parseInt(30 + (100 - Number(result.th)) * Number(this.dropMaxCount));
-          let bonus = 481 - result.ty;
-
-          let sum = baseValue ? (parseInt(baseValue + bonus) * difficulty.speed) / this.difficulties[0].speed : 0;
-          highest = highest + sum;
-        });
-        return highest;
-      },
       GetHighestPossibleScore() {
         let highest = 0;
-        this.results.forEach((result) => {
-          const stageSize = (500 * 500) / 2;
-          const attemptPenalty = 1; // 0 for first attempt, 1 for second, etc.
-          const targetArea = (Number(result.th) * Number(result.tw)) / 2;
-          const targetSizeBonus = (stageSize - targetArea) / 20; // Scale down the bonus
-          const yBonus = 500 - Number(result.ty);
-          const puckArea = (Number(result.pw) * Number(result.ph)) / 2;
-          const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
-          const speedBonus = result.speed;
-
-          let baseValue =
-            targetSizeBonus + // bonus for smaller target
-            speedBonus + // bonus for higher speed
-            yBonus; // penalize for lower Y position
-
-          baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
-
-          baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
-          baseValue = Math.max(10, baseValue);
-
-          highest += baseValue;
+        this.currentSet.stages.forEach((stage) => {
+          highest += this.GetScoreForStage(stage, true);
         });
+        // this.results.forEach((result) => {
+        //   const stageSize = (500 * 500) / 2;
+        //   const attemptPenalty = 1; // 0 for first attempt, 1 for second, etc.
+        //   const targetArea = (Number(result.th) * Number(result.tw)) / 2;
+        //   const targetSizeBonus = (stageSize - targetArea) / 20; // Scale down the bonus
+        //   const yBonus = 500 - Number(result.ty);
+        //   const puckArea = (Number(result.pw) * Number(result.ph)) / 2;
+        //   const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
+        //   const speedBonus = result.speed;
+
+        //   let baseValue =
+        //     targetSizeBonus + // bonus for smaller target
+        //     speedBonus + // bonus for higher speed
+        //     yBonus; // penalize for lower Y position
+
+        //   baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
+
+        //   baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
+        //   baseValue = Math.max(10, baseValue);
+
+        //   highest += baseValue;
+        // });
         return Math.round(highest);
       },
-      GetMissedByDirection(direction) {
+      GetScoreForStage(_stage, _highestPossibleScore = false) {
+        // If the stage has no result, return 0
+        if (!_stage.finished) return 0;
+        const attemptPenalty = _highestPossibleScore ? 1 : _stage.attempts;
+        const stageSize = (500 * 500) / 2;
+        const targetArea = (Number(_stage.th) * Number(_stage.tw)) / 2;
+        const targetSizeBonus = (stageSize - targetArea) / 20;
+        const yBonus = 500 - Number(_stage.ty);
+        const puckArea = (Number(_stage.difficulty.height) * Number(_stage.difficulty.width)) / 2;
+        const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
+
+        const speedBonus = _stage.difficulty.speed;
+
+        // Calculate base value
+        let baseValue =
+          targetSizeBonus + // bonus for smaller target
+          speedBonus + // bonus for higher speed
+          yBonus; // penalize for lower Y position
+
+        baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
+
+        baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
+        baseValue = Math.max(10, baseValue);
+
+        return Math.round(baseValue);
+      },
+      GetMissedByDirection(_direction) {
         let number = 0;
         this.results.forEach((result) => {
           for (let x = 0; x < result.deltas.length; x++) {
             const delta = result.deltas[x];
-            if (delta > 0 && direction == 'below') {
+            if (delta > 0 && _direction == 'below') {
               number++;
             }
-            if (delta < 0 && direction == 'above') {
+            if (delta < 0 && _direction == 'above') {
               number++;
             }
           }
@@ -447,53 +465,100 @@ LoadAllModules().then((modules) => {
         this.isStopped = true;
         this.showHome = true;
       },
-      HandleActionButton(event, action) {
-        if (event) {
-          event.stopPropagation();
-          event.preventDefault();
+      HideAllModalsAndOverlays() {
+        note('Hiding all modals and overlays');
+        this.showSettings = false;
+        this.showCampaigns = false;
+        this.showHome = false;
+        this.showSets = false;
+      },
+      HandleBackButtonClick(_e) {
+        note('Back button clicked');
+        _e.stopPropagation();
+        _e.preventDefault();
+
+        if (this.showSettings) {
+          this.HideAllModalsAndOverlays();
+          this.showHome = !this.isPlaying;
+          return;
         }
-        if (this.showYesNo && action == 'quit') {
+        if (this.showCampaigns) {
+          this.HideAllModalsAndOverlays();
+          this.showHome = true;
+          return;
+        }
+        if (this.showSets) {
+          this.HideAllModalsAndOverlays();
+          if (this.currentCampaign && !this.currentCampaign.isEndless && !this.currentCampaign.isTutorial) {
+            this.showCampaigns = true;
+          } else {
+            this.showHome = true;
+          }
+          return;
+        }
+      },
+      HandleActionButton(_e, _action) {
+        if (_e) {
+          _e.stopPropagation();
+          _e.preventDefault();
+        }
+
+        if (this.showYesNo && _action === 'quit') {
           this.EndGame();
-        } else if (this.isDropping && action == 'stop') {
+          return;
+        }
+
+        if (this.isDropping && _action === 'stop') {
           this.StopPuck();
           this.showInstructions = false;
           this.isDropping = false;
           this.isStopped = true;
-        } else if (this.isStopped && action == 'next') {
-          this.CompleteStageAndReadyNext();
-          this.isStopped = false;
-          this.isReady = true;
-        } else if (this.isReady && action == 'drop') {
+          return;
+        }
+
+        if (this.isStopped && _action === 'next') {
+          if (this.showEndSet && !this.isLastSet && this.currentCampaign && !this.currentCampaign.finished) {
+            this.ResetTheater();
+            this.CompleteStageAndReadyNext();
+          } else {
+            this.CompleteStageAndReadyNext();
+            this.isStopped = false;
+            this.isReady = true;
+          }
+          return;
+        }
+
+        if (this.isReady && _action === 'drop') {
           this.isReady = false;
           this.isDropping = true;
-
           // Only increment dropCount if the stage isn't already finished
           if (this.currentStage && !this.currentStage.finished) {
             this.dropCount++;
           }
+          return;
         }
       },
-      HandlePuckColorButtonClick(event, usedark) {
-        event.stopPropagation();
-        event.preventDefault();
-        this.SetPuckColor(usedark);
+      HandlePuckColorButtonClick(_e, _usedark) {
+        _e.stopPropagation();
+        _e.preventDefault();
+        this.SetPuckColor(_usedark);
       },
-      async SetPuckColor(usedark) {
-        note('Set puck dark: ' + usedark);
-        this.useDarkPuck = usedark;
+      async SetPuckColor(_usedark) {
+        note('Set puck dark: ' + _usedark);
+        this.useDarkPuck = _usedark;
         this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
-        await modules.SaveData('useDarkPuck', usedark);
+        await modules.SaveData('useDarkPuck', _usedark);
       },
-      HandleThemeButton(event, theme) {
-        event.stopPropagation();
-        event.preventDefault();
-        this.SelectGameTheme(theme.name);
+      HandleThemeButton(_e, _theme) {
+        _e.stopPropagation();
+        _e.preventDefault();
+        this.SelectGameTheme(_theme.name);
       },
-      async SelectGameTheme(name) {
-        note('Selecting theme: ' + name);
+      async SelectGameTheme(_name) {
+        note('Selecting theme: ' + _name);
         var theme;
         this.themes.forEach((t) => {
-          t.selected = t.name == name;
+          t.selected = t.name == _name;
           if (t.selected) {
             theme = t;
           }
@@ -507,10 +572,10 @@ LoadAllModules().then((modules) => {
         document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, 61%)');
         await modules.SaveData('theme', theme.name);
       },
-      UpdateApp(now) {
-        if (!this.lastUpdate) this.lastUpdate = now;
-        const deltaSeconds = (now - this.lastUpdate) / 1000;
-        this.lastUpdate = now;
+      UpdateApp(_now) {
+        if (!this.lastUpdate) this.lastUpdate = _now;
+        const deltaSeconds = (_now - this.lastUpdate) / 1000;
+        this.lastUpdate = _now;
 
         if (this.isDropping && !this.puckHitBottom) {
           this.puckY = Number(this.puckY) + this.speed * deltaSeconds;
@@ -534,7 +599,6 @@ LoadAllModules().then((modules) => {
         this.showSettings = false;
         this.showYesNo = false;
         this.showSets = false;
-        this.RemoveConfetti();
         this.CompleteStageAndReadyNext();
       },
       StartCampaign(_campaign) {
@@ -547,7 +611,7 @@ LoadAllModules().then((modules) => {
         }
       },
       SelectSet(_set, _ignoreConfirm = false) {
-        log('Select set: ' + _set.name, true);
+        log('Select set: ' + _set.name);
         if (_set.finished && !_ignoreConfirm) {
           let confirm = window.confirm('This set is already finished. Do you want to play it again?');
           if (!confirm) {
@@ -567,7 +631,8 @@ LoadAllModules().then((modules) => {
       ClearSet(_set) {
         note('Clearing set: ' + _set.name);
         _set.stages.forEach((stage) => {
-          stage.result = null;
+          stage.success = false;
+          stage.attempts = 0;
           stage.finished = false;
           stage.score = 0;
           stage.grade = null;
@@ -590,15 +655,6 @@ LoadAllModules().then((modules) => {
           this.difficulty = this.currentCampaign.difficulty;
         }
       },
-      async GetCurrentGameState() {
-        note('Get current game state');
-        const currentGameStateData = await modules.GetData('currentGameState');
-        if (typeof currentGameStateData === 'string' && currentGameStateData.trim() !== '' && currentGameStateData !== 'undefined') {
-          return JSON.parse(currentGameStateData);
-        } else {
-          this.SelectCampaign(this.campaigns[0]);
-        }
-      },
       ApplyDifficultyInheritance() {
         note('Applying difficulty inheritance');
         this.campaigns.forEach((campaign) =>
@@ -611,38 +667,63 @@ LoadAllModules().then((modules) => {
           ),
         );
       },
-      IsSetComplete(set) {
-        const complete = set.stages.every((stage) => stage.finished);
-        note('Set ' + set.name + ' complete: ' + complete);
+      IsSetComplete(_set) {
+        const complete = _set.stages.every((stage) => stage.finished);
+        note('Set ' + _set.name + ' complete: ' + complete);
         return complete;
       },
-      IsCampaignComplete(campaign) {
-        const complete = campaign.sets.every((set) => this.IsSetComplete(set));
-        note('Campaign ' + campaign.name + ' complete: ' + complete);
+      IsCampaignComplete(_campaign) {
+        const complete = _campaign.sets.every((set) => this.IsSetComplete(set));
+        note('Campaign ' + _campaign.name + ' complete: ' + complete);
         return complete;
       },
       IsGameComplete() {
         return this.campaigns.every((campaign) => this.IsCampaignComplete(campaign));
       },
-      UnlockNextSet(currentCampaign, currentSet) {
-        const sets = currentCampaign.sets;
-        const currentIndex = sets.indexOf(currentSet);
+      UnlockNextSet(_campaign, _set) {
+        note('Unlocking next set in campaign: ' + _campaign.name + ', current set: ' + _set.name);
+        const sets = _campaign.sets;
+        const currentIndex = sets.indexOf(_set);
         if (currentIndex !== -1 && currentIndex < sets.length - 1) {
           sets[currentIndex + 1].locked = false;
           return sets[currentIndex + 1];
         }
+        this.UpdateScores();
         return null;
       },
-      UnlockNextCampaign(currentCampaign) {
+      UnlockNextCampaign(_campaign) {
+        note('Unlocking next campaign after: ' + _campaign.name);
         const campaigns = this.campaigns;
-        const currentIndex = campaigns.indexOf(currentCampaign);
+        const currentIndex = campaigns.indexOf(_campaign);
         if (currentIndex !== -1 && currentIndex < campaigns.length - 1) {
           campaigns[currentIndex + 1].locked = false;
           return campaigns[currentIndex + 1];
         }
+        this.UpdateScores();
         return null;
       },
+      UpdateScores() {
+        note('Updating scores for campaigns and sets');
+        this.campaigns.forEach((campaign) => {
+          if (campaign.sets && Array.isArray(campaign.sets)) {
+            campaign.sets.forEach((set) => {
+              if (set.stages && Array.isArray(set.stages)) {
+                set.stages.forEach((stage) => {
+                  stage.score = this.GetScoreForStage(stage);
+                });
+                set.score = set.stages.reduce((sum, stage) => sum + (stage.score || 0), 0);
+              } else {
+                set.score = 0;
+              }
+            });
+            campaign.score = campaign.sets.reduce((sum, set) => sum + (set.score || 0), 0);
+          } else {
+            campaign.score = 0;
+          }
+        });
+      },
       async GetSettings() {
+        note('Get settings from localStorage');
         const migrationKeys = ['difficulty', 'theme', 'useDarkPuck'];
 
         for (const key of migrationKeys) {
@@ -655,7 +736,7 @@ LoadAllModules().then((modules) => {
 
         const difficultyData = await modules.GetData('difficulty');
         if (typeof difficultyData === 'string' && difficultyData.trim() !== '' && difficultyData !== 'undefined') {
-          var incoming = new modules.DifficultyObject(JSON.parse(difficultyData));
+          var incoming = new modules.DifficultyModel(JSON.parse(difficultyData));
           this.difficulties.forEach((difficulty) => {
             if (difficulty.name == incoming.name) {
               this.SelectDifficulty(difficulty);
@@ -686,10 +767,9 @@ LoadAllModules().then((modules) => {
       },
       RemoveConfetti() {
         note('Remove confetti');
-        let confetti = document.getElementsByTagName('confetti')[0];
-        let allConfetti = document.getElementsByTagName('confetto');
-        for (let _x = allConfetti.length - 1; _x >= 0; _x--) {
-          confetti.removeChild(allConfetti[_x]);
+        const confetti = document.getElementsByTagName('confetti')[0];
+        if (confetti) {
+          confetti.innerHTML = '';
         }
       },
       CreateConfetti(_highlight = false) {
@@ -730,14 +810,14 @@ LoadAllModules().then((modules) => {
           url: 'https://dropnstop.games',
         });
       },
-      HandleKeyUp(event) {
+      HandleKeyUp(_e) {
         let currentThemeIndex;
         this.themes.forEach((theme, i) => {
           if (theme.selected) {
             currentThemeIndex = i;
           }
         });
-        switch (event.code) {
+        switch (_e.code) {
           case 'ArrowRight':
             currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
             if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
@@ -749,12 +829,6 @@ LoadAllModules().then((modules) => {
             if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
               this.SelectGameTheme(this.themes[currentThemeIndex].name);
             }
-            break;
-          case '1':
-          case '2':
-          case '3':
-          case '4':
-            this.SelectDifficulty(this.difficulties[event.key - 1]);
             break;
           case 'Enter':
             if (!this.lock) {
@@ -783,7 +857,7 @@ LoadAllModules().then((modules) => {
               this.spaceBarInUse = false;
 
               if (this.isDropping && !this.showEndSet && !this.showHome && !this.showSettings) {
-                this.HandleActionButton(event, 'stop');
+                this.HandleActionButton(_e, 'stop');
               } else if (
                 !this.spaceBarCooldown && // <-- ADD THIS LINE
                 (this.isReady || (this.isStopped && !this.showEndSet)) &&
@@ -791,25 +865,23 @@ LoadAllModules().then((modules) => {
                 !this.showHome &&
                 !this.showSettings
               ) {
-                this.HandleActionButton(event, 'next');
-              } else if (this.showHome && !this.showSettings) {
-                // this.RestartGame();
+                this.HandleActionButton(_e, 'next');
               }
             }
             break;
         }
       },
-      HandleKeyDown(event) {
+      HandleKeyDown(_e) {
         if (this.showAnnouncement) {
           this.HandleAnnouncementClick();
         } else if (!this.lock) {
-          switch (event.code) {
+          switch (_e.code) {
             case 'Space':
               if (!this.spaceBarCooldown && !this.isDropping && this.isReady && !this.showEndSet && !this.isStopped && !this.showHome && !this.showSettings) {
                 this.spaceBarInUse = true;
                 this.hasUsedSpaceBar = true;
                 modules.SaveData('hasUsedSpaceBar', true);
-                this.HandleActionButton(event, 'drop');
+                this.HandleActionButton(_e, 'drop');
                 // Start cooldown
                 this.spaceBarCooldown = true;
                 setTimeout(() => {
@@ -828,27 +900,65 @@ LoadAllModules().then((modules) => {
           this.RemoveConfetti();
         }, 100);
       },
+      async SaveGameState() {
+        await modules.SaveData(
+          'gameState',
+          JSON.stringify({
+            campaigns: this.campaigns,
+            // currentCampaignIndex: this.campaigns.indexOf(this.currentCampaign),
+            // currentSetIndex: this.currentCampaign ? this.currentCampaign.sets.indexOf(this.currentSet) : null,
+            // currentStageIndex: this.currentSet ? this.currentSet.stages.indexOf(this.currentStage) : null,
+            // add any other state you want to persist
+          }),
+        );
+      },
+      async GetGameState() {
+        note('Restoring game state');
+        const saved = await modules.GetData('gameState');
+        if (typeof saved === 'string' && saved.trim() !== '' && saved !== 'undefined') {
+          try {
+            const parsed = JSON.parse(saved);
+            if (parsed.campaigns) {
+              // Replace campaigns with saved data
+              this.campaigns = parsed.campaigns;
+              // Optionally, re-select the first campaign as current
+              this.currentCampaign = this.campaigns[0];
+              this.currentSet = this.currentCampaign.sets ? this.currentCampaign.sets[0] : null;
+              this.currentStage = this.currentSet && this.currentSet.stages ? this.currentSet.stages[0] : null;
+              note('Game state restored from IndexedDB');
+            }
+          } catch (e) {
+            console.error('Failed to parse saved game state:', e);
+          }
+        } else {
+          note('No saved game state found');
+        }
+      },
     },
 
     async mounted() {
+      this.isLoading = true;
       this.stageElement = document.getElementsByTagName('stage')[0];
       this.puckElement = document.getElementsByTagName('puck')[0];
 
       window.addEventListener('keyup', this.HandleKeyUp);
       window.addEventListener('keydown', this.HandleKeyDown);
       window.addEventListener('resize', this.HandleResize);
+      window.addEventListener('beforeunload', this.SaveGameState);
       this.SetScale();
       this.GetSettings();
-      await this.GetCurrentGameState();
+      await this.GetGameState();
       this.ApplyDifficultyInheritance();
       const update = (now) => {
         this.UpdateApp(now);
         this._animationFrame = requestAnimationFrame(update);
       };
       this._animationFrame = requestAnimationFrame(update);
+      this.isLoading = false;
     },
 
     beforeDestroy() {
+      this.SaveGameState();
       cancelAnimationFrame(this._animationFrame);
       window.removeEventListener('keyup', this.HandleKeyUp);
       window.removeEventListener('keydown', this.HandleKeyDown);
@@ -891,16 +1001,16 @@ LoadAllModules().then((modules) => {
         return Math.round(baseValue);
       },
       hitsOnOne() {
-        return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(0)) / this.results.length) + '%';
-      },
-      hitsOnTwo() {
         return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(1)) / this.results.length) + '%';
       },
-      hitsOnThree() {
+      hitsOnTwo() {
         return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(2)) / this.results.length) + '%';
       },
+      hitsOnThree() {
+        return this.totalZonesClearedSucccessfully === 0 ? 0 : Math.round((100 * this.GetHitsOn(3)) / this.results.length) + '%';
+      },
       totalZonesClearedSucccessfully() {
-        return this.GetHitsOn(0) + this.GetHitsOn(1) + this.GetHitsOn(2);
+        return this.GetHitsOn(1) + this.GetHitsOn(2) + this.GetHitsOn(3);
       },
       misses() {
         return this.GetMisses();
@@ -949,10 +1059,6 @@ LoadAllModules().then((modules) => {
         // Convert the DOM height to unscaled "game" units
         const unscaledStageHeight = stageRect.height / scale;
         let hitBottom = this.puckY + this.puckHeight >= unscaledStageHeight - 2;
-        if (hitBottom) {
-          log('Checking if puck hit bottom', true);
-          highlight('Puck Y: ' + this.puckY + ', Puck Height: ' + this.puckHeight + ', Stage Height (unscaled): ' + unscaledStageHeight);
-        }
         return hitBottom;
       },
       isChromeAndiOSoriPadOS() {
@@ -971,7 +1077,7 @@ LoadAllModules().then((modules) => {
         return theme;
       },
       isFirstRun() {
-        return !this.isDropping && this.dropTotalCount === 0;
+        return !this.isDropping && this.dropTotalCount === 0 && this.currentCampaign && this.currentCampaign.isTutorial;
       },
       percentScored() {
         return this.score / this.highestPossibleScore;

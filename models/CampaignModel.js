@@ -1,4 +1,4 @@
-export function StageCampaignObject(spec = {}) {
+export function CampaignModel(spec = {}) {
   return {
     id: spec.id,
     name: spec.name ?? '',

@@ -33,26 +33,19 @@ icon.lock {
   -webkit-mask-image: url(../images/icon-lock.svg);
 }
 
-spinner {
-  display: flex;
-  padding: 0;
-  justify-content: center;
-}
-
-spinner icon {
-  position: absolute;
+icon.spinner {
   opacity: 0;
   animation: spin 1s steps(10, start) infinite;
   transition-delay: 0ms;
   mask-image: url(../images/icon-spinner.svg);
-  mask-size: calc(0.75 * var(--icon-medium)) calc(0.75 * var(--icon-medium));
-  -webkit-mask-size: calc(0.75 * var(--icon-medium)) calc(0.75 * var(--icon-medium));
+  mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
   -webkit-mask-image: url(../images/icon-spinner.svg);
+  -webkit-mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
   -webkit-animation: spin 1s steps(10, start) infinite;
   transition: 250 linear opacity;
 }
 
-spinner icon.show {
+icon.spinner.show {
   opacity: 1;
   transition-delay: 0ms;
 }

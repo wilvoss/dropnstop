@@ -1,4 +1,4 @@
-export function GradeObject(spec = {}) {
+export function GradeModel(spec = {}) {
   return {
     threshold: spec.threshold ?? 0,
     grade: spec.grade ?? 'Z',

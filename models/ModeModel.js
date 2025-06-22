@@ -1,5 +1,5 @@
 // models/mode-object.js
-export default class ModeObject {
+export default class ModeModel {
   constructor({ name, campaignList, stageGenerationMethod }) {
     this.name = name;
     this.campaignList = campaignList;

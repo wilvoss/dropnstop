@@ -1,4 +1,4 @@
-export function ResultObject(spec = {}) {
+export function ResultModel(spec = {}) {
   return {
     count: spec.count ?? 0,
     difficulty: spec.difficulty ?? 'easy',

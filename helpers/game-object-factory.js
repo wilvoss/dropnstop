@@ -1,11 +1,11 @@
 // helpers/game-object-factory.js
-import StageObject from '../models/StageObject.js';
-import StageSetObject from '../models/StageSetObject.js';
-import StageCampaignObject from '../models/StageCampaignObject.js';
+import StageModel from '../models/StageModel.js';
+import SetModel from '../models/SetModel.js';
+import CampaignModel from '../models/CampaignModel.js';
 
 const GameObjectFactory = {
-  createStageObject(config = {}) {
-    return new StageObject({
+  createStageModel(config = {}) {
+    return new StageModel({
       kx: config.kx || 0,
       kw: config.kw || 0,
       kh: config.kh || 0,
@@ -17,14 +17,14 @@ const GameObjectFactory = {
   },
 
   createStageSet(name = 'Unnamed Set', stageCount = 10) {
-    return new StageSetObject({
+    return new SetModel({
       name,
-      stages: Array.from({ length: stageCount }, () => GameObjectFactory.createStageObject()),
+      stages: Array.from({ length: stageCount }, () => GameObjectFactory.createStageModel()),
     });
   },
 
   createCampaign(name = 'Unnamed Campaign', setCount = 5, stageCountPerSet = 10) {
-    return new StageCampaignObject({
+    return new CampaignModel({
       name,
       sets: Array.from({ length: setCount }, () => GameObjectFactory.createStageSet('Set', stageCountPerSet)),
     });
