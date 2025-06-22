@@ -753,14 +753,14 @@ LoadAllModules().then((modules) => {
           this.SelectGameTheme(this.themes[3].name);
         }
         const useDarkPuckData = await modules.GetData('useDarkPuck');
-        if (typeof useDarkPuckData === 'string' && useDarkPuckData.trim() !== '' && useDarkPuckData !== 'undefined') {
+        if (typeof useDarkPuckData === 'boolean') {
           this.SetPuckColor(useDarkPuckData);
         } else {
           this.SetPuckColor(false);
         }
 
         const hasUsedSpaceBarData = await modules.GetData('hasUsedSpaceBar');
-        if (typeof hasUsedSpaceBarData === 'string' && hasUsedSpaceBarData.trim() !== '' && hasUsedSpaceBarData !== 'undefined') {
+        if (typeof hasUsedSpaceBarData === 'useDarkPuck') {
           this.hasUsedSpaceBar = hasUsedSpaceBarData;
         } else {
           this.hasUsedSpaceBar = false;
@@ -985,7 +985,7 @@ LoadAllModules().then((modules) => {
           // Determine unlock status
           const isTutorial = campaign.isTutorial;
           const isEndless = campaign.isEndless;
-          const isFirstCampaign = cIdx === 0;
+          const isFirstCampaign = cIdx === 2;
 
           // Unlock tutorial, endless, and first campaign
           campaign.locked = !(isTutorial || isEndless || isFirstCampaign);
@@ -995,7 +995,7 @@ LoadAllModules().then((modules) => {
 
           campaign.sets.forEach((set, sIdx) => {
             // Unlock all sets in tutorial, all in endless, and first set in first campaign
-            const unlockSet = isTutorial || isEndless || (isFirstCampaign && sIdx === 2);
+            const unlockSet = isTutorial || isEndless || (isFirstCampaign && sIdx === 0);
 
             set.locked = !unlockSet;
             set.finished = false;
