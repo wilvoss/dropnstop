@@ -131,6 +131,8 @@ LoadAllModules().then((modules) => {
         const stageComplete = this.currentStage.finished || this.dropCount >= this.dropMaxCount;
 
         if (stageComplete) {
+          this.SaveGameState();
+          note('Stage complete, saving state');
           // Record result for the stage
           if (this.results.length > 0) {
             const result = this.results[this.results.length - 1];
@@ -241,13 +243,11 @@ LoadAllModules().then((modules) => {
           this.score = gain;
           this.isSuccess = true;
           this.currentStage.finished = true;
-          this.SaveGameState();
         }
 
         if (!this.currentCampaign.isEndless) {
           if (this.dropCount === 3 && !this.isSuccess) {
             this.currentStage.finished = true;
-            this.SaveGameState();
           }
         }
 
@@ -903,6 +903,7 @@ LoadAllModules().then((modules) => {
         }, 100);
       },
       async SaveGameState() {
+        note('Saving game state');
         await modules.SaveData(
           'gameState',
           JSON.stringify({
