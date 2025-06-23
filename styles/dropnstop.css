@@ -757,19 +757,71 @@ target value {
   text-shadow: var(--shadowAlt);
 }
 
-.ended target value {
-  opacity: 0;
-  transform: translateY(-150px) scale(1.4);
-  transition-property: transform, opacity;
-  transition: 0ms ease-in-out;
-}
-
 .ended.success target value,
 .success target value {
   opacity: 0;
   transform: translateY(-150px) scale(1.4);
   transition-property: transform, opacity;
   transition: 1000ms ease-in-out;
+}
+
+splat {
+  display: flex;
+  position: absolute;
+  z-index: 2000;
+  width: 100%;
+  height: 224px;
+  transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
+  justify-content: center;
+  align-items: center;
+  max-width: var(--maxWidth);
+  max-height: var(--maxHeight);
+  rotate: -5deg;
+  opacity: 0;
+  scale: 0.5;
+  transform-origin: bottom center;
+}
+
+splat words {
+  display: flex;
+  position: absolute;
+  width: 100px;
+  font-family: var(--funfont);
+  font-weight: bold;
+  line-height: 1em;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-shadow: var(--shadowAlt);
+}
+
+splat.show {
+  opacity: 1;
+  animation: splatmove 2000ms ease-in-out forwards;
+  -webkit-animation: splatmove 2000ms ease-in-out forwards;
+}
+
+@keyframes splatmove {
+  0% {
+    opacity: 0;
+    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
+    rotate: -5deg;
+    scale: 0.5;
+  }
+
+  25%,
+  50% {
+    opacity: 1;
+    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
+    rotate: -5deg;
+    scale: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 624px + 100px));
+    rotate: -10deg;
+  }
 }
 
 info {
@@ -919,11 +971,11 @@ overlay announcement {
   font-weight: bold;
   line-height: 1.3em;
   text-align: center;
+  color: var(--highlightColor);
   flex-direction: column;
   justify-content: end;
   align-items: center;
   gap: 4px;
-  color: var(--highlightColor);
   max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));

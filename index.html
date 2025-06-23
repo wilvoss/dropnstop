@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.010" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.010" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.011" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.011" media="screen" />
   </head>
 
   <body>
@@ -74,6 +74,10 @@
               </span>
             </value>
           </target>
+          <splat :class="{show: showSplat}">
+            <words>hidden puck</words>
+            <icon class="splat gigantic"></icon>
+          </splat>
           <info>
             <stats v-if="results.length > 0 && showEndSet" :style="{maxWidth: (fontScale * 300) + 'px'}"
               @click="CreateConfetti(finalGrade.threshold > goodGradeThreshold)">
@@ -248,8 +252,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.010"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.010"></script>
+    <script src="/helpers/console-enhancer.js?4.0.011"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.011"></script>
   </body>
 
 </html>

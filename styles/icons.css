@@ -28,9 +28,18 @@ icon.large {
   --icon-size: 48px;
 }
 
+icon.gigantic {
+  --icon-size: 224px;
+}
+
 icon.lock {
   mask-image: url(../images/icon-lock.svg);
   -webkit-mask-image: url(../images/icon-lock.svg);
+}
+
+icon.splat {
+  mask-image: url(../images/graphic-splat.svg);
+  -webkit-mask-image: url(../images/graphic-splat.svg);
 }
 
 icon.spinner {

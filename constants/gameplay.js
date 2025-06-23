@@ -38,6 +38,7 @@ export async function loadGameplayModules() {
       locked: false,
       sets: [
         new SetModel({
+          id: 0,
           name: `The basics`,
           description: `Your goal is to stop the puck within the dropzone`,
           difficulty: difficulties[0],
@@ -53,12 +54,14 @@ export async function loadGameplayModules() {
       ],
     }),
     new CampaignModel({
+      id: 1,
       name: 'Zen Mode',
       subtitle: `Master your stops with endless drops`,
       isEndless: true,
       locked: false,
     }),
     new CampaignModel({
+      id: 2,
       name: `Campaign 1`,
       subtitle: `Things are pretty easy here`,
       selected: true,
@@ -70,13 +73,14 @@ export async function loadGameplayModules() {
           description: ``,
           difficulty: difficulties[0],
           locked: false,
+          showPuck: true,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 240, ty: 420, th: 80 }),
             new StageModel({ kx: 400, ty: 430, th: 80 }),
             new StageModel({ kx: 120, ty: 445, th: 60 }),
             new StageModel({ kx: 420, ty: 455, th: 40 }),
-            new StageModel({ kx: 300, ty: 470, th: 20 }),
+            new StageModel({ kx: 300, ty: 470, th: 20, showPuck: false }),
           ],
         }),
         new SetModel({
@@ -88,6 +92,7 @@ export async function loadGameplayModules() {
       ],
     }),
     new CampaignModel({
+      id: 3,
       name: `Campaign 2`,
       subtitle: `Don't get too comfortable`,
       selected: true,

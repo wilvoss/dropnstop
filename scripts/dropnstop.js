@@ -82,6 +82,7 @@ LoadAllModules().then((modules) => {
         score: 0,
         lock: false,
         showInstructions: true,
+        showSplat: false,
         showHome: true,
         showEndSet: true,
         spaceBarCooldown: false,
@@ -666,6 +667,12 @@ LoadAllModules().then((modules) => {
               if (!stage.difficulty) {
                 stage.difficulty = set.difficulty;
               }
+              if (stage.showPuck === null) {
+                stage.showPuck = set.showPuck;
+              }
+              if (stage.hideTarget === null) {
+                stage.hideTarget = set.hideTarget;
+              }
             }),
           ),
         );
@@ -983,11 +990,11 @@ LoadAllModules().then((modules) => {
         }
         note('Clearing all game data');
 
-        this.campaigns.forEach((campaign, cIdx) => {
+        this.campaigns.forEach((campaign) => {
           // Determine unlock status
           const isTutorial = campaign.isTutorial;
           const isEndless = campaign.isEndless;
-          const isFirstCampaign = cIdx === 2;
+          const isFirstCampaign = campaign.id === 2;
 
           // Unlock tutorial, endless, and first campaign
           campaign.locked = !(isTutorial || isEndless || isFirstCampaign);
@@ -997,7 +1004,7 @@ LoadAllModules().then((modules) => {
 
           campaign.sets.forEach((set, sIdx) => {
             // Unlock all sets in tutorial, all in endless, and first set in first campaign
-            const unlockSet = isTutorial || isEndless || (!isTutorial && isEndless && isFirstCampaign && sIdx === 0);
+            const unlockSet = isTutorial || isEndless || sIdx === 0;
 
             set.locked = !unlockSet;
             set.finished = false;

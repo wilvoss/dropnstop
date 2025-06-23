@@ -4,6 +4,8 @@ export function SetModel(spec = {}) {
     name: spec.name ?? '',
     subtitle: spec.subtitle ?? '',
     description: spec.description ?? '',
+    showPuck: spec.showPuck ?? false,
+    hideTarget: spec.hideTarget ?? false,
     startVisible: spec.startVisible ?? true,
     difficulty: spec.difficulty ?? null,
     stages: spec.stages ?? [],
