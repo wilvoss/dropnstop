@@ -43,11 +43,11 @@ icon.splat {
 }
 
 icon.spinner {
-  opacity: 0;
   animation: spin 1s steps(10, start) infinite;
-  transition-delay: 0ms;
   mask-image: url(../images/icon-spinner.svg);
   mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
+  opacity: 0;
+  transition-delay: 0ms;
   -webkit-mask-image: url(../images/icon-spinner.svg);
   -webkit-mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
   -webkit-animation: spin 1s steps(10, start) infinite;

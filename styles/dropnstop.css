@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Tektur';
   src: url('../fonts/Tektur.ttf');
+  font-family: 'Tektur';
 }
 
 :root {
@@ -36,18 +36,18 @@
 html,
 body {
   display: flex;
-  overflow: hidden;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   margin: 0px;
   padding: 0px;
+  overflow: hidden;
+  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
+  color: var(--appForeground);
   font-family: 'Courier New', Courier, monospace;
   text-transform: lowercase;
-  color: var(--appForeground);
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
   user-select: none;
   -webkit-user-select: none;
   text-shadow: var(--shadow);
@@ -60,15 +60,15 @@ body {
 
 app {
   display: flex;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
   align-items: start;
-  border-top: 1px solid var(--appForeground);
-  max-width: var(--maxWidth);
+  justify-content: center;
+  width: 100%;
   min-width: var(--minWidth);
+  max-width: var(--maxWidth);
+  height: 100%;
   max-height: var(--maxHeight);
+  overflow: hidden;
+  border-top: 1px solid var(--appForeground);
 }
 
 a {
@@ -79,14 +79,14 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--funfont);
-  line-height: 100%;
-  text-align: center;
-  text-transform: lowercase;
   margin-top: var(--defaultGap);
   margin-bottom: var(--defaultGap);
   padding-top: 0px;
+  line-height: 100%;
+  font-family: var(--funfont);
+  text-align: center;
   text-shadow: var(--shadowAlt);
+  text-transform: lowercase;
 }
 
 h1 {
@@ -102,9 +102,9 @@ subtitle {
 
 pretitle {
   display: block;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 0.3em;
   font-weight: normal;
+  font-size: 0.3em;
+  font-family: 'Courier New', Courier, monospace;
   text-transform: capitalize;
 }
 
@@ -140,15 +140,15 @@ h3 pretitle {
 
 h2 {
   margin: 0;
-  font-size: 1.5em;
   padding-bottom: var(--defaultGap);
+  font-size: 1.5em;
 }
 
 h3 {
+  margin-top: 0;
   font-weight: normal;
   text-align: center;
   text-shadow: var(--shadow);
-  margin-top: 0;
   cursor: pointer;
 }
 
@@ -162,17 +162,17 @@ theater,
 modal,
 overlay {
   display: flex;
-  width: 100%;
-  height: calc(100%);
-  margin: 0px auto;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: var(--minWidth);
+  max-width: var(--maxWidth);
+  height: calc(100%);
+  max-height: var(--maxHeight);
+  margin: 0px auto;
   gap: 0px;
   background: var(--appBackground);
-  max-width: var(--maxWidth);
-  min-width: var(--minWidth);
-  max-height: var(--maxHeight);
 }
 
 theater {
@@ -198,19 +198,19 @@ theater header button.hide {
 theater header score {
   display: block;
   position: relative;
-  font-size: 1.38em;
-  font-weight: bold;
   margin-top: 0px;
+  font-weight: bold;
+  font-size: 1.38em;
   text-shadow: var(--shadowAlt);
 }
 
 theater controls {
   position: absolute;
-  height: calc(100% - var(--bigGap));
-  margin: 0;
-  align-items: flex-end;
   bottom: unset;
+  align-items: flex-end;
+  height: calc(100% - var(--bigGap));
   max-height: calc(var(--maxHeight) - var(--defaultGap) - 0.5 * env(safe-area-inset-bottom));
+  margin: 0;
   pointer-events: none;
   transition: 100ms ease-in-out opacity;
 }
@@ -225,28 +225,28 @@ theater controls {
 
 header {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 header button {
   display: flex;
+  align-items: center;
+  justify-content: start;
   width: 124px;
+  min-width: 124px;
+  max-width: 124px;
   height: 100%;
   padding: 12px 18px 14px 18px;
   border: none;
-  font-family: var(--funfont);
-  font-size: 1.35em;
-  color: var(--appForeground);
-  justify-content: start;
-  align-items: center;
-  min-width: 124px;
-  max-width: 124px;
-  background: none;
   outline: none;
-  cursor: pointer;
+  background: none;
+  color: var(--appForeground);
+  font-size: 1.35em;
+  font-family: var(--funfont);
   text-shadow: var(--shadow);
+  cursor: pointer;
 }
 
 header score {
@@ -267,14 +267,14 @@ stage {
   display: block;
   width: var(--stageWidth);
   height: var(--stageHeight);
-  border: 0px solid var(--appForeground);
-  transform-origin: top;
+  min-height: var(--stageHeight);
   /* border-bottom: 1px solid var(--appForeground); */
   /* border-width: 1px 0px; */
   max-height: var(--stageHeight);
-  min-height: var(--stageHeight);
-  background: var(--appBackground);
   margin-bottom: env(safe-area-inset-bottom);
+  transform-origin: top;
+  border: 0px solid var(--appForeground);
+  background: var(--appBackground);
 }
 
 .lock stage {
@@ -283,9 +283,9 @@ stage {
 
 version {
   display: block;
+  margin-bottom: var(--defaultGap);
   font-size: 0.7em;
   opacity: 0.8;
-  margin-bottom: var(--defaultGap);
 }
 
 version a {
@@ -298,11 +298,11 @@ logo {
   height: 100px;
   mask-image: url(../*images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
-  background: var(--appForeground);
   max-width: 500px;
-  mask-size: 290px;
-  mask-repeat: no-repeat;
+  background: var(--appForeground);
   mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: 290px;
   -webkit-mask-size: 120px;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -311,38 +311,38 @@ logo {
 score {
   display: block;
   width: 100%;
-  font-family: var(--funfont);
   font-size: 1.35em;
   line-height: 100%;
+  font-family: var(--funfont);
   text-align: center;
   pointer-events: none;
 }
 
 stats {
   display: flex;
-  width: 100%;
   flex-direction: column;
-  align-items: center;
   align-content: center;
+  align-items: center;
+  width: 100%;
   max-width: 300px;
   user-select: text;
   -webkit-user-select: text;
-  padding-bottom: 30px;
   padding-top: 30px;
+  padding-bottom: 30px;
   cursor: pointer;
 }
 
 stats grade {
   display: flex;
-  font-family: var(--funfont);
-  font-size: 3em;
-  font-weight: bold;
-  text-align: center;
-  color: hsl(var(--hue), var(--saturation), 100%);
   flex-direction: row;
   align-items: center;
   margin-bottom: var(--bigGap);
   gap: var(--defaultGap);
+  color: hsl(var(--hue), var(--saturation), 100%);
+  font-weight: bold;
+  font-size: 3em;
+  font-family: var(--funfont);
+  text-align: center;
 }
 
 stats h1 {
@@ -355,23 +355,23 @@ stats h3 {
 
 stat {
   display: flex;
+  align-items: end;
+  justify-content: space-between;
   width: 100%;
   text-transform: lowercase;
-  justify-content: space-between;
-  align-items: end;
 }
 
 stats stat.emphasize {
-  border-bottom: 1px solid var(--appForeground);
   margin-bottom: 9px;
   padding-bottom: 7px;
+  border-bottom: 1px solid var(--appForeground);
 }
 
 stats stat.emphasize span {
-  font-family: var(--funfont);
   font-weight: bold;
-  text-transform: uppercase;
+  font-family: var(--funfont);
   text-shadow: var(--shadowAlt);
+  text-transform: uppercase;
 }
 
 stat span {
@@ -380,15 +380,15 @@ stat span {
 
 puck {
   display: flex;
-  position: fixed;
   z-index: 1;
+  position: fixed;
+  align-items: center;
+  justify-content: start;
   height: 10px;
   border: 1px hsl(var(--hue), var(--saturation), calc(100% - var(--puckLuminosity))) solid;
+  border-radius: 33%;
   background-color: hsl(var(--hue), var(--saturation), var(--puckLuminosity));
   opacity: 0;
-  justify-content: start;
-  align-items: center;
-  border-radius: 33%;
 }
 
 puck.show {
@@ -398,12 +398,12 @@ puck.show {
 puck.start::after {
   display: block;
   position: absolute;
-  font-family: var(--funfont);
-  font-weight: 800;
   transform: translateX(30px);
-  white-space: nowrap;
   content: '← the puck';
+  font-weight: 800;
+  font-family: var(--funfont);
   text-shadow: var(--shadowAlt);
+  white-space: nowrap;
 }
 
 .ended puck {
@@ -415,9 +415,9 @@ puck tail {
   position: absolute;
   width: 100%;
   height: 60px;
+  margin-top: -52px;
   transform: scaleY(0);
   transform-origin: center bottom;
-  margin-top: -52px;
   background: linear-gradient(hsla(0, 0%, var(--puckLuminosity), 0), hsla(0, 0%, var(--puckLuminosity), 0.5));
   transition: 50ms ease-in-out all;
 }
@@ -448,21 +448,21 @@ puck.disabled {
 modal,
 overlay {
   display: flex;
-  position: absolute;
   z-index: 1000;
-  padding: 0;
-  opacity: 0;
-  transform: translateY(100%);
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  align-content: start;
-  gap: var(--defaultGap);
-  pointer-events: none;
-  box-shadow: none;
+  position: absolute;
   row-gap: 0px;
-  background: var(--appBackground);
+  flex-direction: column;
+  align-content: start;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
   overflow-y: auto;
+  gap: var(--defaultGap);
+  transform: translateY(100%);
+  background: var(--appBackground);
+  box-shadow: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 modal.center {
@@ -470,8 +470,8 @@ modal.center {
 }
 
 modal.show {
-  opacity: 1;
   transform: translateY(0px);
+  opacity: 1;
   pointer-events: all;
 }
 
@@ -480,31 +480,31 @@ modal ohno {
 }
 
 overlay {
-  opacity: 1;
-  transform: none;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  transform: none;
   background: none;
+  opacity: 1;
 }
 
 section {
   display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
   width: calc(100% - var(--hugeGap));
   padding: 28px var(--bigGap) var(--bigGap);
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
 }
 
 leftright {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   width: calc(100%);
   margin: 0px;
   padding: 0px;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   gap: calc(0.5 * var(--defaultGap));
 }
 
@@ -515,31 +515,31 @@ leftright:first-of-type {
 campaigns,
 sets {
   display: flex;
-  width: 100%;
   flex-direction: column;
+  width: 100%;
   gap: 10px;
 }
 
 campaign,
 set {
   display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: start;
+  justify-content: start;
   width: calc(100% - var(--bigGap));
   padding: 14px var(--defaultGap) 10px;
-  border: 1px solid var(--appForeground);
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
-  align-content: center;
   gap: 2px;
-  cursor: pointer;
+  border: 1px solid var(--appForeground);
   box-shadow: var(--shadow), inset var(--shadow);
   text-shadow: var(--shadow);
+  cursor: pointer;
 }
 
 campaign.locked,
 set.locked {
-  opacity: 0.8;
   border-style: dashed;
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -553,22 +553,22 @@ set p {
 campaign h4,
 set h4 {
   display: flex;
-  width: 100%;
-  line-height: 1.1em;
   flex-direction: row;
-  justify-content: space-between;
   align-items: end;
+  justify-content: space-between;
+  width: 100%;
   gap: 4px;
+  line-height: 1.1em;
 }
 
 campaign h4 name,
 set h4 name {
   display: flex;
-  width: 100%;
-  font-weight: 800;
-  justify-content: space-between;
   align-self: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 2px;
+  font-weight: 800;
 }
 
 campaign h4 status,
@@ -592,72 +592,72 @@ set.finished h4 status {
 
 campaign p,
 set p {
-  font-size: 0.9em;
   font-weight: 100;
+  font-size: 0.9em;
 }
 
 divider {
   display: none;
   width: 100%;
   height: 1px;
+  min-height: 1px;
+  max-height: 1px;
   background-color: white;
   opacity: 0.3;
-  max-height: 1px;
-  min-height: 1px;
 }
 
 setting {
   display: flex;
-  width: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-between;
   align-content: flex-start;
+  justify-content: space-between;
+  width: 100%;
 }
 
 section.puck setting {
-  justify-content: center;
   column-gap: 12px;
+  justify-content: center;
 }
 
 difficulty {
   display: flex;
-  border: 1px solid var(--appForeground);
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
   flex-basis: 20%;
-  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  border: 1px solid var(--appForeground);
   box-shadow: inset var(--shadow), var(--shadow);
+  cursor: pointer;
 }
 
 difficulty puck {
   display: flex;
   position: relative;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
   width: 20px;
   margin: 12px 0 12px 0;
-  opacity: 1;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  align-content: center;
   cursor: pointer;
+  opacity: 1;
 }
 
 difficulty value {
   display: block;
   width: 100%;
   padding: 4px 0px;
+  border-top: 1px solid var(--appForeground);
+  color: var(--appForeground);
   font-family: var(--funfont);
   text-align: center;
   text-transform: lowercase;
-  color: var(--appForeground);
-  border-top: 1px solid var(--appForeground);
 }
 
 difficulty.selected value {
-  color: white;
   background-color: var(--appForeground);
+  color: white;
 }
 
 puckcolor {
@@ -665,42 +665,42 @@ puckcolor {
   width: 80px;
   padding: 10px;
   border: 1px solid var(--appForeground);
+  box-shadow: inset var(--shadow), var(--shadow);
   font-family: var(--funfont);
   text-align: center;
   cursor: pointer;
-  box-shadow: inset var(--shadow), var(--shadow);
 }
 
 puckcolor.selected {
-  color: white;
   background-color: var(--appForeground);
+  color: white;
 }
 
 theme {
   display: flex;
+  row-gap: 4px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 8%;
   padding: 6px;
   border: 1px solid var(--appForeground);
-  font-family: var(--funfont);
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 4px;
-  cursor: pointer;
   box-shadow: inset var(--shadow), var(--shadow);
+  font-family: var(--funfont);
+  cursor: pointer;
 }
 
 theme.selected {
-  color: white;
   background: var(--appForeground);
+  color: white;
 }
 
 theme color {
   display: flex;
+  justify-content: center;
   width: calc(100% - 2px);
   height: 40px;
   border: 1px solid var(--appForeground);
-  justify-content: center;
   box-shadow: var(--shadow);
 }
 
@@ -715,18 +715,18 @@ theme value {
 target {
   display: flex;
   position: fixed;
+  align-content: flex-start;
+  align-items: flex-start;
+  justify-content: center;
   width: var(--stageWidth);
+  max-width: 500px;
   border: 1px solid var(--appForeground);
-  text-align: center;
-  color: var(--appForeground);
+  border-width: 1px 0px;
   background-image: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0), hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.2) 25px);
   background-position: var(--targetX);
-  justify-content: center;
-  align-items: flex-start;
-  align-content: flex-start;
+  color: var(--appForeground);
+  text-align: center;
   transition: 150ms ease-out all;
-  max-width: 500px;
-  border-width: 1px 0px;
 }
 
 target.hide {
@@ -738,8 +738,8 @@ target.hide {
 }
 
 .ended target {
-  opacity: 0.3;
   border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.4);
+  opacity: 0.3;
 }
 
 .ended score {
@@ -749,96 +749,96 @@ target.hide {
 target value {
   display: block;
   height: 100%;
-  font-family: var(--funfont);
-  font-weight: bold;
   transform: translateY(calc(100% + 4px));
-  transition-property: transform, opacity;
-  transition: 0ms ease-out;
+  font-weight: bold;
+  font-family: var(--funfont);
   text-shadow: var(--shadowAlt);
+  transition: 0ms ease-out;
+  transition-property: transform, opacity;
 }
 
 .ended.success target value,
 .success target value {
-  opacity: 0;
   transform: translateY(-150px) scale(1.4);
-  transition-property: transform, opacity;
+  opacity: 0;
   transition: 1000ms ease-in-out;
+  transition-property: transform, opacity;
 }
 
 splat {
   display: flex;
-  position: absolute;
   z-index: 2000;
-  width: 100%;
-  height: 224px;
-  transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
-  justify-content: center;
+  position: absolute;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   max-width: var(--maxWidth);
+  height: 224px;
   max-height: var(--maxHeight);
-  rotate: -5deg;
-  opacity: 0;
-  scale: 0.5;
+  transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
   transform-origin: bottom center;
+  rotate: -5deg;
+  scale: 0.5;
+  opacity: 0;
   pointer-events: none;
 }
 
 splat words {
   display: flex;
   position: absolute;
+  align-items: center;
+  justify-content: center;
   width: 100px;
-  font-family: var(--funfont);
   font-weight: bold;
   line-height: 1em;
+  font-family: var(--funfont);
   text-align: center;
-  justify-content: center;
-  align-items: center;
   text-shadow: var(--shadowAlt);
 }
 
 splat.show {
-  opacity: 1;
   animation: splatmove 2000ms ease-in-out forwards;
+  opacity: 1;
   -webkit-animation: splatmove 2000ms ease-in-out forwards;
 }
 
 @keyframes splatmove {
   0% {
-    opacity: 0;
     transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
     rotate: -5deg;
     scale: 0.5;
+    opacity: 0;
   }
 
   25%,
   50% {
-    opacity: 1;
     transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
     rotate: -5deg;
     scale: 1;
+    opacity: 1;
   }
 
   100% {
-    opacity: 0;
     transform: translate(0px, calc((0.5 * var(--maxHeight)) - 624px + 100px));
     rotate: -10deg;
+    opacity: 0;
   }
 }
 
 info {
   display: flex;
-  position: absolute;
   z-index: 2;
+  position: absolute;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
   width: var(--maxWidth);
   height: var(--stageHeight);
-  color: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  pointer-events: none;
-  max-height: var(--stageHeight);
   min-height: var(--stageHeight);
+  max-height: var(--stageHeight);
   margin-bottom: env(safe-area-inset-bottom);
+  color: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
+  pointer-events: none;
 }
 
 .ended info {
@@ -853,18 +853,18 @@ info p {
 }
 
 info.emphasize p {
-  font-family: var(--funfont);
   font-weight: bold;
+  font-family: var(--funfont);
 }
 
 controls {
   display: flex;
-  width: calc(100% - 2 * var(--bigGap));
-  margin: var(--defaultGap) 0px;
-  justify-content: flex-end;
-  max-width: calc(var(--maxWidth) - 0px);
-  row-gap: 10px;
   column-gap: var(--defaultGap);
+  row-gap: 10px;
+  justify-content: flex-end;
+  width: calc(100% - 2 * var(--bigGap));
+  max-width: calc(var(--maxWidth) - 0px);
+  margin: var(--defaultGap) 0px;
   padding-bottom: calc(var(--defaultGap) + calc(0.5 * env(safe-area-inset-bottom)));
 }
 
@@ -873,54 +873,54 @@ controls.endgame {
 }
 
 theater controls {
-  width: 100%;
   justify-content: space-between;
+  width: 100%;
   gap: 0;
 }
 
 controls button,
 announcement button {
   z-index: 1000;
+  right: 0px;
+  justify-content: center;
   width: 100%;
   margin: 0px;
   padding: 12px 10px;
-  border: 1px solid var(--appForeground);
-  font-family: var(--funfont);
-  font-size: 1.5em;
-  font-weight: 800;
-  text-transform: lowercase;
-  color: white;
-  background-color: var(--appForeground);
   transform: translateY(2px);
-  justify-content: center;
-  cursor: pointer;
-  right: 0px;
+  border: 1px solid var(--appForeground);
+  background-color: var(--appForeground);
   box-shadow: var(--shadow);
+  color: white;
+  font-weight: 800;
+  font-size: 1.5em;
+  font-family: var(--funfont);
   text-shadow: var(--shadow);
+  text-transform: lowercase;
+  cursor: pointer;
 }
 
 controls button span {
   display: block;
-  font-size: 0.6em;
-  font-weight: normal;
   color: var(--appBackground);
+  font-weight: normal;
+  font-size: 0.6em;
 }
 
 announcement button.secondary,
 controls button.secondary,
 controls button.tertiary {
   padding: 10px;
-  font-weight: normal;
-  color: var(--appForeground);
   background: var(--appBackground);
   box-shadow: inset var(--shadow), var(--shadow);
+  color: var(--appForeground);
+  font-weight: normal;
 }
 
 announcement button.secondary {
   width: auto;
+  margin-top: 10px;
   padding: 4px 14px;
   font-size: 1em;
-  margin-top: 10px;
 }
 
 controls button.tertiary {
@@ -934,17 +934,17 @@ controls button:focus {
 
 theater controls button {
   width: 80px;
-  height: 80px;
-  margin: 0 var(--defaultGap);
-  font-size: 1.25em;
-  font-weight: normal;
-  opacity: 1;
-  max-width: 80px;
   min-width: 80px;
-  max-height: 80px;
+  max-width: 80px;
+  height: 80px;
   min-height: 80px;
+  max-height: 80px;
+  margin: 0 var(--defaultGap);
   border-radius: 50%;
   box-shadow: var(--shadow);
+  font-weight: normal;
+  font-size: 1.25em;
+  opacity: 1;
   pointer-events: all;
 }
 
@@ -954,9 +954,9 @@ theater controls button.hide {
 }
 
 theater controls button.highlight {
-  color: var(--appForeground);
-  background-color: hsl(var(--hue), var(--saturation), 100%);
   border-color: hsl(var(--hue), var(--saturation), 100%);
+  background-color: hsl(var(--hue), var(--saturation), 100%);
+  color: var(--appForeground);
 }
 
 overlay {
@@ -967,33 +967,33 @@ overlay {
 overlay instructions,
 overlay announcement {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
   width: 100%;
+  max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
+  margin-bottom: calc(1.75 * var(--hugeGap));
   padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
+  gap: 4px;
+  border-radius: 10px;
+  background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  color: var(--highlightColor);
   font-weight: bold;
   line-height: 1.3em;
   text-align: center;
-  color: var(--highlightColor);
-  flex-direction: column;
-  justify-content: end;
-  align-items: center;
-  gap: 4px;
-  max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
-  background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
-  border-radius: 10px;
   text-shadow: none;
-  margin-bottom: calc(1.75 * var(--hugeGap));
 }
 
 overlay announcement {
-  pointer-events: all;
   margin-bottom: calc(2 * var(--hugeGap));
+  pointer-events: all;
 }
 
 overlay instructions span,
 overlay announcement span {
-  font-weight: 100;
   color: hsl(var(--hue), 80%, 100%);
+  font-weight: 100;
 }
 
 overlay.meta {
@@ -1037,17 +1037,17 @@ confetti {
 confetto,
 canvas {
   display: block;
-  position: fixed;
   z-index: 3000;
+  position: fixed;
+  top: -20px;
   width: 10px;
   height: 10px;
-  opacity: 1;
   transform: translate(0px -10px) rotate(0deg);
+  background: var(--appForeground);
+  opacity: 1;
+  pointer-events: none;
   transition-property: transform, opacity;
   transition-timing-function: ease-in;
-  pointer-events: none;
-  top: -20px;
-  background: var(--appForeground);
 }
 
 @media only screen and (max-width: 500px) {
@@ -1072,8 +1072,8 @@ canvas {
   }
 
   theater instructions {
-    max-width: calc(100% - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
     min-width: calc(100% - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
+    max-width: calc(100% - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
   }
 }
 
@@ -1089,9 +1089,9 @@ canvas {
   }
 
   modal ohno {
+    display: block;
     margin: 0px var(--bigGap);
     text-align: center;
-    display: block;
   }
 
   modal ohno h3 {
@@ -1108,8 +1108,8 @@ canvas {
 
   theater header button,
   modal header button {
-    font-size: 1.1em;
     padding: 12px 14px 14px 14px;
+    font-size: 1.1em;
   }
 
   theater controls p {
