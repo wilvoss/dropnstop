@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.016" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.016" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.017" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.017" media="screen" />
   </head>
 
   <body>
@@ -147,7 +147,6 @@
 
         <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
           <button @click="ShowCampaignsModal">Play</button>
-          <!-- <button class="secondary" @click="RestartGame(campaigns[1])">Zen Mode</button> -->
           <leftright>
             <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
             <button class="tertiary" @click="showSettings = !showSettings">Settings</button>
@@ -252,8 +251,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.016"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.016"></script>
+    <script src="/helpers/console-enhancer.js?4.0.017"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.017"></script>
   </body>
 
 </html>
