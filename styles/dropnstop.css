@@ -880,7 +880,6 @@ theater controls {
 
 controls button,
 announcement button {
-  z-index: 1000;
   right: 0px;
   justify-content: center;
   width: 100%;
