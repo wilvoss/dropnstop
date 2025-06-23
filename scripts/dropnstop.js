@@ -301,6 +301,10 @@ LoadAllModules().then((modules) => {
           this.stageScale = 1;
         }
       },
+      ShowCampaignsModal() {
+        note('Showing campaigns modal');
+        this.showCampaigns = true;
+      },
       HandleAnnouncementClick() {
         note('Announcement clicked');
         this.showAnnouncement = false;
