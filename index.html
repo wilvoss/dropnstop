@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.014" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.014" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.015" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.015" media="screen" />
   </head>
 
   <body>
@@ -143,7 +143,7 @@
             drop 'n stop needs a bigger window to play
           </p>
         </ohno>
-        <icon style="position: relative" class="spinner medium" :class="{show: isLoading}"></icon>
+        <icon v-if="isLoading" style="position: relative" class="spinner medium" :class="{show: isLoading}"></icon>
 
         <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
           <button @click="showCampaigns = true">Play</button>
@@ -252,8 +252,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.014"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.014"></script>
+    <script src="/helpers/console-enhancer.js?4.0.015"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.015"></script>
   </body>
 
 </html>

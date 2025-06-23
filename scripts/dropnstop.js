@@ -451,6 +451,7 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.isStopped = false;
         this.isDropping = false;
+        this.StopAnimationLoop();
         this.isPlaying = false;
         this.showInstructions = true;
       },
@@ -514,6 +515,7 @@ LoadAllModules().then((modules) => {
           this.StopPuck();
           this.showInstructions = false;
           this.isDropping = false;
+          this.StopAnimationLoop();
           this.isStopped = true;
           return;
         }
@@ -533,6 +535,7 @@ LoadAllModules().then((modules) => {
         if (this.isReady && _action === 'drop') {
           this.isReady = false;
           this.isDropping = true;
+          this.StartAnimationLoop();
           // Only increment dropCount if the stage isn't already finished
           if (this.currentStage && !this.currentStage.finished) {
             this.dropCount++;
@@ -593,6 +596,7 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.score = 0;
         this.isDropping = false;
+        this.StopAnimationLoop();
         this.isStopped = false;
         this.isReady = true;
         this.isPlaying = true;
@@ -1026,6 +1030,24 @@ LoadAllModules().then((modules) => {
         this.showHome = true;
         await modules.RemoveData('gameState');
       },
+      StartAnimationLoop() {
+        note('Starting animation loop');
+        if (this._animationFrame) return; // Prevent multiple loops
+        const update = (now) => {
+          this.UpdateApp(now);
+          this._animationFrame = requestAnimationFrame(update);
+        };
+        this._animationFrame = requestAnimationFrame(update);
+      },
+
+      StopAnimationLoop() {
+        note('Stopping animation loop');
+        if (this._animationFrame) {
+          cancelAnimationFrame(this._animationFrame);
+          this._animationFrame = null;
+        }
+        this.lastUpdate = null; // Reset lastUpdate so next animation starts fresh
+      },
     },
 
     async mounted() {
@@ -1041,11 +1063,7 @@ LoadAllModules().then((modules) => {
       this.GetSettings();
       await this.GetGameState();
       this.ApplyDifficultyInheritance();
-      const update = (now) => {
-        this.UpdateApp(now);
-        this._animationFrame = requestAnimationFrame(update);
-      };
-      this._animationFrame = requestAnimationFrame(update);
+
       this.isLoading = false;
     },
 
@@ -1218,5 +1236,3 @@ LoadAllModules().then((modules) => {
     },
   });
 });
-
-const a = window.app;
