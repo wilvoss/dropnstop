@@ -147,6 +147,7 @@
 
         <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
           <button @click="ShowCampaignsModal">Play</button>
+          <button class="secondary disabled">Achievements</button>
           <leftright>
             <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
             <button class="tertiary" @click="showSettings = !showSettings">Settings</button>
@@ -167,6 +168,11 @@
         <divider></divider>
         <section class="puck">
           <h3>puck color</h3>
+          <puck :class="{start: isFirstRun}"
+            :style=" {transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
+            <tail :style="{marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
+            </tail>
+          </puck>
           <setting>
             <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
             </puckcolor>
@@ -186,8 +192,8 @@
         </section>
         <divider></divider>
         <controls v-if="!isPlaying" style="flex-direction: column;">
-          <button class="secondary" @click="location.reload()">Reload App</button>
-          <button class="secondary" @click="ClearAllData">Clear game data</button>
+          <button class="tertiary" @click="location.reload()">Reload App</button>
+          <button class="tertiary" @click="ClearAllData">Clear game data</button>
         </controls>
         <version>
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
