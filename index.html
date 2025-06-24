@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.020" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.020" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.021" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.021" media="screen" />
   </head>
 
   <body>
@@ -214,7 +214,8 @@
                   {{campaign.name}}
                   <icon class="lock tiny" v-if="campaign.locked"></icon>
                 </name>
-                <status>{{campaign.finished ? 'Done!' : ''}}</status>
+                <status>{{campaign.finished ? Intl.NumberFormat(userLocale).format(campaign.score) + ' pts' : ''}}
+                </status>
               </h4>
               <p>{{campaign.subtitle}}</p>
             </campaign>
@@ -236,7 +237,9 @@
                   {{set.name}}
                   <icon class="lock tiny" v-if="set.locked"></icon>
                 </name>
-                <status>{{set.finished ? 'Done!' : set.stages.length +' levels'}}</status>
+                <status>
+                  {{set.finished ? Intl.NumberFormat(userLocale).format(set.score) + ' pts' : set.stages.length +' levels'}}
+                </status>
               </h4>
               <p>{{set.subtitle}}</p>
             </set>
@@ -257,8 +260,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.020"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.020"></script>
+    <script src="/helpers/console-enhancer.js?4.0.021"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.021"></script>
   </body>
 
 </html>

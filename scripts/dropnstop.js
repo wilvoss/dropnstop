@@ -401,7 +401,7 @@ LoadAllModules().then((modules) => {
       },
       GetScoreForStage(_stage, _highestPossibleScore = false) {
         // If the stage has no result, return 0
-        if (!_stage.finished) return 0;
+        if (!_stage.finished || _stage.attempts === 0) return 0;
         const attemptPenalty = _highestPossibleScore ? 1 : _stage.attempts;
         const stageSize = (500 * 500) / 2;
         const targetArea = (Number(_stage.th) * Number(_stage.tw)) / 2;
@@ -422,7 +422,7 @@ LoadAllModules().then((modules) => {
 
         baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
         baseValue = Math.max(10, baseValue);
-
+        highlight('Base value for stage: ' + baseValue + ', attempts: ' + attemptPenalty);
         return Math.round(baseValue);
       },
       GetMissedByDirection(_direction) {
