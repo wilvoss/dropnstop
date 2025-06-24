@@ -37,18 +37,18 @@ html,
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin: 0px;
+  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
+  padding: 0px;
   width: 100%;
   height: 100%;
-  margin: 0px;
-  padding: 0px;
   overflow: hidden;
-  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
   color: var(--appForeground);
   font-family: 'Courier New', Courier, monospace;
-  text-transform: lowercase;
   user-select: none;
+  text-transform: lowercase;
   -webkit-user-select: none;
   text-shadow: var(--shadow);
 }
@@ -60,15 +60,15 @@ body {
 
 app {
   display: flex;
-  align-items: start;
   justify-content: center;
+  align-items: start;
+  border-top: 1px solid var(--appForeground);
   width: 100%;
   min-width: var(--minWidth);
   max-width: var(--maxWidth);
   height: 100%;
   max-height: var(--maxHeight);
   overflow: hidden;
-  border-top: 1px solid var(--appForeground);
 }
 
 a {
@@ -145,11 +145,11 @@ h2 {
 }
 
 h3 {
+  cursor: pointer;
   margin-top: 0;
   font-weight: normal;
   text-align: center;
   text-shadow: var(--shadow);
-  cursor: pointer;
 }
 
 button {
@@ -163,16 +163,16 @@ modal,
 overlay {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  gap: 0px;
+  margin: 0px auto;
+  background: var(--appBackground);
   width: 100%;
   min-width: var(--minWidth);
   max-width: var(--maxWidth);
   height: calc(100%);
   max-height: var(--maxHeight);
-  margin: 0px auto;
-  gap: 0px;
-  background: var(--appBackground);
 }
 
 theater {
@@ -208,11 +208,11 @@ theater controls {
   position: absolute;
   bottom: unset;
   align-items: flex-end;
+  transition: 100ms ease-in-out opacity;
+  margin: 0;
   height: calc(100% - var(--bigGap));
   max-height: calc(var(--maxHeight) - var(--defaultGap) - 0.5 * env(safe-area-inset-bottom));
-  margin: 0;
   pointer-events: none;
-  transition: 100ms ease-in-out opacity;
 }
 
 .keyboard.dropping theater controls {
@@ -225,28 +225,28 @@ theater controls {
 
 header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
 }
 
 header button {
   display: flex;
-  align-items: center;
   justify-content: start;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 12px 18px 14px 18px;
   width: 124px;
   min-width: 124px;
   max-width: 124px;
   height: 100%;
-  padding: 12px 18px 14px 18px;
-  border: none;
-  outline: none;
-  background: none;
   color: var(--appForeground);
   font-size: 1.35em;
   font-family: var(--funfont);
   text-shadow: var(--shadow);
-  cursor: pointer;
 }
 
 header score {
@@ -265,16 +265,16 @@ header.hide {
 
 stage {
   display: block;
+  transform-origin: top;
+  margin-bottom: env(safe-area-inset-bottom);
+  border: 0px solid var(--appForeground);
+  background: var(--appBackground);
   width: var(--stageWidth);
   height: var(--stageHeight);
   min-height: var(--stageHeight);
   /* border-bottom: 1px solid var(--appForeground); */
   /* border-width: 1px 0px; */
   max-height: var(--stageHeight);
-  margin-bottom: env(safe-area-inset-bottom);
-  transform-origin: top;
-  border: 0px solid var(--appForeground);
-  background: var(--appBackground);
 }
 
 .lock stage {
@@ -283,9 +283,9 @@ stage {
 
 version {
   display: block;
+  opacity: 0.8;
   margin-bottom: var(--defaultGap);
   font-size: 0.7em;
-  opacity: 0.8;
 }
 
 version a {
@@ -294,15 +294,15 @@ version a {
 }
 
 logo {
+  mask-image: url(../*images/big_tent_logo.svg);
   width: 100%;
   height: 100px;
-  mask-image: url(../*images/big_tent_logo.svg);
   -webkit-mask-image: url(../images/big_tent_logo.svg);
-  max-width: 500px;
-  background: var(--appForeground);
   mask-position: center;
-  mask-repeat: no-repeat;
   mask-size: 290px;
+  mask-repeat: no-repeat;
+  background: var(--appForeground);
+  max-width: 500px;
   -webkit-mask-size: 120px;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
@@ -311,11 +311,11 @@ logo {
 score {
   display: block;
   width: 100%;
+  pointer-events: none;
   font-size: 1.35em;
   line-height: 100%;
   font-family: var(--funfont);
   text-align: center;
-  pointer-events: none;
 }
 
 stats {
@@ -327,17 +327,17 @@ stats {
   max-width: 300px;
   user-select: text;
   -webkit-user-select: text;
+  cursor: pointer;
   padding-top: 30px;
   padding-bottom: 30px;
-  cursor: pointer;
 }
 
 stats grade {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: var(--bigGap);
   gap: var(--defaultGap);
+  margin-bottom: var(--bigGap);
   color: hsl(var(--hue), var(--saturation), 100%);
   font-weight: bold;
   font-size: 3em;
@@ -355,16 +355,16 @@ stats h3 {
 
 stat {
   display: flex;
-  align-items: end;
   justify-content: space-between;
+  align-items: end;
   width: 100%;
   text-transform: lowercase;
 }
 
 stats stat.emphasize {
   margin-bottom: 9px;
-  padding-bottom: 7px;
   border-bottom: 1px solid var(--appForeground);
+  padding-bottom: 7px;
 }
 
 stats stat.emphasize span {
@@ -380,15 +380,15 @@ stat span {
 
 puck {
   display: flex;
-  z-index: 1;
   position: fixed;
-  align-items: center;
   justify-content: start;
-  height: 10px;
+  align-items: center;
+  opacity: 0;
+  z-index: 1;
   border: 1px hsl(var(--hue), var(--saturation), calc(100% - var(--puckLuminosity))) solid;
   border-radius: 33%;
   background-color: hsl(var(--hue), var(--saturation), var(--puckLuminosity));
-  opacity: 0;
+  height: 10px;
 }
 
 puck.show {
@@ -413,13 +413,13 @@ puck.start::after {
 puck tail {
   display: block;
   position: absolute;
-  width: 100%;
-  height: 60px;
-  margin-top: -52px;
   transform: scaleY(0);
   transform-origin: center bottom;
-  background: linear-gradient(hsla(0, 0%, var(--puckLuminosity), 0), hsla(0, 0%, var(--puckLuminosity), 0.5));
   transition: 50ms ease-in-out all;
+  margin-top: -52px;
+  background: linear-gradient(hsla(0, 0%, var(--puckLuminosity), 0), hsla(0, 0%, var(--puckLuminosity), 0.5));
+  width: 100%;
+  height: 60px;
 }
 
 modal puck,
@@ -448,20 +448,20 @@ puck.disabled {
 modal,
 overlay {
   display: flex;
-  z-index: 1000;
   position: absolute;
   row-gap: 0px;
   flex-direction: column;
   align-content: start;
-  align-items: center;
   justify-content: space-between;
-  padding: 0;
-  overflow-y: auto;
+  align-items: center;
   gap: var(--defaultGap);
   transform: translateY(100%);
-  background: var(--appBackground);
-  box-shadow: none;
   opacity: 0;
+  z-index: 1000;
+  box-shadow: none;
+  background: var(--appBackground);
+  padding: 0;
+  overflow-y: auto;
   pointer-events: none;
 }
 
@@ -480,32 +480,32 @@ modal ohno {
 }
 
 overlay {
-  align-items: center;
   justify-content: center;
+  align-items: center;
   transform: none;
-  background: none;
   opacity: 1;
+  background: none;
 }
 
 section {
   display: flex;
   flex-direction: column;
   align-content: center;
-  align-items: center;
   justify-content: center;
-  width: calc(100% - var(--hugeGap));
+  align-items: center;
   padding: 28px var(--bigGap) var(--bigGap);
+  width: calc(100% - var(--hugeGap));
 }
 
 leftright {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: center;
-  width: calc(100%);
+  align-items: center;
+  gap: calc(0.5 * var(--defaultGap));
   margin: 0px;
   padding: 0px;
-  gap: calc(0.5 * var(--defaultGap));
+  width: calc(100%);
 }
 
 leftright:first-of-type {
@@ -516,8 +516,8 @@ campaigns,
 sets {
   display: flex;
   flex-direction: column;
-  width: 100%;
   gap: 10px;
+  width: 100%;
 }
 
 campaign,
@@ -525,21 +525,21 @@ set {
   display: flex;
   flex-direction: column;
   align-content: center;
-  align-items: start;
   justify-content: start;
-  width: calc(100% - var(--bigGap));
-  padding: 14px var(--defaultGap) 10px;
+  align-items: start;
   gap: 2px;
-  border: 1px solid var(--appForeground);
-  box-shadow: var(--shadow), inset var(--shadow);
-  text-shadow: var(--shadow);
   cursor: pointer;
+  box-shadow: var(--shadow), inset var(--shadow);
+  border: 1px solid var(--appForeground);
+  padding: 14px var(--defaultGap) 10px;
+  width: calc(100% - var(--bigGap));
+  text-shadow: var(--shadow);
 }
 
 campaign.locked,
 set.locked {
-  border-style: dashed;
   opacity: 0.8;
+  border-style: dashed;
   pointer-events: none;
 }
 
@@ -554,20 +554,20 @@ campaign h4,
 set h4 {
   display: flex;
   flex-direction: row;
-  align-items: end;
   justify-content: space-between;
-  width: 100%;
+  align-items: end;
   gap: 4px;
+  width: 100%;
   line-height: 1.1em;
 }
 
 campaign h4 name,
 set h4 name {
   display: flex;
-  align-self: center;
   justify-content: space-between;
-  width: 100%;
+  align-self: center;
   gap: 2px;
+  width: 100%;
   font-weight: 800;
 }
 
@@ -598,12 +598,12 @@ set p {
 
 divider {
   display: none;
+  opacity: 0.3;
+  background-color: white;
   width: 100%;
   height: 1px;
   min-height: 1px;
   max-height: 1px;
-  background-color: white;
-  opacity: 0.3;
 }
 
 setting {
@@ -624,11 +624,11 @@ difficulty {
   display: flex;
   flex-basis: 20%;
   flex-direction: column;
-  align-items: center;
   justify-content: flex-end;
-  border: 1px solid var(--appForeground);
-  box-shadow: inset var(--shadow), var(--shadow);
+  align-items: center;
   cursor: pointer;
+  box-shadow: inset var(--shadow), var(--shadow);
+  border: 1px solid var(--appForeground);
 }
 
 difficulty puck {
@@ -636,19 +636,19 @@ difficulty puck {
   position: relative;
   flex-direction: column;
   align-content: center;
-  align-items: center;
   justify-content: flex-end;
-  width: 20px;
-  margin: 12px 0 12px 0;
-  cursor: pointer;
+  align-items: center;
   opacity: 1;
+  cursor: pointer;
+  margin: 12px 0 12px 0;
+  width: 20px;
 }
 
 difficulty value {
   display: block;
-  width: 100%;
-  padding: 4px 0px;
   border-top: 1px solid var(--appForeground);
+  padding: 4px 0px;
+  width: 100%;
   color: var(--appForeground);
   font-family: var(--funfont);
   text-align: center;
@@ -662,13 +662,13 @@ difficulty.selected value {
 
 puckcolor {
   display: block;
-  width: 80px;
-  padding: 10px;
-  border: 1px solid var(--appForeground);
+  cursor: pointer;
   box-shadow: inset var(--shadow), var(--shadow);
+  border: 1px solid var(--appForeground);
+  padding: 10px;
+  width: 80px;
   font-family: var(--funfont);
   text-align: center;
-  cursor: pointer;
 }
 
 puckcolor.selected {
@@ -680,14 +680,14 @@ theme {
   display: flex;
   row-gap: 4px;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  width: 8%;
-  padding: 6px;
-  border: 1px solid var(--appForeground);
-  box-shadow: inset var(--shadow), var(--shadow);
-  font-family: var(--funfont);
+  align-items: center;
   cursor: pointer;
+  box-shadow: inset var(--shadow), var(--shadow);
+  border: 1px solid var(--appForeground);
+  padding: 6px;
+  width: 8%;
+  font-family: var(--funfont);
 }
 
 theme.selected {
@@ -698,10 +698,10 @@ theme.selected {
 theme color {
   display: flex;
   justify-content: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--appForeground);
   width: calc(100% - 2px);
   height: 40px;
-  border: 1px solid var(--appForeground);
-  box-shadow: var(--shadow);
 }
 
 theme.selected color {
@@ -716,17 +716,17 @@ target {
   display: flex;
   position: fixed;
   align-content: flex-start;
-  align-items: flex-start;
   justify-content: center;
-  width: var(--stageWidth);
-  max-width: 500px;
+  align-items: flex-start;
+  transition: 150ms ease-out all;
   border: 1px solid var(--appForeground);
   border-width: 1px 0px;
   background-image: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0), hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.2) 25px);
   background-position: var(--targetX);
+  width: var(--stageWidth);
+  max-width: 500px;
   color: var(--appForeground);
   text-align: center;
-  transition: 150ms ease-out all;
 }
 
 target.hide {
@@ -738,8 +738,8 @@ target.hide {
 }
 
 .ended target {
-  border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.4);
   opacity: 0.3;
+  border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.4);
 }
 
 .ended score {
@@ -748,13 +748,13 @@ target.hide {
 
 target value {
   display: block;
-  height: 100%;
   transform: translateY(calc(100% + 4px));
+  transition: 0ms ease-out;
+  transition-property: transform, opacity;
+  height: 100%;
   font-weight: bold;
   font-family: var(--funfont);
   text-shadow: var(--shadowAlt);
-  transition: 0ms ease-out;
-  transition-property: transform, opacity;
 }
 
 .ended.success target value,
@@ -767,27 +767,27 @@ target value {
 
 splat {
   display: flex;
-  z-index: 2000;
   position: absolute;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: var(--maxWidth);
-  height: 224px;
-  max-height: var(--maxHeight);
+  align-items: center;
   transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
   transform-origin: bottom center;
   rotate: -5deg;
   scale: 0.5;
   opacity: 0;
+  z-index: 2000;
+  width: 100%;
+  max-width: var(--maxWidth);
+  height: 224px;
+  max-height: var(--maxHeight);
   pointer-events: none;
 }
 
 splat words {
   display: flex;
   position: absolute;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 100px;
   font-weight: bold;
   line-height: 1em;
@@ -797,8 +797,8 @@ splat words {
 }
 
 splat.show {
-  animation: splatmove 2000ms ease-in-out forwards;
   opacity: 1;
+  animation: splatmove 2000ms ease-in-out forwards;
   -webkit-animation: splatmove 2000ms ease-in-out forwards;
 }
 
@@ -827,18 +827,18 @@ splat.show {
 
 info {
   display: flex;
-  z-index: 2;
   position: absolute;
   flex-direction: column;
-  align-items: center;
   justify-content: start;
+  align-items: center;
+  z-index: 2;
+  margin-bottom: env(safe-area-inset-bottom);
   width: var(--maxWidth);
   height: var(--stageHeight);
   min-height: var(--stageHeight);
   max-height: var(--stageHeight);
-  margin-bottom: env(safe-area-inset-bottom);
-  color: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
   pointer-events: none;
+  color: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
 }
 
 .ended info {
@@ -862,10 +862,10 @@ controls {
   column-gap: var(--defaultGap);
   row-gap: 10px;
   justify-content: flex-end;
-  width: calc(100% - 2 * var(--bigGap));
-  max-width: calc(var(--maxWidth) - 0px);
   margin: var(--defaultGap) 0px;
   padding-bottom: calc(var(--defaultGap) + calc(0.5 * env(safe-area-inset-bottom)));
+  width: calc(100% - 2 * var(--bigGap));
+  max-width: calc(var(--maxWidth) - 0px);
 }
 
 controls.endgame {
@@ -874,28 +874,29 @@ controls.endgame {
 
 theater controls {
   justify-content: space-between;
-  width: 100%;
   gap: 0;
+  width: 100%;
 }
 
 controls button,
 announcement button {
   right: 0px;
   justify-content: center;
-  width: 100%;
-  margin: 0px;
-  padding: 12px 10px;
   transform: translateY(2px);
+  z-index: 1000;
+  cursor: pointer;
+  margin: 0px;
+  box-shadow: var(--shadow);
   border: 1px solid var(--appForeground);
   background-color: var(--appForeground);
-  box-shadow: var(--shadow);
+  padding: 12px 10px;
+  width: 100%;
   color: white;
   font-weight: 800;
   font-size: 1.5em;
   font-family: var(--funfont);
   text-shadow: var(--shadow);
   text-transform: lowercase;
-  cursor: pointer;
 }
 
 controls button span {
@@ -908,17 +909,17 @@ controls button span {
 announcement button.secondary,
 controls button.secondary,
 controls button.tertiary {
-  padding: 10px;
-  background: var(--appBackground);
   box-shadow: inset var(--shadow), var(--shadow);
+  background: var(--appBackground);
+  padding: 10px;
   color: var(--appForeground);
   font-weight: normal;
 }
 
 announcement button.secondary {
-  width: auto;
   margin-top: 10px;
   padding: 4px 14px;
+  width: auto;
   font-size: 1em;
 }
 
@@ -932,19 +933,19 @@ controls button:focus {
 }
 
 theater controls button {
+  opacity: 1;
+  margin: 0 var(--defaultGap);
+  box-shadow: var(--shadow);
+  border-radius: 50%;
   width: 80px;
   min-width: 80px;
   max-width: 80px;
   height: 80px;
   min-height: 80px;
   max-height: 80px;
-  margin: 0 var(--defaultGap);
-  border-radius: 50%;
-  box-shadow: var(--shadow);
+  pointer-events: all;
   font-weight: normal;
   font-size: 1.25em;
-  opacity: 1;
-  pointer-events: all;
 }
 
 theater controls button.hide {
@@ -967,16 +968,16 @@ overlay instructions,
 overlay announcement {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: end;
-  width: 100%;
-  max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
-  margin-bottom: calc(1.75 * var(--hugeGap));
-  padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
+  align-items: center;
   gap: 4px;
+  margin-bottom: calc(1.75 * var(--hugeGap));
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
-  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
+  width: 100%;
+  max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
   color: var(--highlightColor);
   font-weight: bold;
   line-height: 1.3em;
@@ -1036,17 +1037,17 @@ confetti {
 confetto,
 canvas {
   display: block;
-  z-index: 3000;
   position: fixed;
   top: -20px;
-  width: 10px;
-  height: 10px;
   transform: translate(0px -10px) rotate(0deg);
-  background: var(--appForeground);
   opacity: 1;
-  pointer-events: none;
+  z-index: 3000;
   transition-property: transform, opacity;
   transition-timing-function: ease-in;
+  background: var(--appForeground);
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
 }
 
 @media only screen and (max-width: 500px) {
