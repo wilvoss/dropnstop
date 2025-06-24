@@ -289,6 +289,7 @@ LoadAllModules().then((modules) => {
 
           const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
           this.SaveGameState();
+          this.UpdateScores();
 
           setTimeout(() => this.CreateConfetti(colorConfetti), 300);
         }
@@ -1067,6 +1068,7 @@ LoadAllModules().then((modules) => {
       this.GetSettings();
       await this.GetGameState();
       this.ApplyDifficultyInheritance();
+      this.UpdateScores();
 
       this.isLoading = false;
     },
