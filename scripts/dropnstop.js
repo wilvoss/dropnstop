@@ -223,6 +223,7 @@ LoadAllModules().then((modules) => {
           this.currentCampaign = this.campaigns[0];
         }
       },
+      ReadyCampaign(_campaign) {},
       StopPuck() {
         note('Stopping puck');
         const kStyle = window.getComputedStyle(this.puckElement);
@@ -671,7 +672,7 @@ LoadAllModules().then((modules) => {
       },
       GetScoreForStage(_stage, _highestPossibleScore = false) {
         // If the stage has no result, return 0
-        if (!_stage.finished || _stage.attempts === 0) return 0;
+        if (!_stage.finished || _stage.attempts === 0 || (!_stage.success && !_highestPossibleScore)) return 0;
         const attemptPenalty = _highestPossibleScore ? 1 : _stage.attempts;
         const stageSize = (500 * 500) / 2;
         const targetArea = (Number(_stage.th) * Number(_stage.tw)) / 2;
@@ -1058,6 +1059,12 @@ LoadAllModules().then((modules) => {
       window.removeEventListener('keyup', this.HandleKeyUp);
       window.removeEventListener('keydown', this.HandleKeyDown);
       window.removeEventListener('resize', this.HandleResize);
+    },
+
+    watch: {
+      dropCount() {
+        highlight('Drop count changed: ' + this.dropCount);
+      },
     },
 
     computed: {
