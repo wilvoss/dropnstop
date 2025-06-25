@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.023" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.023" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.024" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.024" media="screen" />
   </head>
 
   <body>
@@ -82,18 +82,15 @@
             <stats v-if="results.length > 0 && showEndSet" :style="{maxWidth: (fontScale * 300) + 'px'}"
               @click="CreateConfetti(finalGrade.threshold > goodGradeThreshold)">
               <h3>{{currentSet.name}}</h3>
-              <grade>
-                complete!
-                <!-- <icon class="check"></icon> -->
-              </grade>
+              <grade>complete</grade>
               <h1>{{currentCampaign.isTutorial ? '🏆' : finalGrade.emoji}}</h1>
               <h2>{{currentCampaign.isTutorial ? 'bravo!' :finalGrade.title}}
                 <subtitle>{{currentCampaign.isTutorial ? 'You\'ve completed the tutorial' : finalGrade.description}}
                 </subtitle>
               </h2>
-              <!-- <stat>grade<span>{{finalGrade.grade}}</span></stat> -->
+              <stat>grade<span>{{finalGrade.grade}}</span></stat>
               <stat class="emphasize">points earned<span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
-              <!-- <stat>possible points <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat> -->
+              <stat>possible points <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat>
 
               <!-- <h3>hits</h3> -->
               <stat>hits on 1st try<span>{{hitsOnOne}}</span></stat>
@@ -191,6 +188,7 @@
           </setting>
         </section>
         <divider></divider>
+        <h3>advanced </h3>
         <controls v-if="!isPlaying" style="flex-direction: column;">
           <button class="tertiary" @click="location.reload()">Reload App</button>
           <button class="tertiary" @click="ClearAllData">Clear game data</button>
@@ -263,8 +261,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.023"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.023"></script>
+    <script src="/helpers/console-enhancer.js?4.0.024"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.024"></script>
   </body>
 
 </html>

@@ -223,7 +223,6 @@ LoadAllModules().then((modules) => {
           this.currentCampaign = this.campaigns[0];
         }
       },
-      ReadyCampaign(_campaign) {},
       StopPuck() {
         note('Stopping puck');
         const kStyle = window.getComputedStyle(this.puckElement);
@@ -276,7 +275,11 @@ LoadAllModules().then((modules) => {
         if (!this.currentCampaign.isEndless && this.IsSetComplete(this.currentSet)) {
           note('Set complete, Unlocking next set');
           this.lock = true;
+
           this.currentSet.finished = true;
+          this.currentStage.finished = true;
+          this.currentStage.success = currentResult.success;
+          this.currentStage.attempts = currentResult.attempts;
           this.showEndSet = true; // Only show end game if campaign is complete
 
           this.UnlockNextSet(this.currentCampaign, this.currentSet);
@@ -370,61 +373,6 @@ LoadAllModules().then((modules) => {
           misscount = misscount + result.deltas.length;
         });
         return misscount;
-      },
-      GetHighestPossibleScore() {
-        let highest = 0;
-        this.currentSet.stages.forEach((stage) => {
-          highest += this.GetScoreForStage(stage, true);
-        });
-        // this.results.forEach((result) => {
-        //   const stageSize = (500 * 500) / 2;
-        //   const attemptPenalty = 1; // 0 for first attempt, 1 for second, etc.
-        //   const targetArea = (Number(result.th) * Number(result.tw)) / 2;
-        //   const targetSizeBonus = (stageSize - targetArea) / 20; // Scale down the bonus
-        //   const yBonus = 500 - Number(result.ty);
-        //   const puckArea = (Number(result.pw) * Number(result.ph)) / 2;
-        //   const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
-        //   const speedBonus = result.speed;
-
-        //   let baseValue =
-        //     targetSizeBonus + // bonus for smaller target
-        //     speedBonus + // bonus for higher speed
-        //     yBonus; // penalize for lower Y position
-
-        //   baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
-
-        //   baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
-        //   baseValue = Math.max(10, baseValue);
-
-        //   highest += baseValue;
-        // });
-        return Math.round(highest);
-      },
-      GetScoreForStage(_stage, _highestPossibleScore = false) {
-        // If the stage has no result, return 0
-        if (!_stage.finished || _stage.attempts === 0) return 0;
-        const attemptPenalty = _highestPossibleScore ? 1 : _stage.attempts;
-        const stageSize = (500 * 500) / 2;
-        const targetArea = (Number(_stage.th) * Number(_stage.tw)) / 2;
-        const targetSizeBonus = (stageSize - targetArea) / 20;
-        const yBonus = 500 - Number(_stage.ty);
-        const puckArea = (Number(_stage.difficulty.height) * Number(_stage.difficulty.width)) / 2;
-        const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
-
-        const speedBonus = _stage.difficulty.speed;
-
-        // Calculate base value
-        let baseValue =
-          targetSizeBonus + // bonus for smaller target
-          speedBonus + // bonus for higher speed
-          yBonus; // penalize for lower Y position
-
-        baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
-
-        baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
-        baseValue = Math.max(10, baseValue);
-        highlight('Base value for stage: ' + baseValue + ', attempts: ' + attemptPenalty);
-        return Math.round(baseValue);
       },
       GetMissedByDirection(_direction) {
         let number = 0;
@@ -721,6 +669,31 @@ LoadAllModules().then((modules) => {
         this.UpdateScores();
         return null;
       },
+      GetScoreForStage(_stage, _highestPossibleScore = false) {
+        // If the stage has no result, return 0
+        if (!_stage.finished || _stage.attempts === 0) return 0;
+        const attemptPenalty = _highestPossibleScore ? 1 : _stage.attempts;
+        const stageSize = (500 * 500) / 2;
+        const targetArea = (Number(_stage.th) * Number(_stage.tw)) / 2;
+        const targetSizeBonus = (stageSize - targetArea) / 20;
+        const yBonus = 500 - Number(_stage.ty);
+        const puckArea = (Number(_stage.difficulty.height) * Number(_stage.difficulty.width)) / 2;
+        const puckSizeBonus = Math.max(1, (400 - puckArea) / 200);
+
+        const speedBonus = _stage.difficulty.speed;
+
+        // Calculate base value
+        let baseValue =
+          targetSizeBonus + // bonus for smaller target
+          speedBonus + // bonus for higher speed
+          yBonus; // penalize for lower Y position
+
+        baseValue = baseValue * puckSizeBonus; // Apply puck size bonus
+
+        baseValue = baseValue / (attemptPenalty * 10); // Divide by attempts to scale value
+        baseValue = Math.max(10, baseValue);
+        return Math.round(baseValue);
+      },
       UpdateScores() {
         note('Updating scores for campaigns and sets');
         this.campaigns.forEach((campaign) => {
@@ -740,6 +713,13 @@ LoadAllModules().then((modules) => {
             campaign.score = 0;
           }
         });
+      },
+      GetHighestPossibleScore() {
+        let highest = 0;
+        this.currentSet.stages.forEach((stage) => {
+          highest += this.GetScoreForStage(stage, true);
+        });
+        return Math.round(highest);
       },
       async GetSettings() {
         note('Get settings from localStorage');
@@ -1044,7 +1024,6 @@ LoadAllModules().then((modules) => {
         };
         this._animationFrame = requestAnimationFrame(update);
       },
-
       StopAnimationLoop() {
         note('Stopping animation loop');
         if (this._animationFrame) {
