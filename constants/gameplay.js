@@ -6,6 +6,7 @@ export async function loadGameplayModules() {
   const { SetModel } = await import(`../models/SetModel.min.js?${version}`);
   const { CampaignModel } = await import(`../models/CampaignModel.min.js?${version}`);
   const { ResultModel } = await import(`../models/ResultModel.min.js?${version}`);
+  const { YesNoModel } = await import(`../models/YesNoModel.min.js?${version}`);
 
   const grades = [
     new GradeModel({ threshold: 100, grade: `S+`, title: `Drop Deity`, description: `Perfection incarnate!`, emoji: `🏆` }),
@@ -131,5 +132,6 @@ export async function loadGameplayModules() {
     SetModel,
     CampaignModel,
     ResultModel,
+    YesNoModel,
   };
 }

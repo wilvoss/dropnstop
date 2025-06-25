@@ -96,7 +96,10 @@ h1 {
 
 subtitle {
   display: block;
+  margin-top: var(--defaultGap);
+  padding: 0 var(--defaultGap);
   font-weight: normal;
+  line-height: 1.5em;
   text-shadow: var(--shadow);
 }
 

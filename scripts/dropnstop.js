@@ -59,6 +59,7 @@ LoadAllModules().then((modules) => {
         campaigns: modules.campaigns,
         currentCampaign: null,
         currentSet: null,
+        potentialSet: null,
         currentStage: null,
         previousCampaign: null,
         previousSet: null,
@@ -81,6 +82,7 @@ LoadAllModules().then((modules) => {
         startingDropCount: UseDebug ? 5 : 20,
         score: 0,
         lock: false,
+        currentYesNo: null,
         showInstructions: true,
         showSplat: false,
         showHome: true,
@@ -314,19 +316,12 @@ LoadAllModules().then((modules) => {
         note('Announcement clicked');
         this.showAnnouncement = false;
       },
-      HandleOkayButtonClick() {
-        if (this.lock) {
-          this;
-          if (this.finalGrade.threshold > this.goodGradeThreshold) {
-            setTimeout(() => {
-              this.CreateConfetti(true);
-            }, 200);
-          }
-        } else {
-          this.EndGame();
-        }
-      },
       HandleQuitButtonClick() {
+        note('Quit button clicked');
+        this.NewYesNo('Quit?', 'quit', 'your current progress will be lost');
+      },
+      HandleOkayButtonClick() {
+        note('Okay button clicked');
         this.EndGame();
         if (!this.currentCampaign.isEndless && !this.currentCampaign.isTutorial) {
           if (this.IsCampaignComplete(this.currentCampaign)) {
@@ -454,15 +449,39 @@ LoadAllModules().then((modules) => {
           return;
         }
       },
+      NewYesNo(_title, _action, _message = null) {
+        note('Showing Yes/No dialog for action: ' + _action);
+        this.showYesNo = true;
+        this.currentYesNo = modules.YesNoModel({
+          action: _action,
+          title: _title || 'Are you sure?',
+          message: _message || 'Are you sure you want to ' + _action + '? This action cannot be undone.',
+        });
+      },
       HandleActionButton(_e, _action) {
         if (_e) {
           _e.stopPropagation();
           _e.preventDefault();
         }
 
-        if (this.showYesNo && _action === 'quit') {
-          this.EndGame();
-          return;
+        if (this.showYesNo) {
+          this.showYesNo = false;
+
+          if (_action === 'quit') {
+            this.EndGame();
+            return;
+          }
+
+          if (_action === 'clear') {
+            this.ClearAllData();
+            return;
+          }
+
+          if (_action === 'playAgain') {
+            this.SelectSet(this.potentialSet, true);
+            this.showYesNo = false;
+            return;
+          }
         }
 
         if (this.isDropping && _action === 'stop') {
@@ -571,14 +590,24 @@ LoadAllModules().then((modules) => {
           this.showSets = true;
         }
       },
+      HandleSelectSetButtonClick(_e, _set) {
+        note('Select set button clicked: ' + _set.name);
+        _e.stopPropagation();
+        _e.preventDefault();
+
+        if (_set.finished) {
+          this.NewYesNo('Replay?', 'playAgain', 'This will erase your saved score');
+          this.potentialSet = _set;
+          return;
+        }
+
+        this.SelectSet(_set);
+      },
+
       SelectSet(_set, _ignoreConfirm = false) {
         log('Select set: ' + _set.name);
-        if (_set.finished && !_ignoreConfirm) {
-          let confirm = window.confirm('This set is already finished. Do you want to play it again?');
-          if (!confirm) {
-            return;
-          }
-        }
+        this.potentialSet = null;
+
         this.showAnnouncement = true;
         this.currentCampaign.finished = false;
 
@@ -837,8 +866,6 @@ LoadAllModules().then((modules) => {
               } else if (this.showEndSet && !this.showHome && !this.showSettings) {
                 this.EndGame();
               }
-            } else {
-              this.HandleOkayButtonClick();
             }
             break;
           case 'Escape':
@@ -973,11 +1000,11 @@ LoadAllModules().then((modules) => {
           }
         });
       },
+      HandleClearDataButtonClick() {
+        note('Clear data button clicked');
+        this.NewYesNo('Clear Data?', 'clear', 'This will reset all scores and game locks');
+      },
       async ClearAllData() {
-        let confirm = window.confirm('Are you sure you want to clear all game data? This will reset all scores and campaign locks.');
-        if (!confirm) {
-          return;
-        }
         note('Clearing all game data');
 
         this.campaigns.forEach((campaign) => {
