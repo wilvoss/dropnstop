@@ -433,8 +433,8 @@ LoadAllModules().then((modules) => {
       },
       HandleBackButtonClick(_e) {
         note('Back button clicked');
-        _e.stopPropagation();
-        _e.preventDefault();
+        // _e.stopPropagation();
+        // _e.preventDefault();
 
         if (this.showSettings) {
           this.HideAllModalsAndOverlays();
@@ -474,10 +474,10 @@ LoadAllModules().then((modules) => {
         }
       },
       HandleActionButton(_e, _action) {
-        if (_e) {
-          _e.stopPropagation();
-          _e.preventDefault();
-        }
+        // if (_e) {
+        //   _e.stopPropagation();
+        //   _e.preventDefault();
+        // }
 
         if (this.showYesNo) {
           this.showYesNo = false;
@@ -531,8 +531,8 @@ LoadAllModules().then((modules) => {
         }
       },
       HandlePuckColorButtonClick(_e, _usedark) {
-        _e.stopPropagation();
-        _e.preventDefault();
+        // _e.stopPropagation();
+        // _e.preventDefault();
         this.SetPuckColor(_usedark);
       },
       async SetPuckColor(_usedark) {
@@ -542,8 +542,8 @@ LoadAllModules().then((modules) => {
         await modules.SaveData('useDarkPuck', _usedark);
       },
       HandleThemeButton(_e, _theme) {
-        _e.stopPropagation();
-        _e.preventDefault();
+        // _e.stopPropagation();
+        // _e.preventDefault();
         this.SelectGameTheme(_theme.name);
       },
       async SelectGameTheme(_name) {
@@ -606,8 +606,8 @@ LoadAllModules().then((modules) => {
       },
       HandleSelectSetButtonClick(_e, _set) {
         note('Select set button clicked: ' + _set.name);
-        _e.stopPropagation();
-        _e.preventDefault();
+        // _e.stopPropagation();
+        // _e.preventDefault();
 
         if (_set.finished) {
           this.potentialSet = _set;

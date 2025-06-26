@@ -885,10 +885,8 @@ theater controls {
 
 controls button,
 overlay button {
-  right: 0px;
   justify-content: center;
   transform: translateY(2px);
-  z-index: 1000;
   cursor: pointer;
   margin: 0px;
   box-shadow: var(--shadow);
