@@ -1057,6 +1057,7 @@ canvas {
   }
 
   info {
+    margin-top: var(--bigGap);
     max-width: var(--stageWidth);
   }
 
