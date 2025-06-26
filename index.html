@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.034" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.034" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.035" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.035" media="screen" />
   </head>
 
   <body>
@@ -146,7 +146,7 @@
         <icon v-if="isLoading" style="position: relative" class="spinner medium" :class="{show: isLoading}"></icon>
 
         <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
-          <button @click="ShowCampaignsModal">Play</button>
+          <button id="playButton" @touchstart="()=>{}" @click="ShowCampaignsModal">Play</button>
           <button class="secondary disabled">Achievements</button>
           <leftright>
             <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
@@ -265,8 +265,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.034"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.034"></script>
+    <script src="/helpers/console-enhancer.js?4.0.035"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.035"></script>
   </body>
 
 </html>
