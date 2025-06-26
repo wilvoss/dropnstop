@@ -450,7 +450,7 @@ puck.disabled {
 
 modal,
 overlay {
-  display: flex;
+  display: none;
   position: absolute;
   row-gap: 0px;
   flex-direction: column;
@@ -464,17 +464,19 @@ overlay {
   background: var(--appBackground);
   padding: 0;
   overflow-y: auto;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 modal.center {
   justify-content: center;
 }
 
-modal.show {
+modal.show,
+overlay.show {
+  display: flex;
   transform: translateY(0px);
   opacity: 1;
-  pointer-events: all;
+  /* pointer-events: all; */
 }
 
 modal ohno {
@@ -967,7 +969,7 @@ theater controls button.highlight {
 overlay {
   justify-content: center;
   background: var(--appBackgroundSemiTransparent);
-  pointer-events: all;
+  /* pointer-events: all; */
 }
 
 overlay instructions,
