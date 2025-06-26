@@ -880,7 +880,7 @@ theater controls {
 }
 
 controls button,
-announcement button {
+overlay button {
   right: 0px;
   justify-content: center;
   transform: translateY(2px);
@@ -907,7 +907,6 @@ controls button span {
   font-size: 0.6em;
 }
 
-announcement button.secondary,
 controls button.secondary,
 controls button.tertiary {
   box-shadow: inset var(--shadow), var(--shadow);
@@ -917,11 +916,14 @@ controls button.tertiary {
   font-weight: normal;
 }
 
-announcement button.secondary {
+overlay button {
   margin-top: 10px;
+  background: var(--highlightColor);
   padding: 4px 14px;
   width: auto;
-  font-size: 1em;
+  color: var(--appForeground);
+  font-weight: normal;
+  font-size: 1em
 }
 
 controls button.tertiary {
@@ -961,8 +963,9 @@ theater controls button.highlight {
 }
 
 overlay {
-  justify-content: end;
-  pointer-events: none;
+  justify-content: center;
+  background: var(--appBackgroundSemiTransparent);
+  pointer-events: all;
 }
 
 overlay instructions,
@@ -972,7 +975,6 @@ overlay announcement {
   justify-content: end;
   align-items: center;
   gap: 4px;
-  margin-bottom: calc(1.75 * var(--hugeGap));
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
@@ -986,19 +988,10 @@ overlay announcement {
   text-shadow: none;
 }
 
-overlay announcement {
-  margin-bottom: calc(2 * var(--hugeGap));
-  pointer-events: all;
-}
-
 overlay instructions span,
 overlay announcement span {
   color: hsl(var(--hue), 80%, 100%);
   font-weight: 100;
-}
-
-overlay.meta {
-  pointer-events: all;
 }
 
 .blink {
@@ -1119,6 +1112,15 @@ canvas {
 
   theater {
     gap: 0px;
+  }
+
+  overlay {
+    justify-content: end;
+  }
+
+  overlay instructions,
+  overlay announcement {
+    margin-bottom: calc(1.75 * var(--hugeGap));
   }
 
   section {

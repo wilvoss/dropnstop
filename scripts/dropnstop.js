@@ -134,6 +134,9 @@ LoadAllModules().then((modules) => {
         const stageComplete = this.currentStage.finished || this.dropCount >= this.dropMaxCount;
 
         if (stageComplete) {
+          this.showInstructions = true;
+          this.showAnnouncement = this.currentStageIndex === 0;
+
           // Record result for the stage
           if (this.results.length > 0) {
             const result = this.results[this.results.length - 1];
@@ -314,7 +317,13 @@ LoadAllModules().then((modules) => {
       },
       HandleAnnouncementClick() {
         note('Announcement clicked');
+        if (this.showAnnouncement && this.announcement !== '') {
+          this.showAnnouncement = false;
+          this.showInstructions = true;
+          return;
+        }
         this.showAnnouncement = false;
+        this.showInstructions = false;
       },
       HandleQuitButtonClick() {
         note('Quit button clicked');
@@ -350,9 +359,6 @@ LoadAllModules().then((modules) => {
         this.speed = _incoming.speed;
         this.currentDifficulty = _incoming;
         // }
-      },
-      async ToggleInstructions() {
-        await modules.SaveData('showInstructions', this.showInstructions);
       },
       GetHitsOn(value) {
         let hitcount = 0;
@@ -402,7 +408,7 @@ LoadAllModules().then((modules) => {
         this.isDropping = false;
         this.StopAnimationLoop();
         this.isPlaying = false;
-        this.showInstructions = true;
+        this.showInstructions = false;
       },
       EndGame() {
         note('Ending game');
@@ -486,7 +492,6 @@ LoadAllModules().then((modules) => {
 
         if (this.isDropping && _action === 'stop') {
           this.StopPuck();
-          this.showInstructions = false;
           this.isDropping = false;
           this.StopAnimationLoop();
           this.isStopped = true;
@@ -596,8 +601,12 @@ LoadAllModules().then((modules) => {
         _e.preventDefault();
 
         if (_set.finished) {
-          this.NewYesNo('Replay?', 'playAgain', 'This will erase your saved score');
           this.potentialSet = _set;
+          if (this.currentCampaign.isTutorial) {
+            this.NewYesNo('Replay?', 'playAgain', 'This will start the tutorial over');
+            return;
+          }
+          this.NewYesNo('Replay?', 'playAgain', `This will erase the saved score for  ${_set.name}`);
           return;
         }
 
@@ -608,7 +617,6 @@ LoadAllModules().then((modules) => {
         log('Select set: ' + _set.name);
         this.potentialSet = null;
 
-        this.showAnnouncement = true;
         this.currentCampaign.finished = false;
 
         this.currentSet = _set;
@@ -1156,19 +1164,25 @@ LoadAllModules().then((modules) => {
       userLocale() {
         return navigator.language || 'en-US';
       },
+      currentStageIndex() {
+        return this.currentSet ? this.currentSet.stages.indexOf(this.currentStage) : -1;
+      },
+      currentSetIndex() {
+        return this.currentCampaign ? this.currentCampaign.sets.indexOf(this.currentSet) : -1;
+      },
       instructions() {
-        if (this.currentStage && this.currentStage.description && this.dropCount === 0) {
+        if (this.currentStage && this.currentStage.description && this.dropCount === 0 && this.showInstructions && this.announcement === '') {
           // return this.currentStage.description;
           if (!this.currentStage.name) {
-            return `<span>${this.currentStage.description}</span>`;
+            return `<span>${this.currentStage.description}</span> <button class="tertiary">okay</button>`;
           }
-          return `${this.currentStage.name}<br /><span>${this.currentStage.description}</span>`;
+          return `${this.currentStage.name}<br /><span>${this.currentStage.description}</span> <button class="tertiary">okay</button>`;
         }
         return '';
       },
       announcement() {
-        if (this.currentSet && this.currentSet.name && this.dropCount === 0) {
-          return `${this.currentCampaign.name} — ${this.currentSet.name}<br /><span>${this.currentSet.description}</span>`;
+        if (this.currentSet && this.currentSet.name && this.dropCount === 0 && this.showAnnouncement && this.currentStageIndex === 0) {
+          return `${this.currentCampaign.name} — ${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">Next</button>`;
         }
         return '';
       },
@@ -1251,6 +1265,9 @@ LoadAllModules().then((modules) => {
       },
       fontScale() {
         return `${1 / this.stageScale}`;
+      },
+      showOverlay() {
+        return this.isPlaying && !this.showEndSet && !this.lock && !this.isDropping && (this.announcement !== '' || this.instructions !== '');
       },
     },
   });

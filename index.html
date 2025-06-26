@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.026" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.026" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.027" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.027" media="screen" />
   </head>
 
   <body>
@@ -119,11 +119,12 @@
             @pointerleave="HandleActionButton(event, 'stop')" class="action">DROP</button>
         </controls>
       </theater>
-      <overlay @click="HandleAnnouncementClick" v-if="!showEndSet && isPlaying"
-        :class="{meta: showAnnouncement, show: isPlaying && !showEndSet && !lock && !isDropping && dropCount === 0 && (announcement !== '' || instructions !== '')}">
-        <announcement v-if="showAnnouncement && announcement !== ''" v-html="announcement">
+      <overlay @click="HandleAnnouncementClick"
+        v-if="!showEndSet && isPlaying && (announcement !== '' || instructions !== '')" class="meta"
+        :class="{show: showOverlay}">
+        <announcement v-if="announcement !== ''" v-html="announcement">
         </announcement>
-        <instructions v-if="!showAnnouncement && instructions !== ''" v-html="instructions">
+        <instructions v-if="instructions !== ''" v-html="instructions">
         </instructions>
       </overlay>
       <modal :class="{show: showHome}">
@@ -262,8 +263,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.026"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.026"></script>
+    <script src="/helpers/console-enhancer.js?4.0.027"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.027"></script>
   </body>
 
 </html>
