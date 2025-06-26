@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.038" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.038" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.039" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.039" media="screen" />
   </head>
 
   <body>
@@ -106,16 +106,19 @@
         </stage>
 
         <controls>
-          <button key="buttonRetryStage" @click="HandleSelectSetButtonClick(event, currentSet)"
+          <button id="buttonRetryStage" key="buttonRetryStage" @click="HandleSelectSetButtonClick(event, currentSet)"
             v-if="currentSet && currentSet.finished">Retry</button>
-          <button key="buttonNextStage" @click="HandleActionButton(event, 'next')" class="action" v-if="!showEndSet"
+          <button id="buttonNextStage" key="buttonNextStage" @click="HandleActionButton(event, 'next')" class="action"
+            v-if="!showEndSet"
             :class="{hide:  lock || isReady || !isStopped, highlight: currentStage && currentStage.finished}">
             {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
           </button>
-          <button key="buttonQuit" @click="HandleOkayButtonClick" v-if="currentSet && currentSet.finished">Quit</button>
+          <button id="buttonQuit" key="buttonQuit" @click="HandleOkayButtonClick"
+            v-if="currentSet && currentSet.finished">Quit</button>
           <button key="buttonNextSet" @click="HandleNextButtonClick(event)" class="highlight"
             v-if="showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
-          <button key="buttonDrop" v-if="!showEndSet || isLastSet || (currentCampaign && currentCampaign.finished)"
+          <button id="buttonDrop" key="buttonDrop"
+            v-if="!showEndSet || isLastSet || (currentCampaign && currentCampaign.finished)"
             :class="{hide: showEndSet || lock || (isFirstRun && showAnnouncement), disabled: isStopped, blink: !showAnnouncement && isFirstRun}"
             @pointerdown="HandleActionButton(event, 'drop')" @pointerup="HandleDropButtonPointerUp"
             @pointerleave="HandleDropButtonPointerUp" class="action">DROP</button>
@@ -265,8 +268,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.038"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.038"></script>
+    <script src="/helpers/console-enhancer.js?4.0.039"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.039"></script>
   </body>
 
 </html>
