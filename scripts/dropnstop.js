@@ -342,6 +342,7 @@ LoadAllModules().then((modules) => {
       },
       HandleNextButtonClick() {
         this.ResetTheater();
+        this.RestartGame();
         this.CompleteStageAndReadyNext();
       },
       async SelectDifficulty(_incoming) {
