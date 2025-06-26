@@ -127,7 +127,7 @@ export async function loadGameplayModules() {
     }),
     new CampaignModel({
       id: 3,
-      name: `Precision Under Pressure`,
+      name: `Timing Trials`,
       subtitle: `Things are a little harder now`,
       selected: false,
       isTutorial: false,

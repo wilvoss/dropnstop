@@ -134,9 +134,6 @@ LoadAllModules().then((modules) => {
         const stageComplete = this.currentStage.finished || this.dropCount >= this.dropMaxCount;
 
         if (stageComplete) {
-          this.showInstructions = true;
-          this.showAnnouncement = true;
-
           // Record result for the stage
           if (this.results.length > 0) {
             const result = this.results[this.results.length - 1];
@@ -147,6 +144,8 @@ LoadAllModules().then((modules) => {
           if (!endless) {
             this.QueueSet();
             this.SelectDifficulty(this.currentStage.difficulty);
+            this.showInstructions = this.currentSetIndex !== 0;
+            this.showAnnouncement = this.currentStageIndex === 0;
           }
           // Reset for next stage
           this.puckY = -this.puckHeight - 2;
@@ -407,7 +406,6 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.isStopped = false;
         this.isDropping = false;
-        highlight('stop in reset theater');
         this.StopAnimationLoop();
 
         this.isPlaying = false;
@@ -504,7 +502,6 @@ LoadAllModules().then((modules) => {
         if (_action === 'stop') {
           this.StopPuck();
           this.isDropping = false;
-          highlight('stop in handleactionbutton');
           this.StopAnimationLoop();
           this.isStopped = true;
           return;
@@ -586,7 +583,6 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.score = 0;
         this.isDropping = false;
-        highlight('stop in restartgame');
         this.StopAnimationLoop();
         this.isStopped = false;
         this.isReady = true;
@@ -1120,7 +1116,14 @@ LoadAllModules().then((modules) => {
       window.removeEventListener('resize', this.HandleResize);
     },
 
-    watch: {},
+    watch: {
+      showAnnouncement() {
+        highlight('showAnnouncement: ' + this.showAnnouncement);
+      },
+      spaceBarInUse() {
+        highlight('spaceBarInUse: ' + this.spaceBarInUse);
+      },
+    },
 
     computed: {
       targetValue() {
@@ -1201,7 +1204,7 @@ LoadAllModules().then((modules) => {
       },
       announcement() {
         if (this.currentSet && this.currentSet.name && this.dropCount === 0 && this.showAnnouncement && this.currentStageIndex === 0) {
-          return `${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">Next</button>`;
+          return `${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">${this.currentStage.description ? 'Next' : 'Okay'}</button>`;
         }
         return '';
       },
