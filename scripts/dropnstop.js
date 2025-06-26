@@ -135,7 +135,7 @@ LoadAllModules().then((modules) => {
 
         if (stageComplete) {
           this.showInstructions = true;
-          this.showAnnouncement = this.currentStageIndex === 0;
+          this.showAnnouncement = true;
 
           // Record result for the stage
           if (this.results.length > 0) {
@@ -340,14 +340,15 @@ LoadAllModules().then((modules) => {
           }
         }
       },
-      HandleNextButtonClick() {
-        this.ResetTheater();
-        this.RestartGame();
-        this.CompleteStageAndReadyNext();
+      HandleNextButtonClick(_e) {
+        note('Next button clicked');
+        const nextSet = this.GetNextSet(this.currentCampaign, this.currentSet);
+        if (nextSet) {
+          this.HandleSelectSetButtonClick(_e, nextSet);
+        }
       },
       async SelectDifficulty(_incoming) {
         note('Selected difficulty: ' + _incoming.name);
-        // if (!this.isPlaying) {
         this.difficulties.forEach((difficulty) => {
           difficulty.selected = false;
         });
@@ -359,7 +360,6 @@ LoadAllModules().then((modules) => {
         await modules.SaveData('difficulty', JSON.stringify(_incoming));
         this.speed = _incoming.speed;
         this.currentDifficulty = _incoming;
-        // }
       },
       GetHitsOn(value) {
         let hitcount = 0;
@@ -407,7 +407,9 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.isStopped = false;
         this.isDropping = false;
+        highlight('stop in reset theater');
         this.StopAnimationLoop();
+
         this.isPlaying = false;
         this.showInstructions = false;
       },
@@ -465,6 +467,14 @@ LoadAllModules().then((modules) => {
           message: _message || 'Are you sure you want to ' + _action + '? This action cannot be undone.',
         });
       },
+      HandleDropButtonPointerUp(_e) {
+        note('Drop button pointer up');
+        if (!this.lock) {
+          if (this.isDropping && !this.showEndSet && !this.showHome && !this.showSettings) {
+            this.HandleActionButton(_e, 'stop');
+          }
+        }
+      },
       HandleActionButton(_e, _action) {
         if (_e) {
           _e.stopPropagation();
@@ -486,20 +496,21 @@ LoadAllModules().then((modules) => {
 
           if (_action === 'playAgain') {
             this.SelectSet(this.potentialSet, true);
-            this.showYesNo = false;
             return;
           }
+          return;
         }
 
-        if (this.isDropping && _action === 'stop') {
+        if (_action === 'stop') {
           this.StopPuck();
           this.isDropping = false;
+          highlight('stop in handleactionbutton');
           this.StopAnimationLoop();
           this.isStopped = true;
           return;
         }
 
-        if (this.isStopped && _action === 'next') {
+        if (_action === 'next') {
           if (this.showEndSet && !this.isLastSet && this.currentCampaign && !this.currentCampaign.finished) {
             this.ResetTheater();
             this.CompleteStageAndReadyNext();
@@ -575,6 +586,7 @@ LoadAllModules().then((modules) => {
         this.dropTotalCount = 0;
         this.score = 0;
         this.isDropping = false;
+        highlight('stop in restartgame');
         this.StopAnimationLoop();
         this.isStopped = false;
         this.isReady = true;
@@ -685,6 +697,17 @@ LoadAllModules().then((modules) => {
       },
       IsGameComplete() {
         return this.campaigns.every((campaign) => this.IsCampaignComplete(campaign));
+      },
+      GetNextSet(_campaign, _set) {
+        note('Unlocking next set in campaign: ' + _campaign.name + ', current set: ' + _set.name);
+        const sets = _campaign.sets;
+        const currentIndex = sets.indexOf(_set);
+        if (currentIndex !== -1 && currentIndex < sets.length - 1) {
+          sets[currentIndex + 1];
+          return sets[currentIndex + 1];
+        }
+        this.UpdateScores();
+        return null;
       },
       UnlockNextSet(_campaign, _set) {
         note('Unlocking next set in campaign: ' + _campaign.name + ', current set: ' + _set.name);
@@ -1097,11 +1120,7 @@ LoadAllModules().then((modules) => {
       window.removeEventListener('resize', this.HandleResize);
     },
 
-    watch: {
-      dropCount() {
-        highlight('Drop count changed: ' + this.dropCount);
-      },
-    },
+    watch: {},
 
     computed: {
       targetValue() {
@@ -1173,7 +1192,6 @@ LoadAllModules().then((modules) => {
       },
       instructions() {
         if (this.currentStage && this.currentStage.description && this.dropCount === 0 && this.showInstructions && this.announcement === '') {
-          // return this.currentStage.description;
           if (!this.currentStage.name) {
             return `<span>${this.currentStage.description}</span> <button class="tertiary">okay</button>`;
           }
@@ -1183,7 +1201,7 @@ LoadAllModules().then((modules) => {
       },
       announcement() {
         if (this.currentSet && this.currentSet.name && this.dropCount === 0 && this.showAnnouncement && this.currentStageIndex === 0) {
-          return `${this.currentCampaign.name} — ${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">Next</button>`;
+          return `${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">Next</button>`;
         }
         return '';
       },
@@ -1261,6 +1279,7 @@ LoadAllModules().then((modules) => {
       nextSet() {
         return this.UnlockNextSet(this.currentCampaign, this.currentSet);
       },
+
       nextCampaign() {
         return this.UnlockNextCampaign(this.currentCampaign);
       },

@@ -63,60 +63,175 @@ export async function loadGameplayModules() {
     }),
     new CampaignModel({
       id: 2,
-      name: `Campaign 1`,
+      name: `Precision Primer`,
       subtitle: `Things are pretty easy here`,
       selected: true,
       isTutorial: false,
       locked: false,
       sets: [
         new SetModel({
-          name: `Set 1`,
-          description: ``,
+          name: `First Drops`,
+          description: `Learn the basics with full visibility and easy timing`,
           difficulty: difficulties[0],
-          locked: false,
           showPuck: true,
-          // prettier-ignore
-          stages: [
-            new StageModel({ kx: 240, ty: 420, th: 80 }),
-            new StageModel({ kx: 400, ty: 430, th: 80 }),
-            new StageModel({ kx: 120, ty: 445, th: 60 }),
-            new StageModel({ kx: 420, ty: 455, th: 40 }),
-            new StageModel({ kx: 300, ty: 470, th: 20, showPuck: false }),
-          ],
+          hideTarget: false,
+          locked: false,
+          stages: [new StageModel({ kx: 200, ty: 300, th: 80 }), new StageModel({ kx: 260, ty: 320, th: 80 }), new StageModel({ kx: 180, ty: 340, th: 80 }), new StageModel({ kx: 240, ty: 360, th: 80 })],
         }),
+
         new SetModel({
-          name: `Set 2`,
-          description: ``,
+          name: `Shifting Heights`,
+          description: `The drop distance changes, but everything stays visible`,
           difficulty: difficulties[0],
-          stages: [new StageModel({ kx: 240, ty: 400, th: 80 }), new StageModel({ kx: 30, ty: 20, th: 100 }), new StageModel({ kx: 450, ty: 200, th: 90 }), new StageModel({ kx: 250, ty: 100, th: 60 }), new StageModel({ kx: 80, ty: 320, th: 70 }), new StageModel({ kx: 400, ty: 270, th: 60 }), new StageModel({ kx: 240, ty: 40, th: 30 }), new StageModel({ kx: 60, ty: 220, th: 35 }), new StageModel({ kx: 420, ty: 430, th: 40 }), new StageModel({ kx: 320, ty: 300, th: 20 })],
+          showPuck: true,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 220, ty: 280, th: 80 }), new StageModel({ kx: 270, ty: 360, th: 80 }), new StageModel({ kx: 160, ty: 400, th: 80 }), new StageModel({ kx: 230, ty: 450, th: 80 }), new StageModel({ kx: 180, ty: 380, th: 80 })],
+        }),
+
+        new SetModel({
+          name: `Now You See It`,
+          description: `We’ll start to hide the puck or dropzone before the drop`,
+          difficulty: difficulties[0],
+          showPuck: true,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 200, ty: 400, th: 80, showPuck: false }), new StageModel({ kx: 150, ty: 350, th: 80, hideTarget: true }), new StageModel({ kx: 270, ty: 420, th: 80, showPuck: false }), new StageModel({ kx: 190, ty: 380, th: 80, hideTarget: true }), new StageModel({ kx: 250, ty: 360, th: 80 }), new StageModel({ kx: 230, ty: 440, th: 80 })],
+        }),
+
+        new SetModel({
+          name: `Surprise Drops`,
+          description: `Expect shorter drops and faster decisions — but nothing too tricky`,
+          difficulty: difficulties[0],
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 180, ty: 280, th: 80 }), new StageModel({ kx: 260, ty: 240, th: 80 }), new StageModel({ kx: 200, ty: 300, th: 80 })],
+        }),
+
+        new SetModel({
+          name: `Find Your Flow`,
+          description: `Build rhythm and trust your instincts with mixed visibility`,
+          difficulty: difficulties[0],
+          showPuck: true,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 210, ty: 320, th: 80 }), new StageModel({ kx: 240, ty: 380, th: 80, hideTarget: true }), new StageModel({ kx: 190, ty: 300, th: 80, showPuck: false }), new StageModel({ kx: 170, ty: 430, th: 80 }), new StageModel({ kx: 260, ty: 410, th: 80 }), new StageModel({ kx: 150, ty: 350, th: 80 }), new StageModel({ kx: 280, ty: 390, th: 80, hideTarget: true })],
+        }),
+
+        new SetModel({
+          name: `Proving Ground`,
+          description: `Drop height, visibility, and timing all mix in — take your time and trust your feel`,
+          difficulty: difficulties[0],
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 210, ty: 320, th: 80 }), new StageModel({ kx: 250, ty: 400, th: 80 }), new StageModel({ kx: 180, ty: 440, th: 80 }), new StageModel({ kx: 230, ty: 300, th: 80, showPuck: true, hideTarget: false }), new StageModel({ kx: 190, ty: 360, th: 80 })],
         }),
       ],
     }),
     new CampaignModel({
       id: 3,
-      name: `Campaign 2`,
-      subtitle: `Don't get too comfortable`,
-      selected: true,
+      name: `Precision Under Pressure`,
+      subtitle: `Things are a little harder now`,
+      selected: false,
       isTutorial: false,
-      lock: true,
+      locked: true,
       sets: [
         new SetModel({
-          name: `Set 1`,
-          description: ``,
+          name: `Early Pressure`,
+          description: `Drop distance gets shorter, and the target may not wait around.`,
           difficulty: difficulties[0],
-          // prettier-ignore
-          stages: [
-            new StageModel({ kx: 240, ty: 400, th: 80 }),
-            new StageModel({ kx: 30,  ty: 20,  th: 100 }),
-            new StageModel({ kx: 450, ty: 200, th: 90 }),
-            new StageModel({ kx: 250, ty: 100, th: 60 }),
-            new StageModel({ kx: 80,  ty: 320, th: 70 }),
-            new StageModel({ kx: 400, ty: 270, th: 60 }),
-            new StageModel({ kx: 240, ty: 40,  th: 30 }),
-            new StageModel({ kx: 60,  ty: 220, th: 35 }),
-            new StageModel({ kx: 420, ty: 430, th: 40 }),
-            new StageModel({ kx: 320, ty: 300, th: 20 }),
-          ],
+          showPuck: true,
+          hideTarget: false,
+          locked: false,
+          stages: [new StageModel({ kx: 180, ty: 260, th: 60 }), new StageModel({ kx: 200, ty: 240, th: 60 }), new StageModel({ kx: 160, ty: 300, th: 60, hideTarget: true }), new StageModel({ kx: 140, ty: 280, th: 60 })],
+        }),
+
+        new SetModel({
+          name: `Hidden Starts`,
+          description: `You won’t always see what’s falling—or what it’s falling toward.`,
+          difficulty: difficulties[0],
+          showPuck: false,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 260, ty: 350, th: 60 }), new StageModel({ kx: 230, ty: 320, th: 60, hideTarget: true }), new StageModel({ kx: 190, ty: 400, th: 60 }), new StageModel({ kx: 210, ty: 330, th: 60, hideTarget: true }), new StageModel({ kx: 240, ty: 370, th: 60 })],
+        }),
+
+        new SetModel({
+          name: `Steady Hands`,
+          description: `You’ll need better aim as the puck gets smaller and falls faster.`,
+          difficulty: difficulties[1],
+          showPuck: true,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 170, ty: 280, th: 50 }), new StageModel({ kx: 290, ty: 300, th: 50 }), new StageModel({ kx: 210, ty: 350, th: 50, showPuck: false }), new StageModel({ kx: 230, ty: 400, th: 50 }), new StageModel({ kx: 260, ty: 360, th: 50 }), new StageModel({ kx: 200, ty: 380, th: 50 })],
+        }),
+
+        new SetModel({
+          name: `Precision Zones`,
+          description: `The puck is faster. The target is smaller. You’ve got this.`,
+          difficulty: difficulties[1],
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 250, ty: 220, th: 40 }), new StageModel({ kx: 180, ty: 250, th: 40 }), new StageModel({ kx: 220, ty: 280, th: 40 }), new StageModel({ kx: 200, ty: 260, th: 40 })],
+        }),
+
+        new SetModel({
+          name: `Flow and Focus`,
+          description: `You’ll need to rely on feel now—sight won’t save you every time.`,
+          difficulty: difficulties[1],
+          showPuck: false,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 190, ty: 390, th: 50, hideTarget: true }), new StageModel({ kx: 240, ty: 420, th: 50 }), new StageModel({ kx: 210, ty: 370, th: 50, showPuck: true, hideTarget: true }), new StageModel({ kx: 260, ty: 400, th: 50 }), new StageModel({ kx: 170, ty: 430, th: 50 }), new StageModel({ kx: 280, ty: 410, th: 50 })],
+        }),
+      ],
+    }),
+    new CampaignModel({
+      id: 4,
+      name: `Reflex and Rhythm`,
+      subtitle: `It’s all about timing now`,
+      selected: false,
+      isTutorial: false,
+      locked: true,
+      sets: [
+        new SetModel({
+          name: `Sharper Edges`,
+          description: `The puck moves faster—and the target gets smaller.`,
+          difficulty: difficulties[1], // Normal
+          showPuck: true,
+          hideTarget: false,
+          locked: false,
+          stages: [new StageModel({ kx: 210, ty: 300, th: 40 }), new StageModel({ kx: 180, ty: 320, th: 40 }), new StageModel({ kx: 250, ty: 340, th: 40 }), new StageModel({ kx: 190, ty: 360, th: 40 })],
+        }),
+
+        new SetModel({
+          name: `Trust the Drop`,
+          description: `More is hidden now—trust your instincts and don’t blink.`,
+          difficulty: difficulties[1],
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 200, ty: 280, th: 40 }), new StageModel({ kx: 170, ty: 250, th: 40 }), new StageModel({ kx: 230, ty: 300, th: 40 }), new StageModel({ kx: 260, ty: 270, th: 40 }), new StageModel({ kx: 240, ty: 290, th: 40 })],
+        }),
+
+        new SetModel({
+          name: `Fast Falls`,
+          description: `Speed and height come together—you’ll need quick hands.`,
+          difficulty: difficulties[2], // Hard
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 150, ty: 420, th: 30 }), new StageModel({ kx: 290, ty: 450, th: 30 }), new StageModel({ kx: 180, ty: 400, th: 30 }), new StageModel({ kx: 240, ty: 430, th: 30 })],
+        }),
+
+        new SetModel({
+          name: `Feeling the Flow`,
+          description: `You’ll need timing, rhythm, and a bit of trust.`,
+          difficulty: difficulties[2],
+          showPuck: false,
+          hideTarget: false,
+          stages: [new StageModel({ kx: 220, ty: 390, th: 30 }), new StageModel({ kx: 200, ty: 360, th: 30, hideTarget: true }), new StageModel({ kx: 260, ty: 410, th: 30 }), new StageModel({ kx: 190, ty: 370, th: 30, showPuck: true }), new StageModel({ kx: 170, ty: 440, th: 30 })],
+        }),
+
+        new SetModel({
+          name: `Final Stretch`,
+          description: `Everything you’ve learned—every drop, every delay—comes together now.`,
+          difficulty: difficulties[3], // Ultra
+          showPuck: false,
+          hideTarget: true,
+          stages: [new StageModel({ kx: 240, ty: 260, th: 20 }), new StageModel({ kx: 160, ty: 300, th: 20 }), new StageModel({ kx: 280, ty: 240, th: 20 }), new StageModel({ kx: 200, ty: 220, th: 20 }), new StageModel({ kx: 230, ty: 280, th: 20 }), new StageModel({ kx: 180, ty: 250, th: 20 })],
         }),
       ],
     }),

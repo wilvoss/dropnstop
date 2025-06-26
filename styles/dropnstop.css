@@ -561,12 +561,14 @@ set h4 {
   gap: 4px;
   width: 100%;
   line-height: 1.1em;
+  text-align: left;
 }
 
 campaign h4 name,
 set h4 name {
   display: flex;
   justify-content: space-between;
+  align-items: end;
   align-self: center;
   gap: 2px;
   width: 100%;
@@ -719,7 +721,7 @@ target {
   align-content: flex-start;
   justify-content: center;
   align-items: flex-start;
-  transition: 150ms ease-out all;
+  transition: 150ms ease-out transform, height, width, background-color;
   border: 1px solid var(--appForeground);
   border-width: 1px 0px;
   background-image: repeating-radial-gradient(circle, hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0), hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.2) 25px);
