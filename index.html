@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.035" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.035" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.036" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.036" media="screen" />
   </head>
 
   <body>
@@ -146,7 +146,7 @@
         <icon v-if="isLoading" style="position: relative" class="spinner medium" :class="{show: isLoading}"></icon>
 
         <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
-          <button id="playButton" @touchstart="()=>{}" @click="ShowCampaignsModal">Play</button>
+          <button @click="ShowCampaignsModal">Play</button>
           <button class="secondary disabled">Achievements</button>
           <leftright>
             <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
@@ -200,7 +200,7 @@
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
       </modal>
-      <modal v-if="currentCampaign" :class="{show: showCampaigns}">
+      <modal :class="{show: showCampaigns}">
         <header>
           <button @click="HandleBackButtonClick(event)">← back</button>
         </header>
@@ -224,7 +224,7 @@
         </section>
         <controls></controls>
       </modal>
-      <modal v-if="currentCampaign" :class="{show: showSets}">
+      <modal :class="{show: showSets}">
         <header>
           <button @click="HandleBackButtonClick(event)">← back</button>
         </header>
@@ -265,8 +265,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.035"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.035"></script>
+    <script src="/helpers/console-enhancer.js?4.0.036"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.036"></script>
   </body>
 
 </html>
