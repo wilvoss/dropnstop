@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.036" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.036" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.037" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.037" media="screen" />
   </head>
 
   <body>
@@ -224,7 +224,7 @@
         </section>
         <controls></controls>
       </modal>
-      <modal :class="{show: showSets}">
+      <modal v-if="currentCampaign" :class="{show: showSets}">
         <header>
           <button @click="HandleBackButtonClick(event)">← back</button>
         </header>
@@ -265,8 +265,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.036"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.036"></script>
+    <script src="/helpers/console-enhancer.js?4.0.037"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.037"></script>
   </body>
 
 </html>
