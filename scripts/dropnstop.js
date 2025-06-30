@@ -144,6 +144,9 @@ LoadAllModules().then((modules) => {
           if (!endless) {
             this.QueueSet();
             this.SelectDifficulty(this.currentStage.difficulty);
+            if (this.currentStage.hideTarget === true) {
+              this.showSplat = true;
+            }
             this.showInstructions = this.currentSetIndex !== 0;
             this.showAnnouncement = this.currentStageIndex === 0;
           }
@@ -192,12 +195,10 @@ LoadAllModules().then((modules) => {
           this.QueueStage();
         }
       },
-
       QueueStage() {
         note('Queue stage');
         this.currentStage = this.currentSet.stages.find((stage) => !stage.finished) || this.currentSet.stages[0];
       },
-
       /**
        * Queues the next campaign based on the current state.
        * - Called when the game is started or restarted.
@@ -227,7 +228,6 @@ LoadAllModules().then((modules) => {
           this.currentCampaign = this.campaigns[0];
         }
       },
-      ReadyCampaign(_campaign) {},
       StopPuck() {
         note('Stopping puck');
         const kStyle = window.getComputedStyle(this.puckElement);
@@ -520,6 +520,7 @@ LoadAllModules().then((modules) => {
         }
 
         if (this.isReady && _action === 'drop') {
+          this.showSplat = false;
           this.isReady = false;
           this.isDropping = true;
           this.StartAnimationLoop();
@@ -542,8 +543,6 @@ LoadAllModules().then((modules) => {
         await modules.SaveData('useDarkPuck', _usedark);
       },
       HandleThemeButton(_e, _theme) {
-        // _e.stopPropagation();
-        // _e.preventDefault();
         this.SelectGameTheme(_theme.name);
       },
       async SelectGameTheme(_name) {
@@ -621,7 +620,6 @@ LoadAllModules().then((modules) => {
 
         this.SelectSet(_set);
       },
-
       SelectSet(_set, _ignoreConfirm = false) {
         log('Select set: ' + _set.name);
         this.potentialSet = null;
@@ -772,10 +770,17 @@ LoadAllModules().then((modules) => {
           }
         });
       },
-      GetHighestPossibleScore() {
+      GetHighestPossibleScoreForSet(_set = this.currentSet) {
         let highest = 0;
-        this.currentSet.stages.forEach((stage) => {
+        _set.stages.forEach((stage) => {
           highest += this.GetScoreForStage(stage, true);
+        });
+        return Math.round(highest);
+      },
+      GetHighestPossibleScoreForCampaign(_campaign = this.currentCampaign) {
+        let highest = 0;
+        _campaign.sets.forEach((set) => {
+          highest += this.GetHighestPossibleScoreForSet(set);
         });
         return Math.round(highest);
       },
@@ -970,6 +975,7 @@ LoadAllModules().then((modules) => {
       },
       async GetGameState() {
         note('Restoring game state');
+
         const saved = await modules.GetData('gameState');
         if (typeof saved === 'string' && saved.trim() !== '' && saved !== 'undefined') {
           try {
@@ -989,6 +995,28 @@ LoadAllModules().then((modules) => {
           }
         } else {
           note('No saved game state found');
+        }
+      },
+      CompleteCampaignForDebug(campaignId) {
+        note('Completing campaign for debug: ' + campaignId);
+        const campaign = this.campaigns.find((c) => c.id === campaignId);
+        if (campaign) {
+          campaign.locked = false;
+          campaign.finished = true;
+          campaign.score = 1000; // Set a high score for debug
+          campaign.grade = 'A'; // Set a grade for UseDebug
+          campaign.sets.forEach((set) => {
+            set.locked = false;
+            set.finished = true;
+            set.score = 1000; // Set a high score for UseDebug
+            set.grade = 'A'; // Set a grade for UseDebug
+            set.stages.forEach((stage) => {
+              stage.finished = true;
+              stage.success = true;
+              stage.attempts = 1; // Set attempts to 1 for UseDebug
+              stage.score = this.GetScoreForStage(stage, true); // Use highest possible score
+            });
+          });
         }
       },
       MergeCampaignProgress(codeCampaigns, savedCampaigns) {
@@ -1103,6 +1131,12 @@ LoadAllModules().then((modules) => {
       this.GetSettings();
       await this.GetGameState();
       this.ApplyDifficultyInheritance();
+      if (UseDebug) {
+        // this.ClearAllData();
+        // this.CompleteCampaignForDebug(2);
+        // this.CompleteCampaignForDebug(3);
+        // this.UnlockNextCampaign(this.campaigns[3]);
+      }
       this.UpdateScores();
 
       this.isLoading = false;
@@ -1176,7 +1210,7 @@ LoadAllModules().then((modules) => {
         return this.GetMisses();
       },
       highestPossibleScore() {
-        return this.GetHighestPossibleScore();
+        return this.GetHighestPossibleScoreForSet();
       },
       missedAbove() {
         return this.GetMissedByDirection('above') + '%';

@@ -776,10 +776,10 @@ splat {
   position: absolute;
   justify-content: center;
   align-items: center;
-  transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
+  transform: translate(0px, calc(54px));
   transform-origin: bottom center;
   rotate: -5deg;
-  scale: 0.5;
+  scale: 1;
   opacity: 0;
   z-index: 2000;
   width: 100%;
@@ -796,6 +796,7 @@ splat words {
   align-items: center;
   width: 100px;
   font-weight: bold;
+  font-size: 16px;
   line-height: 1em;
   font-family: var(--funfont);
   text-align: center;
@@ -803,30 +804,22 @@ splat words {
 }
 
 splat.show {
-  opacity: 1;
-  animation: splatmove 2000ms ease-in-out forwards;
-  -webkit-animation: splatmove 2000ms ease-in-out forwards;
+  animation: splatmove 1500ms ease-in-out forwards;
+  -webkit-animation: splatmove 1500ms ease-in-out forwards;
 }
 
 @keyframes splatmove {
   0% {
-    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
-    rotate: -5deg;
-    scale: 0.5;
     opacity: 0;
   }
 
-  25%,
-  50% {
-    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 224px));
-    rotate: -5deg;
-    scale: 1;
+  2%,
+  95% {
+    scale: 1.2;
     opacity: 1;
   }
 
   100% {
-    transform: translate(0px, calc((0.5 * var(--maxHeight)) - 624px + 100px));
-    rotate: -10deg;
     opacity: 0;
   }
 }
