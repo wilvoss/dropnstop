@@ -600,7 +600,11 @@ LoadAllModules().then((modules) => {
         if (this.currentCampaign.isEndless) {
           this.RestartGame(_campaign);
         } else {
-          this.showSets = true;
+          if (this.currentCampaign.sets.length === 1) {
+            this.SelectSet(this.currentCampaign.sets[0]);
+          } else {
+            this.showSets = true;
+          }
         }
       },
       HandleSelectSetButtonClick(_e, _set) {
@@ -1131,6 +1135,13 @@ LoadAllModules().then((modules) => {
       this.GetSettings();
       await this.GetGameState();
       this.ApplyDifficultyInheritance();
+      let hasSeenTutorial = await modules.GetData('hasSeenTutorial');
+      if (typeof hasSeenTutorial === 'boolean') {
+      } else {
+        this.SelectCampaign(this.campaigns[0]); // Select the tutorial campaign if not seen
+        this.SelectSet(this.campaigns[0].sets[0]); // Select the first set of the tutorial campaign
+        modules.SaveData('hasSeenTutorial', true);
+      }
       if (UseDebug) {
         // this.ClearAllData();
         // this.CompleteCampaignForDebug(2);

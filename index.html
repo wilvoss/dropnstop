@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.044" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.044" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.045" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.045" media="screen" />
   </head>
 
   <body>
@@ -88,7 +88,7 @@
                 <subtitle>{{currentCampaign.isTutorial ? 'You\'ve completed the tutorial' : finalGrade.description}}
                 </subtitle>
               </h2>
-              <stat>grade<span>{{finalGrade.grade}}</span></stat>
+              <stat v-if="!currentCampaign.isTutorial">grade<span>{{finalGrade.grade}}</span></stat>
               <stat class="emphasize">points earned<span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
               <stat>possible points <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat>
 
@@ -269,8 +269,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.044"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.044"></script>
+    <script src="/helpers/console-enhancer.js?4.0.045"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.045"></script>
   </body>
 
 </html>
