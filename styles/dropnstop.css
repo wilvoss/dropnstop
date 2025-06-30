@@ -789,14 +789,21 @@ splat {
   pointer-events: none;
 }
 
+splat icon {
+  rotate: 6deg;
+  opacity: .3;
+  /* background: hsl(var(--hue), 60%, 100%); */
+}
+
 splat words {
   display: flex;
   position: absolute;
   justify-content: center;
   align-items: center;
+  margin-bottom: 7px;
   width: 100px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1em;
   font-family: var(--funfont);
   text-align: center;
@@ -804,8 +811,8 @@ splat words {
 }
 
 splat.show {
-  animation: splatmove 1500ms ease-in-out forwards;
-  -webkit-animation: splatmove 1500ms ease-in-out forwards;
+  animation: splatmove 1700ms ease-in-out forwards;
+  -webkit-animation: splatmove 1700ms ease-in-out forwards;
 }
 
 @keyframes splatmove {
@@ -815,7 +822,7 @@ splat.show {
 
   2%,
   95% {
-    scale: 1.2;
+    scale: 1.5;
     opacity: 1;
   }
 
