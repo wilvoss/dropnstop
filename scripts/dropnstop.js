@@ -1143,10 +1143,12 @@ LoadAllModules().then((modules) => {
         modules.SaveData('hasSeenTutorial', true);
       }
       if (UseDebug) {
-        // this.ClearAllData();
-        // this.CompleteCampaignForDebug(2);
-        // this.CompleteCampaignForDebug(3);
-        // this.UnlockNextCampaign(this.campaigns[3]);
+        this.ClearAllData();
+        this.CompleteCampaignForDebug(2);
+        this.CompleteCampaignForDebug(3);
+        this.CompleteCampaignForDebug(4);
+        this.CompleteCampaignForDebug(5);
+        this.UnlockNextCampaign(this.campaigns[5]);
       }
       this.UpdateScores();
 
