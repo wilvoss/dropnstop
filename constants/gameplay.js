@@ -42,7 +42,7 @@ export async function loadGameplayModules() {
           id: 0,
           name: `The basics`,
           description: `Your goal is to stop the puck within the dropzone`,
-          difficulty: difficulties[0],
+          difficulty: new DifficultyModel({ speed: 600 }),
           locked: false,
           // prettier-ignore
           stages: [
