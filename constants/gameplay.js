@@ -726,7 +726,7 @@ export async function loadGameplayModules() {
       subtitle: `You will be broken`,
       selected: false,
       isTutorial: false,
-      locked: false,
+      locked: true,
       sets: [
         new SetModel({
           name: `Perfect Is a Lie`,
