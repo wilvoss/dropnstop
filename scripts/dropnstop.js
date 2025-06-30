@@ -147,7 +147,7 @@ LoadAllModules().then((modules) => {
             if (this.currentStage.hideTarget === true) {
               this.showSplat = true;
             }
-            this.showInstructions = this.currentSetIndex !== 0;
+            this.showInstructions = true;
             this.showAnnouncement = this.currentStageIndex === 0;
           }
           // Reset for next stage
