@@ -25,9 +25,9 @@ export async function loadGameplayModules() {
   // prettier-ignore
   const difficulties = [
     new DifficultyModel({ name: 'Easy', height: 20, speed: 900, }),
-    new DifficultyModel({ name: 'Normal', height: 12, width: 15, speed: 1800, selected: true, }),
-    new DifficultyModel({ name: 'Hard', height: 8, width: 10, speed: 3600, }),
-    new DifficultyModel({ name: 'Ultra', height: 4, width: 5, speed: 4000, }),
+    new DifficultyModel({ name: 'Normal', height: 12, width: 15, speed: 1400, selected: true, }),
+    new DifficultyModel({ name: 'Hard', height: 8, width: 11, speed: 2000, }),
+    new DifficultyModel({ name: 'Ultra', height: 4, width: 7, speed: 3000, }),
   ];
 
   var campaigns = [
