@@ -895,7 +895,6 @@ theater controls {
   width: 100%;
 }
 
-button,
 button {
   justify-content: center;
   transform: translateY(2px);
@@ -930,14 +929,16 @@ button.tertiary {
   font-weight: normal;
 }
 
-overlay button {
+overlay button,
+overlay button.secondary,
+overlay button.tertiary {
   margin-top: 10px;
   background: var(--highlightColor);
   padding: 4px 14px;
   width: auto;
   color: var(--appForeground);
   font-weight: normal;
-  font-size: 1em
+  font-size: 1em;
 }
 
 button.tertiary {
