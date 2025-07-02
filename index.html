@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.053" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.053" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.054" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.054" media="screen" />
   </head>
 
   <body>
@@ -169,7 +169,9 @@
       </modal>
       <modal :class="{show: showCampaigns}">
         <header>
-          <button @click="HandleBackButtonClick(event)">← back</button>
+          <button @click="HandleBackButtonClick(event)">
+            <icon class="cancel medium"></icon>
+          </button>
         </header>
         <section>
           <h2>Campaigns</h2>
@@ -193,7 +195,9 @@
       </modal>
       <modal v-if="currentCampaign" :class="{show: showSets}">
         <header>
-          <button @click="HandleBackButtonClick(event)">← back</button>
+          <button @click="HandleBackButtonClick(event)">
+            <icon class="chevron-left medium"></icon>
+          </button>
         </header>
         <section>
           <h2>{{currentCampaign.name}}</h2>
@@ -225,37 +229,40 @@
             <icon class="cancel medium"></icon>
           </button>
         </header>
-        <h2>Settings</h2>
-        <!-- <divider></divider> -->
-        <section class="puck">
-          <!-- <h3>puck color</h3> -->
-          <puck :class="{start: isFirstRun}"></puck>
-          <setting>
-            <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
-            </puckcolor>
-            <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">dark
-            </puckcolor>
-          </setting>
-        </section>
-        <divider></divider>
-        <section>
-          <!-- <h3>color theme</h3> -->
-          <setting>
-            <theme :class="{selected: theme.selected}" v-for="theme in themes" @click="HandleThemeButton(event, theme)">
-              <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
-              <value>{{theme.name}}</value>
-            </theme>
-          </setting>
-        </section>
-        <divider></divider>
-        <section v-if="!isPlaying" style="flex-direction: column;">
-          <!-- <h3>advanced</h3> -->
-          <leftright style="margin: 0">
-            <button class="tertiary" @click="location.reload()">Reload App</button>
-            <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
-          </leftright>
-        </section>
-        <!-- <divider></divider> -->
+        <stretch>
+          <h2>Settings</h2>
+          <divider></divider>
+          <section class="puck">
+            <!-- <h3>puck color</h3> -->
+            <puck :class="{start: isFirstRun}"></puck>
+            <setting>
+              <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
+              </puckcolor>
+              <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">dark
+              </puckcolor>
+            </setting>
+          </section>
+          <divider></divider>
+          <section>
+            <!-- <h3>color theme</h3> -->
+            <setting>
+              <theme :class="{selected: theme.selected}" v-for="theme in themes"
+                @click="HandleThemeButton(event, theme)">
+                <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
+                <value>{{theme.name}}</value>
+              </theme>
+            </setting>
+          </section>
+          <divider></divider>
+          <section v-if="!isPlaying" style="flex-direction: column;">
+            <!-- <h3>advanced</h3> -->
+            <leftright style="margin: 0">
+              <button class="tertiary" @click="location.reload()">Reload App</button>
+              <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
+            </leftright>
+          </section>
+          <divider></divider>
+        </stretch>
         <version>
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
@@ -274,8 +281,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.053"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.053"></script>
+    <script src="/helpers/console-enhancer.js?4.0.054"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.054"></script>
   </body>
 
 </html>

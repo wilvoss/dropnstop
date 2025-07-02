@@ -57,6 +57,11 @@ icon.cancel {
   -webkit-mask-image: url(../images/icon-cancel.svg);
 }
 
+icon.chevron-left {
+  mask-image: url(../images/icon-chevron-left.svg);
+  -webkit-mask-image: url(../images/icon-chevron-left.svg);
+}
+
 icon.spinner {
   opacity: 0;
   mask-image: url(../images/icon-spinner.svg);
