@@ -40,14 +40,14 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.049" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.049" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.050" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.050" media="screen" />
   </head>
 
   <body>
     <app id="app" v-cloak
       :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
-      <theater v-cloak>
+      <theater>
         <header :class="{hide: isFirstRun}">
           <button :class="{hide: lock}" @click="showSettings=!showSettings">settings</button>
           <score v-if="!lock">{{(showEndSet ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
@@ -163,47 +163,6 @@
           </leftright>
         </controls>
       </modal>
-      <modal :class="{show: showSettings}">
-        <header>
-          <button @click="HandleBackButtonClick(event)">← back</button>
-          <button v-if="isPlaying" @click="HandleQuitButtonClick">quit</button>
-        </header>
-        <h2>Settings</h2>
-        <divider></divider>
-        <section class="puck">
-          <h3>puck color</h3>
-          <puck :class="{start: isFirstRun}"
-            :style=" {transform: 'translate(' + puckX + 'px, ' + puckY + 'px)', width: puckWidth + 'px', height: puckHeight + 'px'}">
-            <tail :style="{marginTop: -1 *  (60 - (.5 * puckHeight)) + 'px'}">
-            </tail>
-          </puck>
-          <setting>
-            <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
-            </puckcolor>
-            <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">dark
-            </puckcolor>
-          </setting>
-        </section>
-        <divider></divider>
-        <section>
-          <h3>color theme</h3>
-          <setting>
-            <theme :class="{selected: theme.selected}" v-for="theme in themes" @click="HandleThemeButton(event, theme)">
-              <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
-              <value>{{theme.name}}</value>
-            </theme>
-          </setting>
-        </section>
-        <divider></divider>
-        <h3>advanced </h3>
-        <controls v-if="!isPlaying" style="flex-direction: column;">
-          <button class="tertiary" @click="location.reload()">Reload App</button>
-          <button class="tertiary" @click="HandleClearDataButtonClick">Clear game data</button>
-        </controls>
-        <version>
-          &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
-        </version>
-      </modal>
       <modal :class="{show: showCampaigns}">
         <header>
           <button @click="HandleBackButtonClick(event)">← back</button>
@@ -256,6 +215,43 @@
         </section>
         <controls></controls>
       </modal>
+      <modal :class="{show: showSettings}">
+        <header>
+          <button @click="HandleBackButtonClick(event)">← back</button>
+          <button v-if="isPlaying" @click="HandleQuitButtonClick">quit</button>
+        </header>
+        <h2>Settings</h2>
+        <divider></divider>
+        <section class="puck">
+          <h3>puck color</h3>
+          <puck :class="{start: isFirstRun}"></puck>
+          <setting>
+            <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
+            </puckcolor>
+            <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">dark
+            </puckcolor>
+          </setting>
+        </section>
+        <divider></divider>
+        <section>
+          <h3>color theme</h3>
+          <setting>
+            <theme :class="{selected: theme.selected}" v-for="theme in themes" @click="HandleThemeButton(event, theme)">
+              <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
+              <value>{{theme.name}}</value>
+            </theme>
+          </setting>
+        </section>
+        <divider></divider>
+        <section v-if="!isPlaying" style="flex-direction: column;">
+          <h3>advanced </h3>
+          <button class="tertiary" @click="location.reload()">Reload App</button>
+          <button class="tertiary" @click="HandleClearDataButtonClick">Clear game data</button>
+        </section>
+        <version>
+          &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
+        </version>
+      </modal>
       <modal v-if="currentYesNo" :class="{show: showYesNo}" class="center">
         <h1>{{currentYesNo.title}}
           <subtitle v-html="currentYesNo.message"></subtitle>
@@ -269,8 +265,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.049"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.049"></script>
+    <script src="/helpers/console-enhancer.js?4.0.050"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.050"></script>
   </body>
 
 </html>

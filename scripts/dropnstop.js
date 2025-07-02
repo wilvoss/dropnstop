@@ -40,7 +40,7 @@ Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'sp
 //#endregion
 
 LoadAllModules().then((modules) => {
-  console.log('Modules loaded:', modules);
+  note('Modules loaded');
 
   window.app = new Vue({
     el: '#app',
@@ -789,7 +789,7 @@ LoadAllModules().then((modules) => {
         return Math.round(highest);
       },
       async GetSettings() {
-        note('Get settings from localStorage');
+        note('Restoring player settings from IndexedDB');
         const migrationKeys = ['difficulty', 'theme', 'useDarkPuck'];
 
         for (const key of migrationKeys) {
@@ -978,7 +978,7 @@ LoadAllModules().then((modules) => {
         );
       },
       async GetGameState() {
-        note('Restoring game state');
+        note('Restoring game state from IndexedDB');
 
         const saved = await modules.GetData('gameState');
         if (typeof saved === 'string' && saved.trim() !== '' && saved !== 'undefined') {
@@ -1123,6 +1123,7 @@ LoadAllModules().then((modules) => {
     },
 
     async mounted() {
+      highlight(`App version ${this.version} initiated`, true);
       this.isLoading = true;
       this.stageElement = document.getElementsByTagName('stage')[0];
       this.puckElement = document.getElementsByTagName('puck')[0];
@@ -1132,9 +1133,6 @@ LoadAllModules().then((modules) => {
       window.addEventListener('resize', this.HandleResize);
       window.addEventListener('beforeunload', this.SaveGameState);
       this.SetScale();
-      this.GetSettings();
-      await this.GetGameState();
-      this.ApplyDifficultyInheritance();
       let hasSeenTutorial = await modules.GetData('hasSeenTutorial');
       if (typeof hasSeenTutorial === 'boolean') {
       } else {
@@ -1142,17 +1140,23 @@ LoadAllModules().then((modules) => {
         this.SelectSet(this.campaigns[0].sets[0]); // Select the first set of the tutorial campaign
         modules.SaveData('hasSeenTutorial', true);
       }
-      if (UseDebug) {
-        this.ClearAllData();
-        this.CompleteCampaignForDebug(2);
-        this.CompleteCampaignForDebug(3);
-        this.CompleteCampaignForDebug(4);
-        this.CompleteCampaignForDebug(5);
-        this.UnlockNextCampaign(this.campaigns[5]);
-      }
-      this.UpdateScores();
 
-      this.isLoading = false;
+      this.$nextTick(async () => {
+        await this.GetGameState();
+        await this.GetSettings();
+        await this.ApplyDifficultyInheritance();
+        this.UpdateScores();
+        if (false && this.isDebug) {
+          warn('DEBUG - setting fake state');
+          this.ClearAllData();
+          this.CompleteCampaignForDebug(2);
+          this.CompleteCampaignForDebug(3);
+          this.CompleteCampaignForDebug(4);
+          this.CompleteCampaignForDebug(5);
+          this.UnlockNextCampaign(this.campaigns[5]);
+        }
+        this.isLoading = false;
+      });
     },
 
     beforeDestroy() {
@@ -1329,7 +1333,6 @@ LoadAllModules().then((modules) => {
       nextSet() {
         return this.UnlockNextSet(this.currentCampaign, this.currentSet);
       },
-
       nextCampaign() {
         return this.UnlockNextCampaign(this.currentCampaign);
       },

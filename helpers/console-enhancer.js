@@ -1,4 +1,4 @@
-var UseDebug = document.location.href.indexOf('staging') != -1;
+var UseDebug = document.location.href.indexOf('staging') != -1 || document.location.href.indexOf('debug=true') != -1;
 
 function highlight(text, isolate) {
   isolate = isolate == undefined ? false : isolate;
@@ -29,7 +29,7 @@ function log(text, isolate, color) {
   var ms = new Date(Date.now()).getMilliseconds();
   ms = ms < 10 ? ms * 100 : ms;
   ms = ms < 100 ? ms * 10 : ms;
-  if (UseDebug) {
+  if (UseDebug || isolate) {
     if (isolate) {
       console.log('◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦◦');
     }

@@ -240,6 +240,7 @@ header button {
   align-items: center;
   cursor: pointer;
   outline: none;
+  box-shadow: none;
   border: none;
   background: none;
   padding: 12px 18px 14px 18px;
@@ -248,6 +249,7 @@ header button {
   max-width: 124px;
   height: 100%;
   color: var(--appForeground);
+  font-weight: normal;
   font-size: 1.35em;
   font-family: var(--funfont);
   text-shadow: var(--shadow);
@@ -498,6 +500,7 @@ section {
   align-content: center;
   justify-content: center;
   align-items: center;
+  gap: var(--defaultGap);
   padding: var(--bigGap);
   width: calc(100% - var(--hugeGap));
 }
@@ -624,6 +627,16 @@ section.puck setting {
   column-gap: 12px;
   justify-content: center;
 }
+
+section h3 {
+  margin-bottom: var(--bigGap)
+}
+
+section.puck puck {
+  width: 20px;
+  height: 20px;
+}
+
 
 difficulty {
   display: flex;
@@ -779,7 +792,7 @@ splat {
   transform: translate(0px, calc((var(--stageHeight) - 224px) / 2));
   transform-origin: bottom center;
   rotate: -5deg;
-  scale: 1;
+  scale: 1.3;
   opacity: 0;
   z-index: 2000;
   width: 100%;
@@ -811,23 +824,20 @@ splat words {
 }
 
 splat.show {
-  animation: splatmove 1700ms ease-in-out forwards;
-  -webkit-animation: splatmove 1700ms ease-in-out forwards;
+  opacity: 1;
 }
 
 @keyframes splatmove {
   0% {
-    opacity: 0;
+    opacity: 1;
   }
 
   2%,
   95% {
-    scale: 1.4;
     opacity: 1;
   }
 
   100% {
-    scale: 1.4;
     opacity: 1;
   }
 }
@@ -885,8 +895,8 @@ theater controls {
   width: 100%;
 }
 
-controls button,
-overlay button {
+button,
+button {
   justify-content: center;
   transform: translateY(2px);
   cursor: pointer;
@@ -904,15 +914,15 @@ overlay button {
   text-transform: lowercase;
 }
 
-controls button span {
+button span {
   display: block;
   color: var(--appBackground);
   font-weight: normal;
   font-size: 0.6em;
 }
 
-controls button.secondary,
-controls button.tertiary {
+button.secondary,
+button.tertiary {
   box-shadow: inset var(--shadow), var(--shadow);
   background: var(--appBackground);
   padding: 10px;
@@ -930,12 +940,12 @@ overlay button {
   font-size: 1em
 }
 
-controls button.tertiary {
+button.tertiary {
   font-size: 1.3em;
 }
 
-controls button:active,
-controls button:focus {
+button:active,
+button:focus {
   transform: translateY(4px);
 }
 
@@ -1065,6 +1075,11 @@ canvas {
 
   modal {
     margin: auto;
+  }
+
+
+  leftright {
+    gap: var(--defaultGap);
   }
 
   app {
