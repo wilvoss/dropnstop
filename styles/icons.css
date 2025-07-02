@@ -4,10 +4,10 @@
 
 icon {
   display: block;
+  mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
+  background-color: var(--appForeground);
   width: var(--icon-size);
   height: var(--icon-size);
-  background-color: var(--appForeground);
-  mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
   -webkit-mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
@@ -42,11 +42,26 @@ icon.splat {
   -webkit-mask-image: url(../images/graphic-splat.svg);
 }
 
+icon.settings {
+  mask-image: url(../images/icon-settings.svg);
+  -webkit-mask-image: url(../images/icon-settings.svg);
+}
+
+icon.quit {
+  mask-image: url(../images/icon-logout.svg);
+  -webkit-mask-image: url(../images/icon-logout.svg);
+}
+
+icon.cancel {
+  mask-image: url(../images/icon-cancel.svg);
+  -webkit-mask-image: url(../images/icon-cancel.svg);
+}
+
 icon.spinner {
-  animation: spin 1s steps(10, start) infinite;
+  opacity: 0;
   mask-image: url(../images/icon-spinner.svg);
   mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));
-  opacity: 0;
+  animation: spin 1s steps(10, start) infinite;
   transition-delay: 0ms;
   -webkit-mask-image: url(../images/icon-spinner.svg);
   -webkit-mask-size: calc(0.75 * var(--icon-size)) calc(0.75 * var(--icon-size));

@@ -237,12 +237,13 @@ LoadAllModules().then((modules) => {
 
         let gain = this.score + this.targetValue;
 
+        const puckTop = Number(this.puckY);
         const puckBottom = Number(this.puckY) + Number(this.puckHeight);
-        const targetTop = Number(this.targetY);
-        const targetBottom = Number(this.targetY) + Number(this.targetHeight);
+        const targetTop = Number(this.targetY) - 2; // Subtract 2 to account for the puck's bottom edge
+        const targetBottom = Number(this.targetY) + Number(this.targetHeight) + 2; // Add 2 to account for the puck's bottom edge
 
         // Check for success
-        if (puckBottom >= targetTop - 2 && puckBottom <= targetBottom + 2) {
+        if (puckTop >= targetTop && puckBottom <= targetBottom) {
           this.score = gain;
           this.isSuccess = true;
           this.currentStage.finished = true;
@@ -1167,14 +1168,7 @@ LoadAllModules().then((modules) => {
       window.removeEventListener('resize', this.HandleResize);
     },
 
-    watch: {
-      showAnnouncement() {
-        highlight('showAnnouncement: ' + this.showAnnouncement);
-      },
-      spaceBarInUse() {
-        highlight('spaceBarInUse: ' + this.spaceBarInUse);
-      },
-    },
+    watch: {},
 
     computed: {
       targetValue() {

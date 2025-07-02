@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.052" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.052" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.053" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.053" media="screen" />
   </head>
 
   <body>
@@ -49,11 +49,15 @@
       :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
       <theater>
         <header :class="{hide: isFirstRun}">
-          <button :class="{hide: lock}" @click="showSettings=!showSettings">settings</button>
+          <button :class="{hide: lock}" @click="showSettings=!showSettings">
+            <icon class="settings medium"></icon>
+          </button>
           <score v-if="!lock">{{(showEndSet ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
           </score>
           <score v-if="lock">set complete!</score>
-          <button :class="{hide: lock}" @click="HandleQuitButtonClick">quit</button>
+          <button :class="{hide: lock}" @click="HandleQuitButtonClick">
+            <icon class="quit medium"></icon>
+          </button>
         </header>
         <stage :style="{scale: stageScale, fontSize: fontScale + 'em'}">
           <puck
@@ -94,13 +98,13 @@
 
               <!-- <h3>hits</h3> -->
               <stat>hits on 1st try<span>{{hitsOnOne}}</span></stat>
-              <stat>- on 2nd try<span>{{hitsOnTwo}}</span></stat>
-              <stat>- on 3rd try<span>{{hitsOnThree}}</span></stat>
+              <stat>hits on 2nd try<span>{{hitsOnTwo}}</span></stat>
+              <stat>hits on 3rd try<span>{{hitsOnThree}}</span></stat>
 
               <!-- <h3>misses</h3> -->
-              <stat>target misses<span>{{misses}}</span></stat>
-              <stat>- above<span>{{missedAbove}}</span></stat>
-              <stat>- below<span>{{missedBelow}}</span></stat>
+              <stat>misses<span>{{misses}}</span></stat>
+              <stat>% above<span>{{missedAbove}}</span></stat>
+              <stat>% below<span>{{missedBelow}}</span></stat>
             </stats>
           </info>
         </stage>
@@ -217,13 +221,14 @@
       </modal>
       <modal :class="{show: showSettings}">
         <header>
-          <button @click="HandleBackButtonClick(event)">← back</button>
-          <button v-if="isPlaying" @click="HandleQuitButtonClick">quit</button>
+          <button @click="HandleBackButtonClick(event)">
+            <icon class="cancel medium"></icon>
+          </button>
         </header>
         <h2>Settings</h2>
-        <divider></divider>
+        <!-- <divider></divider> -->
         <section class="puck">
-          <h3>puck color</h3>
+          <!-- <h3>puck color</h3> -->
           <puck :class="{start: isFirstRun}"></puck>
           <setting>
             <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
@@ -234,7 +239,7 @@
         </section>
         <divider></divider>
         <section>
-          <h3>color theme</h3>
+          <!-- <h3>color theme</h3> -->
           <setting>
             <theme :class="{selected: theme.selected}" v-for="theme in themes" @click="HandleThemeButton(event, theme)">
               <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
@@ -244,29 +249,33 @@
         </section>
         <divider></divider>
         <section v-if="!isPlaying" style="flex-direction: column;">
-          <h3>advanced </h3>
-          <button class="tertiary" @click="location.reload()">Reload App</button>
-          <button class="tertiary" @click="HandleClearDataButtonClick">Clear game data</button>
+          <!-- <h3>advanced</h3> -->
+          <leftright style="margin: 0">
+            <button class="tertiary" @click="location.reload()">Reload App</button>
+            <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
+          </leftright>
         </section>
+        <!-- <divider></divider> -->
         <version>
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
       </modal>
       <modal v-if="currentYesNo" :class="{show: showYesNo}" class="center">
-        <h1>{{currentYesNo.title}}
-          <subtitle v-html="currentYesNo.message"></subtitle>
-        </h1>
-        <controls>
-          <button @click="showYesNo = false" class="secondary">no</button>
-          <button @click="HandleActionButton(event, currentYesNo.action)">Yes</button>
-        </controls>
-
+        <section>
+          <h1>{{currentYesNo.title}}
+            <subtitle v-html="currentYesNo.message"></subtitle>
+          </h1>
+          <controls>
+            <button @click="showYesNo = false">no</button>
+            <button @click="HandleActionButton(event, currentYesNo.action)" class="secondary">Yes</button>
+          </controls>
+        </section>
       </modal>
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.052"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.052"></script>
+    <script src="/helpers/console-enhancer.js?4.0.053"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.053"></script>
   </body>
 
 </html>

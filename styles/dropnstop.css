@@ -14,11 +14,14 @@
   --appBackground: hsl(var(--hue), var(--saturation), var(--mainLuminosity));
   --appBackgroundSemiTransparent: hsla(var(--hue), var(--saturation), var(--mainLuminosity), 0);
   --appForeground: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
+  --appForegroundDark: hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) / 1.5));
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.5);
   --highlightColor: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
   --targetX: 50%;
   --funfont: 'Tektur';
+  /* prettier-ignore */
+  --mainFont: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   --defaultGap: 20px;
   --bigGap: calc(2 * var(--defaultGap));
   --hugeGap: calc(4 * var(--defaultGap));
@@ -46,7 +49,7 @@ body {
   height: 100%;
   overflow: hidden;
   color: var(--appForeground);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--mainFont);
   user-select: none;
   text-transform: lowercase;
   -webkit-user-select: none;
@@ -100,6 +103,7 @@ subtitle {
   padding: 0 var(--defaultGap);
   font-weight: normal;
   line-height: 1.5em;
+  font-family: var(--mainFont);
   text-shadow: var(--shadow);
 }
 
@@ -107,7 +111,7 @@ pretitle {
   display: block;
   font-weight: normal;
   font-size: 0.3em;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--mainFont);
   text-transform: capitalize;
 }
 
@@ -203,6 +207,7 @@ theater header score {
   display: block;
   position: relative;
   margin-top: 0px;
+  padding-top: 3px;
   font-weight: bold;
   font-size: 1.38em;
   text-shadow: var(--shadowAlt);
@@ -607,7 +612,8 @@ set p {
 }
 
 divider {
-  background-color: hsl(var(--hue), var(--saturation), 66%);
+  /* display: none; */
+  background-color: hsl(var(--hue), var(--saturation), 46%);
   width: 100%;
   height: 1px;
   min-height: 1px;
@@ -629,7 +635,7 @@ section.puck setting {
 }
 
 section h3 {
-  margin-bottom: var(--bigGap)
+  margin-bottom: var(--defaultGap);
 }
 
 section.puck puck {
@@ -933,16 +939,20 @@ overlay button,
 overlay button.secondary,
 overlay button.tertiary {
   margin-top: 10px;
+  box-shadow: unset;
+  border-width: 0px;
+  border-style: none;
   background: var(--highlightColor);
   padding: 4px 14px;
   width: auto;
-  color: var(--appForeground);
+  color: var(--appForegroundDark);
   font-weight: normal;
   font-size: 1em;
+  text-shadow: unset;
 }
 
 button.tertiary {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 button:active,
@@ -989,7 +999,7 @@ overlay announcement {
   flex-direction: column;
   justify-content: end;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
@@ -999,6 +1009,7 @@ overlay announcement {
   color: var(--highlightColor);
   font-weight: bold;
   line-height: 1.3em;
+  font-family: var(--funfont);
   text-align: center;
   text-shadow: none;
 }
@@ -1006,7 +1017,12 @@ overlay announcement {
 overlay instructions span,
 overlay announcement span {
   color: hsl(var(--hue), 80%, 100%);
-  font-weight: 100;
+  font-weight: 200;
+  font-family: var(--mainFont);
+}
+
+b {
+  font-weight: 800;
 }
 
 .blink {

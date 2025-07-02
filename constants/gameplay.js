@@ -40,16 +40,16 @@ export async function loadGameplayModules() {
       sets: [
         new SetModel({
           id: 0,
-          name: `The basics`,
-          description: `Your goal is to stop the puck within the dropzone`,
+          name: `Welcome!`,
+          description: `The goal is to stop the puck when it's fully inside the dropzone`,
           difficulty: new DifficultyModel({ speed: 600 }),
           locked: false,
           // prettier-ignore
           stages: [
-            new StageModel({ kx: 215, ty: 50, th: 190, showPuck: true, name: `you control gravity`, description: `the puck falls when you press/hold the "drop" button at the bottom of the screen`, difficulty: new DifficultyModel({ speed: 200 }) }),
-            new StageModel({ kx: 20, ty: 200, th: 40, showPuck: true, name: `you get 3 chances`, description: `each miss lowers the dropzone's value` }),
-            new StageModel({ kx: 420, ty: 100, th: 120, name: `hidden puck!`, description: `sometimes the puck won't appear unless you are pressing the "drop" button` }),
-            new StageModel({ kx: 340, ty: 220, th: 170, showPuck: true, hideTarget: true, name: `hidden dropzone!`, description: `sometimes the dropzone won't appear unless you are pressing the "drop" button` }),
+            new StageModel({ kx: 215, ty: 42, th: 170, showPuck: true, name: `you control gravity`, description: `the puck falls while you <b>PRESS</b> & <b>HOLD</b> the "drop" button at the bottom of the screen`, difficulty: new DifficultyModel({ speed: 200 }) }),
+            new StageModel({ kx: 20, ty: 200, th: 40, showPuck: true, name: `you get 3 chances`, description: `each miss lowers the dropzone's value and your overall score potential` }),
+            new StageModel({ kx: 420, ty: 100, th: 120, name: `hidden puck!`, description: `sometimes the puck appears only while you <b>press</b> & <b>hold</b> the "drop" button` }),
+            new StageModel({ kx: 340, ty: 220, th: 170, showPuck: true, hideTarget: true, name: `hidden dropzone!`, description: `the dropzone can also be hidden from view until you <b>press</b> & <b>hold</b> the "drop" button` }),
           ],
         }),
       ],
