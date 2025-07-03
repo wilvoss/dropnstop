@@ -258,11 +258,11 @@ LoadAllModules().then((modules) => {
 
         const puckTop = Number(this.puckY);
         const puckBottom = Number(this.puckY) + Number(this.puckHeight);
-        const targetTop = Number(this.targetY) - 2; // Subtract 2 to account for the puck's bottom edge
-        const targetBottom = Number(this.targetY) + Number(this.targetHeight) + 2; // Add 2 to account for the puck's bottom edge
+        const targetTop = Number(this.targetY); // Subtract 2 to account for the puck's bottom edge
+        const targetBottom = Number(this.targetY) + Number(this.targetHeight); // Add 2 to account for the puck's bottom edge
 
         // Check for success
-        if (puckTop >= targetTop && puckBottom <= targetBottom) {
+        if (puckBottom >= targetTop && puckTop <= targetBottom) {
           this.score = gain;
           this.isSuccess = true;
           this.currentStage.finished = true;

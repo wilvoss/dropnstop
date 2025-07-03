@@ -42,7 +42,7 @@ export async function loadGameplayModules() {
         new SetModel({
           id: 0,
           name: `Welcome!`,
-          description: `The goal is to stop the puck when it's fully inside the dropzone`,
+          description: `The goal is to stop the puck when it's touching the dropzone`,
           difficulty: new DifficultyModel({ speed: 600 }),
           locked: false,
           // prettier-ignore
