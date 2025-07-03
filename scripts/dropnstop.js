@@ -52,6 +52,8 @@ LoadAllModules().then((modules) => {
         isStopped: true,
         isReady: false,
         useDarkPuck: false,
+        playerName: 'Player 1',
+        tempPlayerName: 'Player 1',
         lastUpdate: null,
         isSuccess: false,
         isPlaying: false,
@@ -461,6 +463,7 @@ LoadAllModules().then((modules) => {
         if (this.showSettings) {
           this.HideAllModalsAndOverlays();
           this.showHome = !this.isPlaying;
+          this.tempPlayerName = this.playerName;
           return;
         }
         if (this.showCampaigns) {
@@ -868,6 +871,15 @@ LoadAllModules().then((modules) => {
         } else {
           this.SelectDifficulty(this.difficulties[0]);
         }
+
+        const playerNameData = await modules.GetData('playerName');
+        if (typeof playerNameData === 'string' && playerNameData.trim() !== '' && playerNameData !== 'undefined') {
+          this.playerName = playerNameData;
+        } else {
+          this.playerName = 'Player 1';
+        }
+        this.tempPlayerName = this.playerName;
+
         const themeData = await modules.GetData('theme');
         if (typeof themeData === 'string' && themeData.trim() !== '' && themeData !== 'undefined') {
           this.SelectGameTheme(themeData);
@@ -954,7 +966,9 @@ LoadAllModules().then((modules) => {
             }
             break;
           case 'Enter':
-            if (!this.lock) {
+            if (document.activeElement.tagName === 'INPUT') {
+              document.activeElement.blur();
+            } else if (!this.lock) {
               if (this.showYesNo && !this.showEndSet) {
                 this.EndGame();
               } else if (this.showEndSet && !this.showHome && !this.showSettings) {
@@ -1227,7 +1241,16 @@ LoadAllModules().then((modules) => {
       window.removeEventListener('resize', this.HandleResize);
     },
 
-    watch: {},
+    watch: {
+      tempPlayerName(newVal) {
+        // Only allow letters, numbers, emoji, and (optionally) spaces
+        this.tempPlayerName = newVal.replace(/[^\p{L}\p{N}\p{Emoji_Presentation}\p{Emoji}\s]/gu, '');
+      },
+      async playerName(newVal) {
+        note('Saving player name: ' + newVal);
+        await modules.SaveData('playerName', newVal);
+      },
+    },
 
     computed: {
       targetValue() {

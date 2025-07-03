@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.060" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.060" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.061" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.061" media="screen" />
   </head>
 
   <body>
@@ -129,7 +129,7 @@
         <instructions v-if="instructions !== ''" v-html="instructions">
         </instructions>
       </overlay>
-      <modal :class="{show: showHome}">
+      <modal :class="{show: showHome || showCampaigns}">
         <header>
         </header>
         <h1>
@@ -137,6 +137,9 @@
           drop 'n stop
           <subtitle>= the puck stops here =</subtitle>
         </h1>
+        <welcome @click="showSettings = !showSettings" style="text-transform: initial;">Hi
+          {{tempPlayerName === 'Player 1' || tempPlayerName === '' ? ' Player 1!' : playerName +', welcome back!'}}
+        </welcome>
         <ohno>
           <h3>oh no!</h3>
           <p>
@@ -159,7 +162,7 @@
           </leftright>
         </controls>
       </modal>
-      <modal :class="{show: showCampaigns}">
+      <modal :class="{show: showCampaigns || showSets}" class="down">
         <header>
           <button @click="HandleBackButtonClick(event)">
             <icon class="cancel medium"></icon>
@@ -181,16 +184,16 @@
                   {{campaign.finished ? Intl.NumberFormat(userLocale).format(campaign.score) + ' pts' : 'ready!'}}
                 </status>
               </h4>
-              <!-- <p>{{campaign.subtitle}}</p> -->
+              <p></p>
             </campaign>
           </campaigns>
         </section>
         <controls></controls>
       </modal>
-      <modal :class="{show: showSets}" v-if="currentCampaign">
+      <modal :class="{show: showSets}" class="down" v-if="currentCampaign">
         <header>
           <button @click="HandleBackButtonClick(event)">
-            <icon class="chevron-left medium"></icon>
+            <icon class="chevron-down medium"></icon>
           </button>
         </header>
         <section>
@@ -230,6 +233,24 @@
         <stretch>
           <h2>Settings</h2>
           <divider></divider>
+          <section>
+            <leftright style="margin: 0; ">
+              <input onclick="this.select()" autocomplete="off" spellcheck="false" maxlength="18" type="text"
+                placeholder="Player name" v-model="tempPlayerName" tabindex="0"
+                @keyup.enter="playerName = tempPlayerName" />
+              <tinycontrols :class="{disabled: tempPlayerName === playerName}">
+                <button class="secondary" v-tabindex="tempPlayerName === playerName ? -1 : 0"
+                  @click="tempPlayerName = playerName">
+                  <icon class="x"></icon>
+                </button>
+                <button class="primary" v-tabindex="tempPlayerName === playerName ? -1 : 0"
+                  @click="playerName = tempPlayerName">
+                  <icon class="check"></icon>
+                </button>
+              </tinycontrols>
+            </leftright>
+          </section>
+          <divider></divider>
           <section class="puck">
             <!-- <h3>puck color</h3> -->
             <puck :class="{start: isFirstRun}"></puck>
@@ -252,7 +273,7 @@
             </setting>
           </section>
           <divider></divider>
-          <section v-if="!isPlaying" style="flex-direction: column;">
+          <section v-if="!isPlaying">
             <!-- <h3>advanced</h3> -->
             <leftright style="margin: 0">
               <button class="tertiary" @click="location.reload()">Reload App</button>
@@ -265,8 +286,8 @@
           &copy;{{thisYear}} <a href="https://bigtentgames.com" target="_blank">Big Tent Games</a> - v{{version}}
         </version>
       </modal>
-      <modal v-if="currentYesNo" :class="{show: showYesNo}" class="center">
-        <section>
+      <modal :class="{show: currentYesNo && showYesNo}" class="center up">
+        <section v-if="currentYesNo">
           <h1>{{currentYesNo.title}}
             <subtitle v-html="currentYesNo.message"></subtitle>
           </h1>
@@ -279,8 +300,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.060"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.060"></script>
+    <script src="/helpers/console-enhancer.js?4.0.061"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.061"></script>
   </body>
 
 </html>

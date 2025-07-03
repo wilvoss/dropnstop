@@ -32,7 +32,7 @@
   --minWidth: 340px;
   --maxHeight: 956px;
   --dividerColor: hsl(var(--hue), var(--saturation), 66%);
-  --whiteTextShadow: 0px -1px 0px hsl(var(--hue), var(--saturation), 35%);
+  --whiteTextShadow: 1px 1px 0px hsl(var(--highlightHue), 30%, 50%);
   --shadow: 2px 2px 0px hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.1);
   --shadowAlt: 2px 2px 0px hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.025);
 }
@@ -64,6 +64,7 @@ body {
 
 app {
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: start;
   border-top: 1px solid var(--appForeground);
@@ -175,6 +176,7 @@ overlay {
   justify-content: space-between;
   align-items: center;
   gap: 0px;
+  transition: 400ms cubic-bezier(0.4, 0, 0.6, 1) transform, opacity;
   margin: 0px auto;
   background: var(--appBackground);
   width: 100%;
@@ -183,6 +185,23 @@ overlay {
   height: calc(100%);
   max-height: var(--maxHeight);
 }
+
+.left {
+  transform: translate(-100%, 0px);
+}
+
+.right {
+  transform: translate(100%, 0px);
+}
+
+.down {
+  transform: translate(0px, 100%);
+}
+
+.up {
+  transform: translate(0px, -100%);
+}
+
 
 theater {
   justify-content: start;
@@ -464,7 +483,6 @@ puck.disabled {
 
 modal,
 overlay {
-  display: none;
   position: absolute;
   row-gap: 0px;
   flex-direction: column;
@@ -472,13 +490,14 @@ overlay {
   justify-content: space-between;
   align-items: center;
   transform: translateY(100%);
-  opacity: 0;
   z-index: 1000;
-  box-shadow: none;
   background: var(--appBackground);
   padding: 0;
   overflow-y: auto;
-  /* pointer-events: none; */
+}
+
+overlay {
+  box-shadow: none;
 }
 
 stretch {
@@ -500,14 +519,27 @@ modal.center controls {
 
 modal.show,
 overlay.show {
-  display: flex;
-  transform: translateY(0px);
-  opacity: 1;
+  /* display: flex; */
+  transform: translate(0px, 0px);
+  transition: 300ms cubic-bezier(0.165, 0.84, 0.44, 1) transform, opacity;
+  /* opacity: 1; */
   /* pointer-events: all; */
 }
 
 modal ohno {
   display: none;
+}
+
+welcome {
+  display: block;
+  cursor: pointer;
+  border: 1px solid white;
+  /* border-radius: 5px; */
+  background-color: hsl(var(--highlightHue), 30%, 50%);
+  padding: 8px 16px;
+  color: white;
+  text-shadow: var(--whiteTextShadow);
+
 }
 
 overlay {
@@ -570,11 +602,6 @@ set {
   color: hsl(var(--hue), 80%, 100%);
   text-shadow: var(--shadow);
 }
-
-campaign {
-  padding-bottom: 14px;
-}
-
 
 campaign.finished,
 set.finished,
@@ -762,6 +789,42 @@ difficulty value {
 difficulty.selected value {
   background-color: var(--appForeground);
   color: white;
+}
+
+input {
+  border: 1px solid var(--appForeground);
+  border-radius: 0px;
+  background: hsla(var(--hue), var(--saturation), 100%, .2);
+  padding: 13px 12px;
+  max-width: 200px;
+  font-size: 1em;
+}
+
+input:focus {
+  outline: none;
+  background: white;
+  /* optional: removes default blue outline */
+}
+
+input::placeholder {
+  opacity: 1; /* Firefox */
+  color: var(--appForegroundSemiTransparent);
+}
+
+tinycontrols {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+tinycontrols button {
+  padding: 10px;
+  font-size: 1em;
+  line-height: 1em;
+}
+
+tinycontrols button.primary icon {
+  background-color: hsl(var(--hue), 80%, 100%);
 }
 
 puckcolor {
@@ -986,7 +1049,6 @@ theater controls {
 
 button {
   justify-content: center;
-  transform: translateY(2px);
   cursor: pointer;
   margin: 0px;
   box-shadow: var(--shadow);
@@ -1040,7 +1102,7 @@ button.tertiary {
 
 button:active,
 button:focus {
-  transform: translateY(4px);
+  transform: translateY(2px);
 }
 
 theater controls button {

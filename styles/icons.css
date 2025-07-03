@@ -57,9 +57,34 @@ icon.cancel {
   -webkit-mask-image: url(../images/icon-cancel.svg);
 }
 
+icon.check {
+  mask-image: url(../images/icon-check.svg);
+  -webkit-mask-image: url(../images/icon-check.svg);
+}
+
+icon.x {
+  mask-image: url(../images/icon-x.svg);
+  -webkit-mask-image: url(../images/icon-x.svg);
+}
+
 icon.chevron-left {
   mask-image: url(../images/icon-chevron-left.svg);
   -webkit-mask-image: url(../images/icon-chevron-left.svg);
+}
+
+icon.chevron-right {
+  mask-image: url(../images/icon-chevron-right.svg);
+  -webkit-mask-image: url(../images/icon-chevron-right.svg);
+}
+
+icon.chevron-up {
+  mask-image: url(../images/icon-chevron-up.svg);
+  -webkit-mask-image: url(../images/icon-chevron-up.svg);
+}
+
+icon.chevron-down {
+  mask-image: url(../images/icon-chevron-down.svg);
+  -webkit-mask-image: url(../images/icon-chevron-down.svg);
 }
 
 icon.spinner {
