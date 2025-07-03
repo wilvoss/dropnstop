@@ -1,5 +1,5 @@
 var UseDebug = document.location.href.indexOf('staging') != -1 || document.location.href.indexOf('debug=true') != -1;
-UseDebug = false;
+
 function highlight(text, isolate) {
   isolate = isolate == undefined ? false : isolate;
   log(text, isolate, 'color:#97FF90;');
