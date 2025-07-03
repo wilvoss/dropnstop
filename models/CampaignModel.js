@@ -14,6 +14,7 @@ export function CampaignModel(spec = {}) {
     // this data is restored from the game state database
     finished: spec.finished ?? false,
     locked: spec.locked ?? true,
+    highestPossibleScore: spec.highestPossibleScore ?? 0,
     score: spec.score ?? 0,
     grade: spec.grade ?? null,
   };

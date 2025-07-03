@@ -7,27 +7,28 @@ export async function loadGameplayModules() {
   const { CampaignModel } = await import(`../models/CampaignModel.min.js?${version}`);
   const { ResultModel } = await import(`../models/ResultModel.min.js?${version}`);
   const { YesNoModel } = await import(`../models/YesNoModel.min.js?${version}`);
+  const { achievements } = await import(`../constants/achievements.min.js?${version}`);
 
   const grades = [
-    new GradeModel({ threshold: 100, grade: `S+`, title: `Drop Deity`, description: `Perfection incarnate!`, emoji: `🏆` }),
-    new GradeModel({ threshold: 95, grade: `S`, title: `Drop Dynamo`, description: `Flawless timing — unstoppable precision!`, emoji: `🎯` }),
-    new GradeModel({ threshold: 90, grade: `A+`, title: `Stop Sage`, description: `Elite-level reaction speed`, emoji: `🧘` }),
-    new GradeModel({ threshold: 85, grade: `A`, title: `Zone Zealot`, description: `Consistently landing in the sweet spot`, emoji: `🔍` }),
-    new GradeModel({ threshold: 80, grade: `B+`, title: `Rapid Reacter`, description: `Fast and reliable, on your way`, emoji: `⚡` }),
-    new GradeModel({ threshold: 75, grade: `B`, title: `Decent Dropper`, description: `Solid control, occasional missteps`, emoji: `📚` }),
-    new GradeModel({ threshold: 70, grade: `C+`, title: `Late Bloomer`, description: `Slow reactions but improving`, emoji: `🌱` }),
-    new GradeModel({ threshold: 65, grade: `C`, title: `Hesitant Handler`, description: `Second-guessing leads to misses`, emoji: `🤷` }),
-    new GradeModel({ threshold: 60, grade: `D+`, title: `Silly Stopper`, description: `Mostly missing the timing`, emoji: `🫳` }),
-    new GradeModel({ threshold: 55, grade: `D`, title: `Chaotic Clicker`, description: `More luck than skill`, emoji: `🎲` }),
-    new GradeModel({ threshold: 0, grade: `F`, title: `Miserable Masher`, description: `Drop Disaster!`, emoji: `💥` }),
+    new GradeModel({ threshold: 100, value: `S+`, title: `Drop Deity`, description: `Perfection incarnate!`, emoji: `🏆` }),
+    new GradeModel({ threshold: 95, value: `S`, title: `Drop Dynamo`, description: `Flawless timing — unstoppable precision!`, emoji: `🎯` }),
+    new GradeModel({ threshold: 90, value: `A+`, title: `Stop Sage`, description: `Elite-level reaction speed`, emoji: `🧘` }),
+    new GradeModel({ threshold: 85, value: `A`, title: `Zone Zealot`, description: `Consistently landing in the sweet spot`, emoji: `🔍` }),
+    new GradeModel({ threshold: 80, value: `B+`, title: `Rapid Reacter`, description: `Fast and reliable, on your way`, emoji: `⚡` }),
+    new GradeModel({ threshold: 75, value: `B`, title: `Decent Dropper`, description: `Solid control, occasional missteps`, emoji: `📚` }),
+    new GradeModel({ threshold: 70, value: `C+`, title: `Late Bloomer`, description: `Slow reactions but improving`, emoji: `🌱` }),
+    new GradeModel({ threshold: 65, value: `C`, title: `Hesitant Handler`, description: `Second-guessing leads to misses`, emoji: `🤷` }),
+    new GradeModel({ threshold: 60, value: `D+`, title: `Silly Stopper`, description: `Mostly missing the timing`, emoji: `🫳` }),
+    new GradeModel({ threshold: 55, value: `D`, title: `Chaotic Clicker`, description: `More luck than skill`, emoji: `🎲` }),
+    new GradeModel({ threshold: 0, value: `F`, title: `Miserable Masher`, description: `Drop Disaster!`, emoji: `💥` }),
   ];
 
   // prettier-ignore
   const difficulties = [
-    new DifficultyModel({ name: 'Easy', height: 20, speed: 900, }),
-    new DifficultyModel({ name: 'Normal', height: 12, width: 15, speed: 1400, selected: true, }),
-    new DifficultyModel({ name: 'Hard', height: 8, width: 11, speed: 2000, }),
-    new DifficultyModel({ name: 'Ultra', height: 4, width: 7, speed: 3000, }),
+    new DifficultyModel({ id: 0, name: 'Easy', height: 20, speed: 900, }),
+    new DifficultyModel({ id: 1, name: 'Normal', height: 12, width: 15, speed: 1400, selected: true, }),
+    new DifficultyModel({ id: 2, name: 'Hard', height: 8, width: 11, speed: 2000, }),
+    new DifficultyModel({ id: 3, name: 'Ultra', height: 4, width: 7, speed: 3000, }),
   ];
 
   var campaigns = [
@@ -46,7 +47,7 @@ export async function loadGameplayModules() {
           locked: false,
           // prettier-ignore
           stages: [
-            new StageModel({ kx: 215, ty: 42, th: 170, showPuck: true, name: `you control gravity`, description: `the puck falls while you <b>PRESS</b> & <b>HOLD</b> the "drop" button at the bottom of the screen`, difficulty: new DifficultyModel({ speed: 200 }) }),
+            new StageModel({ kx: 215, ty: 42, th: 170, showPuck: true, name: `you control gravity`, description: `the puck falls while you <b>PRESS</b> & <b>HOLD</b> the "drop" button at the bottom`, difficulty: new DifficultyModel({ speed: 200 }) }),
             new StageModel({ kx: 20, ty: 200, th: 40, showPuck: true, name: `you get 3 chances`, description: `each miss lowers the dropzone's value and your overall score potential` }),
             new StageModel({ kx: 420, ty: 100, th: 120, name: `hidden puck!`, description: `sometimes the puck appears only while you <b>press</b> & <b>hold</b> the "drop" button` }),
             new StageModel({ kx: 340, ty: 220, th: 170, showPuck: true, hideTarget: true, name: `hidden dropzone!`, description: `the dropzone can also be hidden from view until you <b>press</b> & <b>hold</b> the "drop" button` }),
@@ -61,7 +62,6 @@ export async function loadGameplayModules() {
       isEndless: true,
       locked: false,
     }),
-
     new CampaignModel({
       id: 2,
       name: `Precision Primer`,
@@ -71,7 +71,7 @@ export async function loadGameplayModules() {
       locked: false,
       sets: [
         new SetModel({
-          name: `Steady Starts`,
+          name: `Set 1`,
           description: `Targets appear in a comfort zone`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -87,7 +87,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Pulse Shift`,
+          name: `Set 2`,
           description: `You'll need to adjust to the rhythm`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -104,7 +104,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Spacing Stretch`,
+          name: `Set 3`,
           description: `Target position creeps wider`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -122,7 +122,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Anchor Break`,
+          name: `Set 4`,
           description: `Rhythm drifts as placements move high and low`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -141,7 +141,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Altitude Flux`,
+          name: `Set 5`,
           description: `Big swings in position — focus or fumble`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -161,7 +161,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Soft Falls, Hard Landings`,
+          name: `Set 6`,
           description: `The finale arrives — narrow, fast, and high`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -191,7 +191,7 @@ export async function loadGameplayModules() {
       locked: false,
       sets: [
         new SetModel({
-          name: `Measured Drops`,
+          name: `Set 1`,
           description: `Shrink the height, feel the rhythm`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -212,7 +212,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Slack Breaker`,
+          name: `Set 2`,
           description: `The safety net frays`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -233,7 +233,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `No Floor, No Ceiling`,
+          name: `Set 3`,
           description: `You’ve got the range — now use it`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -254,7 +254,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Thin Air`,
+          name: `Set 4`,
           description: `Small targets — big control`,
           difficulty: difficulties[0],
           showPuck: true,
@@ -275,7 +275,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Now You See It`,
+          name: `Set 5`,
           description: `Now you don't`,
           difficulty: difficulties[0],
           showPuck: true, // overridden at stage level
@@ -296,7 +296,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Leaps of Faith`,
+          name: `Set 6`,
           description: `Hidden puck. Little dropzones. Nail the drop.`,
           difficulty: difficulties[0],
           showPuck: false,
@@ -327,7 +327,7 @@ export async function loadGameplayModules() {
       locked: false,
       sets: [
         new SetModel({
-          name: `Peripheral Vision`,
+          name: `Set 1`,
           description: `The puck’s hidden, but the target guides you.`,
           difficulty: difficulties[0],
           showPuck: false,
@@ -348,7 +348,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `On Faith`,
+          name: `Set 2`,
           description: `The world dims a bit more`,
           difficulty: difficulties[0],
           showPuck: false,
@@ -369,7 +369,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Feeling For Form`,
+          name: `Set 3`,
           description: `Confidence meets uncertainty`,
           difficulty: difficulties[0],
           showPuck: false,
@@ -390,7 +390,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Vanishing Points`,
+          name: `Set 4`,
           description: `Timing's tighter, things disappear`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -411,7 +411,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Hidden Geometry`,
+          name: `Set 5`,
           description: `You're flying half-blind now`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -432,7 +432,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Lucid Guesswork`,
+          name: `Set 6`,
           description: `Your intuition now does the aiming`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -463,7 +463,7 @@ export async function loadGameplayModules() {
       locked: true,
       sets: [
         new SetModel({
-          name: `False Comforts`,
+          name: `Set 1`,
           description: `Big targets, relax... for now`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -484,7 +484,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Cracks in Focus`,
+          name: `Set 2`,
           description: `Your confidence will is fleeting`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -505,7 +505,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Breaking Tension`,
+          name: `Set 3`,
           description: `The center is gone — adjust or fall`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -526,7 +526,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `The Compression`,
+          name: `Set 4`,
           description: `Nothing here breathes, least of all you`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -547,7 +547,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Thread the Drop`,
+          name: `Set 5`,
           description: `Tall walls and sharp falls`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -568,7 +568,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `The Six-Pixel Rule`,
+          name: `Set 6`,
           description: `One edge, one chance, don't hit bottom.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -599,7 +599,7 @@ export async function loadGameplayModules() {
       locked: true,
       sets: [
         new SetModel({
-          name: `Fraying Lines`,
+          name: `Set 1`,
           description: `Nothing’s broken. Not yet.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -619,7 +619,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Asymmetric Echoes`,
+          name: `Set 2`,
           description: `What seemed safe repeats... but off-center.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -639,7 +639,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Distorted Rhythm`,
+          name: `Set 3`,
           description: `Drop, flinch, recover. Drop again.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -659,7 +659,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Glitched Horizon`,
+          name: `Set 4`,
           description: `Vision flickers. Intuition hesitates.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -679,7 +679,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Jitter Logic`,
+          name: `Set 5`,
           description: `Targets shudder. So does timing.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -699,7 +699,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Tremor Parade`,
+          name: `Set 6`,
           description: `No patterns. No help. Just instinct.`,
           difficulty: difficulties[1],
           showPuck: false,
@@ -729,7 +729,7 @@ export async function loadGameplayModules() {
       locked: true,
       sets: [
         new SetModel({
-          name: `Perfect Is a Lie`,
+          name: `Set 1`,
           description: `Precision comforts you, but not really`,
           difficulty: difficulties[2],
           showPuck: false,
@@ -750,7 +750,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Symmetry Collapse`,
+          name: `Set 2`,
           description: `The pattern’s there — until it isn’t`,
           difficulty: difficulties[3],
           showPuck: false,
@@ -771,7 +771,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Noise Commands`,
+          name: `Set 3`,
           description: `No tempo, no symmetry — just drop`,
           difficulty: difficulties[3],
           showPuck: false,
@@ -792,7 +792,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Crack Theory`,
+          name: `Set 4`,
           description: `The pattern is the bait`,
           difficulty: difficulties[3],
           showPuck: false,
@@ -813,7 +813,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Friction State`,
+          name: `Set 5`,
           description: `Goood luck`,
           difficulty: difficulties[3],
           showPuck: false,
@@ -834,7 +834,7 @@ export async function loadGameplayModules() {
           ],
         }),
         new SetModel({
-          name: `Shatterpoint`,
+          name: `Set 6`,
           description: `No logic survives the fall`,
           difficulty: difficulties[3],
           showPuck: false,
@@ -862,6 +862,7 @@ export async function loadGameplayModules() {
     grades,
     difficulties,
     campaigns,
+    achievements,
     DifficultyModel,
     GradeModel,
     StageModel,

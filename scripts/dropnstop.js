@@ -59,6 +59,25 @@ LoadAllModules().then((modules) => {
         campaigns: modules.campaigns,
         currentCampaign: null,
         currentSet: null,
+        successThreshold: 50,
+        achievements: {
+          first_drop: false,
+          primer_complete: false,
+          edge_complete: false,
+          sight_complete: false,
+          collapse_complete: false,
+          unraveled_complete: false,
+          shattered_complete: false,
+          all_campaigns: false,
+          perfect_stage: false,
+          flawless_set: false,
+          no_misses: false,
+          ultra_clear: false,
+          hidden_hero: false,
+          zen_100: false,
+          comeback: false,
+          persistent: false,
+        },
         potentialSet: null,
         currentStage: null,
         previousCampaign: null,
@@ -68,7 +87,7 @@ LoadAllModules().then((modules) => {
         puckY: 0,
         puckWidth: 20,
         puckHeight: 10,
-        goodGradeThreshold: 84,
+        goodGradeThreshold: modules.grades[modules.grades.length - 2].threshold,
         trailWidth: 20,
         trailHeight: 10,
         targetX: 0,
@@ -279,7 +298,7 @@ LoadAllModules().then((modules) => {
 
         // Handle set/campaign completion and interstitial in one place
         if (!this.currentCampaign.isEndless && this.IsSetComplete(this.currentSet)) {
-          note('Set complete, Unlocking next set');
+          note('Set complete, unlocking next set if earned');
           this.lock = true;
 
           this.currentSet.finished = true;
@@ -288,19 +307,20 @@ LoadAllModules().then((modules) => {
           this.currentStage.attempts = currentResult.attempts;
           this.showEndSet = true; // Only show end game if campaign is complete
 
-          this.UnlockNextSet(this.currentCampaign, this.currentSet);
-
-          if (this.IsCampaignComplete(this.currentCampaign)) {
-            this.currentCampaign.finished = true;
-
-            this.UnlockNextCampaign(this.currentCampaign);
-          }
-
           const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
           this.SaveGameState();
           this.UpdateScores();
 
-          setTimeout(() => this.CreateConfetti(colorConfetti), 300);
+          if (this.currentSet.passed) {
+            this.UnlockNextSet(this.currentCampaign, this.currentSet);
+
+            if (this.IsCampaignComplete(this.currentCampaign)) {
+              this.currentCampaign.finished = true;
+
+              this.UnlockNextCampaign(this.currentCampaign);
+            }
+            setTimeout(() => this.CreateConfetti(colorConfetti), 300);
+          }
         }
       },
       SetScale() {
@@ -619,7 +639,7 @@ LoadAllModules().then((modules) => {
             this.NewYesNo('Replay?', 'playAgain', 'This will start the tutorial over');
             return;
           }
-          this.NewYesNo('Replay?', 'playAgain', `This will erase the saved score for  ${_set.name}`);
+          this.NewYesNo('Replay?', 'playAgain', `This will erase the saved score for  <br /><b>"${_set.name}"</b>`);
           return;
         }
 
@@ -758,20 +778,55 @@ LoadAllModules().then((modules) => {
       UpdateScores() {
         note('Updating scores for campaigns and sets');
         this.campaigns.forEach((campaign) => {
-          if (campaign.sets && Array.isArray(campaign.sets)) {
-            campaign.sets.forEach((set) => {
-              if (set.stages && Array.isArray(set.stages)) {
-                set.stages.forEach((stage) => {
-                  stage.score = this.GetScoreForStage(stage);
-                });
-                set.score = set.stages.reduce((sum, stage) => sum + (stage.score || 0), 0);
+          if (!campaign.isTutorial && !campaign.isEndless) {
+            if (campaign.sets && Array.isArray(campaign.sets)) {
+              campaign.sets.forEach((set) => {
+                if (set.stages && Array.isArray(set.stages)) {
+                  set.stages.forEach((stage) => {
+                    stage.score = this.GetScoreForStage(stage);
+                  });
+                  set.score = set.stages.reduce((sum, stage) => sum + (stage.score || 0), 0);
+
+                  // Calculate percent of highest possible score
+                  set.highestPossibleScore = this.GetHighestPossibleScoreForSet(set);
+                  let percent = set.highestPossibleScore > 0 ? (set.score / set.highestPossibleScore) * 100 : 0;
+                  percent = Math.round(percent);
+
+                  // Assign grade only if set is finished
+                  if (set.finished) {
+                    const setGrade = this.grades.find((g) => percent >= g.threshold) || this.grades[this.grades.length - 1];
+                    set.grade = setGrade.value;
+                    set.percent = percent;
+                    set.passed = set.percent >= this.grades[this.grades.length - 2].threshold;
+                  } else {
+                    set.grade = null;
+                    set.passed = false;
+                  }
+                } else {
+                  set.score = 0;
+                  set.percent = 0;
+                  set.passed = false;
+                  set.grade = null;
+                }
+              });
+
+              campaign.score = campaign.sets.reduce((sum, set) => sum + (set.score || 0), 0);
+
+              // Calculate percent of highest possible score for campaign
+              campaign.highestPossibleScore = this.GetHighestPossibleScoreForCampaign(campaign);
+              let percent = campaign.highestPossibleScore > 0 ? (campaign.score / campaign.highestPossibleScore) * 100 : 0;
+
+              // Assign campaign grade only if campaign is finished
+              if (campaign.finished) {
+                const campaignGrade = this.grades.find((g) => percent >= g.threshold) || this.grades[this.grades.length - 1];
+                campaign.grade = campaignGrade.value;
               } else {
-                set.score = 0;
+                campaign.grade = null;
               }
-            });
-            campaign.score = campaign.sets.reduce((sum, set) => sum + (set.score || 0), 0);
-          } else {
-            campaign.score = 0;
+            } else {
+              campaign.score = 0;
+              campaign.grade = null;
+            }
           }
         });
       },
@@ -1009,12 +1064,10 @@ LoadAllModules().then((modules) => {
           campaign.locked = false;
           campaign.finished = true;
           campaign.score = 1000; // Set a high score for debug
-          campaign.grade = 'A'; // Set a grade for UseDebug
           campaign.sets.forEach((set) => {
             set.locked = false;
             set.finished = true;
             set.score = 1000; // Set a high score for UseDebug
-            set.grade = 'A'; // Set a grade for UseDebug
             set.stages.forEach((stage) => {
               stage.finished = true;
               stage.success = true;
@@ -1032,7 +1085,6 @@ LoadAllModules().then((modules) => {
             codeCampaign.locked = savedCampaign.locked;
             codeCampaign.finished = savedCampaign.finished;
             codeCampaign.score = savedCampaign.score;
-            codeCampaign.grade = savedCampaign.grade;
             // Merge sets
             if (codeCampaign.sets && savedCampaign.sets) {
               codeCampaign.sets.forEach((codeSet, setIdx) => {
@@ -1041,7 +1093,6 @@ LoadAllModules().then((modules) => {
                   codeSet.locked = savedSet.locked;
                   codeSet.finished = savedSet.finished;
                   codeSet.score = savedSet.score;
-                  codeSet.grade = savedSet.grade;
                   // Merge stages
                   if (codeSet.stages && savedSet.stages) {
                     codeSet.stages.forEach((codeStage, stageIdx) => {
@@ -1051,7 +1102,6 @@ LoadAllModules().then((modules) => {
                         codeStage.success = savedStage.success;
                         codeStage.attempts = savedStage.attempts;
                         codeStage.score = savedStage.score;
-                        codeStage.grade = savedStage.grade;
                       }
                     });
                   }
@@ -1325,10 +1375,7 @@ LoadAllModules().then((modules) => {
         return this.currentSet && this.currentSet.stages.length > 0 && this.currentSet.stages.indexOf(this.currentStage) === 0;
       },
       nextSet() {
-        return this.UnlockNextSet(this.currentCampaign, this.currentSet);
-      },
-      nextCampaign() {
-        return this.UnlockNextCampaign(this.currentCampaign);
+        return this.GetNextSet(this.currentCampaign, this.currentSet);
       },
       fontScale() {
         return `${1 / this.stageScale}`;

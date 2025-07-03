@@ -12,8 +12,9 @@
   --oppositeLuminosity: 17%;
   --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), var(--mainLuminosity));
-  --appBackgroundSemiTransparent: hsla(var(--hue), var(--saturation), var(--mainLuminosity), 0);
+  --appBackgroundSemiTransparent: hsla(var(--hue), var(--saturation), var(--mainLuminosity), .4);
   --appForeground: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
+  --appForegroundSemiTransparent: hsl(var(--hue), var(--saturation), var(--oppositeLuminosity), .2);
   --appForegroundDark: hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) / 1.5));
   --appForegroundHighlight: hsl(var(--hue), 60%, 80%);
   --appForegroundDisabled: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.5);
@@ -99,7 +100,7 @@ h1 {
 
 subtitle {
   display: block;
-  margin-top: var(--defaultGap);
+  margin-top: 0;
   padding: 0 var(--defaultGap);
   font-weight: normal;
   line-height: 1.5em;
@@ -353,6 +354,7 @@ stats grade {
   color: hsl(var(--hue), var(--saturation), 100%);
   font-weight: bold;
   font-size: 3em;
+  line-height: 1em;
   font-family: var(--funfont);
   text-align: center;
 }
@@ -362,7 +364,7 @@ stats h1 {
 }
 
 stats h3 {
-  margin: var(--defaultGap) 0 4px 0;
+  margin: var(--defaultGap) 0 0;
 }
 
 stat {
@@ -370,6 +372,7 @@ stat {
   justify-content: space-between;
   align-items: end;
   width: 100%;
+  line-height: 1.5em;
   text-transform: lowercase;
 }
 
@@ -379,15 +382,15 @@ stats stat.emphasize {
   padding-bottom: 7px;
 }
 
-stats stat.emphasize span {
-  font-weight: bold;
-  font-family: var(--funfont);
-  text-shadow: var(--shadowAlt);
-  text-transform: uppercase;
-}
-
 stat span {
   float: right;
+  /* line-height: 1em; */
+}
+
+stats stat.emphasize span {
+  /* font-family: var(--funfont); */
+  /* text-shadow: var(--shadowAlt); */
+  font-weight: bold;
 }
 
 puck {
@@ -451,6 +454,7 @@ modal puck,
 .stopped puck.disabled,
 puck.disabled {
   opacity: 0.3;
+  border-width: 0px;
 }
 
 .stopped puck tail {
@@ -487,6 +491,10 @@ stretch {
 
 modal.center {
   justify-content: center;
+}
+
+modal.center controls {
+  width: 100%;
 }
 
 modal.show,
@@ -543,6 +551,7 @@ sets {
   width: 100%;
 }
 
+
 campaign,
 set {
   display: flex;
@@ -554,16 +563,65 @@ set {
   cursor: pointer;
   box-shadow: var(--shadow), inset var(--shadow);
   border: 1px solid var(--appForeground);
+  background: var(--appForeground);
   padding: 14px var(--defaultGap) 10px;
   width: calc(100% - var(--bigGap));
+  color: hsl(var(--hue), 80%, 100%);
   text-shadow: var(--shadow);
 }
 
+campaign {
+  padding-bottom: 14px;
+}
+
+
+campaign.finished,
+set.finished,
+campaign.passed,
+set.passed,
 campaign.locked,
 set.locked {
-  opacity: 0.8;
-  border-style: dashed;
+  opacity: 1;
+  box-shadow: none;
+  border: none;
+  background: none;
   pointer-events: none;
+  color: var(--appForeground);
+  font-style: italic;
+}
+
+campaign.finished.passed,
+set.finished.passed {
+  /* background: var(--highlightColor); */
+  font-style: unset
+}
+
+
+campaign.locked,
+set.locked {
+  opacity: 1;
+  box-shadow: none;
+  border: 1px solid var(--appForegroundSemiTransparent);
+  background: repeating-linear-gradient(45deg, var(--appForegroundSemiTransparent) 0px, var(--appForegroundSemiTransparent) 1px, transparent 1px, transparent 10px);
+  padding-left: calc(var(--defaultGap) - 4px);
+  width: calc(100% - var(--bigGap)) + 4px;
+  pointer-events: none;
+  color: var(--appForeground);
+  font-style: unset;
+}
+
+campaign.finished,
+set.finished {
+  box-shadow: var(--shadow), inset var(--shadow);
+  border: 1px solid var(--appForeground);
+  pointer-events: all;
+}
+
+campaign.passed,
+set.passed {
+  box-shadow: var(--shadow), inset var(--shadow);
+  border: 1px solid var(--appForeground);
+  pointer-events: all;
 }
 
 campaign h4,
@@ -581,14 +639,16 @@ set h4 {
   align-items: end;
   gap: 4px;
   width: 100%;
+  font-weight: 200;
   line-height: 1.1em;
   text-align: left;
+  text-shadow: var(--shadow);
 }
 
 campaign h4 name,
 set h4 name {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: end;
   align-self: center;
   gap: 2px;
@@ -599,15 +659,20 @@ campaign h4 status,
 set h4 status {
   display: flex;
   font-weight: 200;
+  text-shadow: var(--shadowAlt);
   white-space: nowrap;
 }
 
-campaign.finished h4 name,
+campaign h4 status {
+  font-weight: bold;
+}
+
+/* campaign.finished h4 name,
 set.finished h4 name,
 campaign.locked h4 name,
 set.locked h4 name {
   font-weight: 200;
-}
+} */
 
 campaign.finished h4 status,
 set.finished h4 status {
@@ -772,8 +837,8 @@ target.hide {
 }
 
 .ended target {
-  opacity: 0.3;
-  border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0.4);
+  opacity: 0.2;
+  border-color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 0);
 }
 
 .ended score {
@@ -910,6 +975,10 @@ theater controls {
   width: 100%;
 }
 
+.ended theater controls {
+  justify-content: center;
+}
+
 button {
   justify-content: center;
   transform: translateY(2px);
@@ -998,8 +1067,12 @@ theater controls button.highlight {
 
 overlay {
   justify-content: center;
+  background: none;
+}
+
+overlay.meta {
+  backdrop-filter: blur(2px);
   background: var(--appBackgroundSemiTransparent);
-  /* pointer-events: all; */
 }
 
 overlay instructions,
@@ -1013,7 +1086,7 @@ overlay announcement {
   border-radius: 10px;
   background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
   padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
-  width: 100%;
+  /* width: 100%; */
   max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
   color: var(--highlightColor);
   font-weight: bold;
@@ -1025,6 +1098,7 @@ overlay announcement {
 
 overlay instructions span,
 overlay announcement span {
+  max-width: 300px;
   color: hsl(var(--hue), 80%, 100%);
   font-weight: 200;
   font-family: var(--mainFont);
@@ -1087,7 +1161,6 @@ canvas {
 @media only screen and (max-width: 500px) {
   :root {
     --maxWidth: 100%;
-    --defaultGap: 12px;
   }
 
   body {
@@ -1101,11 +1174,6 @@ canvas {
 
   modal {
     margin: auto;
-  }
-
-
-  leftright {
-    gap: var(--defaultGap);
   }
 
   app {

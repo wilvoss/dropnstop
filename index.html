@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.054" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.054" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.055" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.055" media="screen" />
   </head>
 
   <body>
@@ -78,50 +78,43 @@
               </span>
             </value>
           </target>
-          <splat :class="{show: showSplat}">
+          <splat :class="{show: showSplat && instructions === ''}">
             <words>hidden dropzone!</words>
             <icon class="splat gigantic"></icon>
           </splat>
           <info>
-            <stats v-if="results.length > 0 && showEndSet" :style="{maxWidth: (fontScale * 300) + 'px'}"
-              @click="CreateConfetti(finalGrade.threshold > goodGradeThreshold)">
-              <h3>{{currentSet.name}}</h3>
-              <grade>complete</grade>
-              <h1>{{currentCampaign.isTutorial ? '🏆' : finalGrade.emoji}}</h1>
-              <h2>{{currentCampaign.isTutorial ? 'bravo!' :finalGrade.title}}
-                <subtitle>{{currentCampaign.isTutorial ? 'You\'ve completed the tutorial' : finalGrade.description}}
-                </subtitle>
-              </h2>
-              <stat v-if="!currentCampaign.isTutorial">grade<span>{{finalGrade.grade}}</span></stat>
-              <stat class="emphasize">points earned<span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
-              <stat>possible points <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat>
-
-              <!-- <h3>hits</h3> -->
-              <stat>hits on 1st try<span>{{hitsOnOne}}</span></stat>
-              <stat>hits on 2nd try<span>{{hitsOnTwo}}</span></stat>
-              <stat>hits on 3rd try<span>{{hitsOnThree}}</span></stat>
-
-              <!-- <h3>misses</h3> -->
-              <stat>misses<span>{{misses}}</span></stat>
-              <stat>% above<span>{{missedAbove}}</span></stat>
-              <stat>% below<span>{{missedBelow}}</span></stat>
+            <stats v-if="results.length > 0 && showEndSet" :style="{maxWidth: (fontScale * 300) + 'px'}">
+              <h3>{{currentCampaign.isTutorial ? 'Tutorial' : currentSet.name}}</h3>
+              <grade>{{currentSet.passed || currentCampaign.isTutorial ? 'done!' : 'fail!'}}</grade>
+              <stat class="emphasize" v-if="!currentCampaign.isTutorial">
+                set title
+                <span>
+                  {{finalGrade.emoji}}
+                  {{finalGrade.title}}
+                </span>
+              </stat>
+              <stat>points earned<span>{{Intl.NumberFormat(userLocale).format(score)}}</span></stat>
+              <stat>highest possible <span>{{Intl.NumberFormat(userLocale).format(highestPossibleScore)}}</span></stat>
+              <stat v-if="!currentCampaign.isTutorial">final score<span>{{currentSet.percent}}%</span>
+              </stat>
             </stats>
           </info>
         </stage>
 
         <controls>
           <button tabindex="0" id="buttonRetryStage" key="buttonRetryStage"
+            :class="{hide: currentCampaign && currentCampaign.isTutorial}"
             @click="HandleSelectSetButtonClick(event, currentSet)"
-            v-if="currentSet && currentSet.finished">Retry</button>
+            v-if="currentSet && currentSet.finished && !currentSet.passed">Retry</button>
           <button tabindex="0" id="buttonNextStage" key="buttonNextStage" @pointerup="HandleActionButton(event, 'next')"
             class="action" v-if="!showEndSet"
             :class="{hide:  lock || isReady || !isStopped, highlight: currentStage && currentStage.finished}">
             {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
           </button>
+          <button tabindex="0" key="buttonNextSet" @click="HandleNextButtonClick(event)" class="highlight"
+            v-if="currentSet && currentSet.passed && showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
           <button tabindex="0" id="buttonQuit" key="buttonQuit" @click="HandleOkayButtonClick"
             v-if="currentSet && currentSet.finished">Quit</button>
-          <button tabindex="0" key="buttonNextSet" @click="HandleNextButtonClick(event)" class="highlight"
-            v-if="showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
           <button tabindex="0" id="buttonDrop" key="buttonDrop"
             v-if="!showEndSet || isLastSet || (currentCampaign && currentCampaign.finished)"
             :class="{hide: showEndSet || lock || (isFirstRun && showAnnouncement), disabled: isStopped, blink: !showAnnouncement && isFirstRun}"
@@ -130,8 +123,8 @@
         </controls>
       </theater>
       <overlay @click="HandleAnnouncementClick"
-        v-if="!showEndSet && isPlaying && (announcement !== '' || instructions !== '')" class="meta"
-        :class="{show: showOverlay}">
+        v-if="!showEndSet && isPlaying && (announcement !== '' || instructions !== '')"
+        :class="{show: showOverlay, meta: !currentCampaign.isTutorial}">
         <announcement v-if="announcement !== ''" v-html="announcement">
         </announcement>
         <instructions v-if="instructions !== ''" v-html="instructions">
@@ -178,22 +171,24 @@
           <campaigns>
             <campaign v-for="(campaign, index) in campaigns" :key="index"
               v-if="!campaign.isTutorial && !campaign.isEndless"
-              :class="{locked: campaign.locked, finished: campaign.finished}" @click="StartCampaign(campaign)">
+              :class="{passed: campaign.finished, locked: campaign.locked, finished: campaign.finished}"
+              @click="StartCampaign(campaign)">
               <h4>
                 <name>
-                  {{campaign.name}}
                   <icon class="lock tiny" v-if="campaign.locked"></icon>
+                  {{campaign.name}}
                 </name>
-                <status>{{campaign.finished ? Intl.NumberFormat(userLocale).format(campaign.score) + ' pts' : ''}}
+                <status v-if="!campaign.locked">
+                  {{campaign.finished ? Intl.NumberFormat(userLocale).format(campaign.score) + ' pts' : 'ready!'}}
                 </status>
               </h4>
-              <p>{{campaign.subtitle}}</p>
+              <!-- <p>{{campaign.subtitle}}</p> -->
             </campaign>
           </campaigns>
         </section>
         <controls></controls>
       </modal>
-      <modal v-if="currentCampaign" :class="{show: showSets}">
+      <modal :class="{show: showSets}" v-if="currentCampaign">
         <header>
           <button @click="HandleBackButtonClick(event)">
             <icon class="chevron-left medium"></icon>
@@ -204,20 +199,23 @@
           <sets v-if="currentCampaign.sets && currentCampaign.sets.length > 0">
             <set v-for="(set, index) in currentCampaign.sets" :key="index"
               @click="HandleSelectSetButtonClick(event, set)"
-              :class="{selected: currentSet && currentSet.id == set.id, locked: set.locked, finished: set.finished}">
+              :class="{passed: set.passed, selected: currentSet && currentSet.id == set.id, locked: set.locked, finished: set.finished}">
               <h4>
                 <name>
-                  {{set.name}}
                   <icon class="lock tiny" v-if="set.locked"></icon>
+                  {{set.name}}
                 </name>
                 <status v-if="currentCampaign.isTutorial">
                   {{set.finished ? 'Done!' : set.stages.length +' levels'}}
                 </status>
                 <status v-if="!currentCampaign.isTutorial">
-                  {{set.finished ? Intl.NumberFormat(userLocale).format(set.score) + ' pts' : set.stages.length +' levels'}}
+                  {{set.finished ? (set.percent > 50 ? 'done!' : 'Failed') : set.locked ? '' : set.stages.length +' levels'}}
                 </status>
               </h4>
-              <p>{{set.subtitle}}</p>
+              <p v-if="set.finished">{{ Intl.NumberFormat(userLocale).format(set.percent) + '%'  }}
+                ({{set.score}} / {{set.highestPossibleScore + ' pts'}})
+              </p>
+              <p v-if="!set.finished"></p>
             </set>
           </sets>
         </section>
@@ -281,8 +279,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.054"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.054"></script>
+    <script src="/helpers/console-enhancer.js?4.0.055"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.055"></script>
   </body>
 
 </html>
