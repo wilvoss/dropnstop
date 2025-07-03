@@ -17,5 +17,6 @@ export function SetModel(spec = {}) {
     grade: spec.grade ?? null,
     percent: spec.percent ?? 0,
     passed: spec.passed ?? false,
+    isDirty: spec.isDirty ?? false,
   };
 }

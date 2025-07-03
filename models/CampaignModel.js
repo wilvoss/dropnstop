@@ -17,5 +17,6 @@ export function CampaignModel(spec = {}) {
     highestPossibleScore: spec.highestPossibleScore ?? 0,
     score: spec.score ?? 0,
     grade: spec.grade ?? null,
+    isDirty: spec.isDirty ?? false,
   };
 }

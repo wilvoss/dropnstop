@@ -299,6 +299,7 @@ version {
   margin-top: var(--bigGap);
   margin-bottom: var(--defaultGap);
   font-size: 0.7em;
+  text-transform: initial;
 }
 
 version a {
@@ -580,7 +581,9 @@ set.finished,
 campaign.passed,
 set.passed,
 campaign.locked,
-set.locked {
+campaign.dirty,
+set.locked,
+set.dirty {
   opacity: 1;
   box-shadow: none;
   border: none;
@@ -611,7 +614,9 @@ set.locked {
 }
 
 campaign.finished,
-set.finished {
+campaign.dirty,
+set.finished,
+set.dirty {
   box-shadow: var(--shadow), inset var(--shadow);
   border: 1px solid var(--appForeground);
   pointer-events: all;
@@ -681,7 +686,7 @@ set.finished h4 status {
 
 campaign p,
 set p {
-  font-weight: 200;
+  font-weight: 400;
   font-size: 0.9em;
 }
 

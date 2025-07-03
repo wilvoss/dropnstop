@@ -316,6 +316,7 @@ LoadAllModules().then((modules) => {
 
             if (this.IsCampaignComplete(this.currentCampaign)) {
               this.currentCampaign.finished = true;
+              this.currentCampaign.isDirty = true;
 
               this.UnlockNextCampaign(this.currentCampaign);
             }
@@ -645,12 +646,10 @@ LoadAllModules().then((modules) => {
 
         this.SelectSet(_set);
       },
-      SelectSet(_set, _ignoreConfirm = false) {
+      SelectSet(_set) {
         log('Select set: ' + _set.name);
         this.potentialSet = null;
-
         this.currentCampaign.finished = false;
-
         this.currentSet = _set;
         this.currentSet.selected = true;
 
@@ -798,6 +797,7 @@ LoadAllModules().then((modules) => {
                     set.grade = setGrade.value;
                     set.percent = percent;
                     set.passed = set.percent >= this.grades[this.grades.length - 2].threshold;
+                    set.isDirty = true;
                   } else {
                     set.grade = null;
                     set.passed = false;
@@ -818,6 +818,7 @@ LoadAllModules().then((modules) => {
 
               // Assign campaign grade only if campaign is finished
               if (campaign.finished) {
+                campaign.isDirty = true;
                 const campaignGrade = this.grades.find((g) => percent >= g.threshold) || this.grades[this.grades.length - 1];
                 campaign.grade = campaignGrade.value;
               } else {
@@ -1085,6 +1086,7 @@ LoadAllModules().then((modules) => {
             codeCampaign.locked = savedCampaign.locked;
             codeCampaign.passed = savedCampaign.passed;
             codeCampaign.finished = savedCampaign.finished;
+            codeCampaign.isDirty = savedCampaign.isDirty;
             codeCampaign.score = savedCampaign.score;
             // Merge sets
             if (codeCampaign.sets && savedCampaign.sets) {
@@ -1094,6 +1096,7 @@ LoadAllModules().then((modules) => {
                   codeSet.locked = savedSet.locked;
                   codeSet.finished = savedSet.finished;
                   codeSet.passed = savedSet.passed;
+                  codeSet.isDirty = savedSet.isDirty;
                   codeSet.score = savedSet.score;
                   // Merge stages
                   if (codeSet.stages && savedSet.stages) {
@@ -1132,6 +1135,7 @@ LoadAllModules().then((modules) => {
           campaign.score = 0;
           campaign.grade = null;
           campaign.passed = false;
+          campaign.isDirty = false;
 
           campaign.sets.forEach((set, sIdx) => {
             // Unlock all sets in tutorial, all in endless, and first set in first campaign
@@ -1140,6 +1144,7 @@ LoadAllModules().then((modules) => {
             set.locked = !unlockSet;
             set.finished = false;
             set.passed = false;
+            set.isDirty = false;
             set.score = 0;
             set.grade = null;
 

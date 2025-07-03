@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.059" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.059" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.060" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.060" media="screen" />
   </head>
 
   <body>
@@ -115,8 +115,7 @@
             v-if="currentSet && currentSet.passed && showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
           <button tabindex="0" id="buttonQuit" key="buttonQuit" @pointerup="HandleOkayButtonClick"
             v-if="currentSet && currentSet.finished">Quit</button>
-          <button tabindex="0" id="buttonDrop" key="buttonDrop"
-            v-if="!showEndSet || isLastSet || (currentCampaign && currentCampaign.finished)"
+          <button tabindex="0" id="buttonDrop" key="buttonDrop" v-if="!showEndSet "
             :class="{hide: showEndSet || lock || (isFirstRun && showAnnouncement), disabled: isStopped, blink: !showAnnouncement && isFirstRun}"
             @pointerdown="HandleActionButton(event, 'drop')" @pointerup="HandleDropButtonPointerUp"
             @pointerleave="HandleDropButtonPointerUp" class="action">DROP</button>
@@ -134,7 +133,7 @@
         <header>
         </header>
         <h1>
-          <pretitle>Big Tent Games</pretitle>
+          <pretitle @click="window.open('https://www.bigtentgames.com')">Big Tent Games</pretitle>
           drop 'n stop
           <subtitle>= the puck stops here =</subtitle>
         </h1>
@@ -171,7 +170,7 @@
           <campaigns>
             <campaign v-for="(campaign, index) in campaigns" :key="index"
               v-if="!campaign.isTutorial && !campaign.isEndless"
-              :class="{passed: campaign.finished, locked: campaign.locked, finished: campaign.finished}"
+              :class="{passed: campaign.finished, dirty: campaign.isDirty, locked: campaign.locked, finished: campaign.finished}"
               @click="StartCampaign(campaign)">
               <h4>
                 <name>
@@ -199,7 +198,7 @@
           <sets v-if="currentCampaign.sets && currentCampaign.sets.length > 0">
             <set v-for="(set, index) in currentCampaign.sets" :key="index"
               @click="HandleSelectSetButtonClick(event, set)"
-              :class="{passed: set.passed, selected: currentSet && currentSet.id == set.id, locked: set.locked, finished: set.finished}">
+              :class="{passed: set.passed, dirty: set.isDirty, locked: set.locked, finished: set.finished}">
               <h4>
                 <name>
                   <icon class="lock tiny" v-if="set.locked"></icon>
@@ -212,10 +211,11 @@
                   {{set.finished ? (set.percent > 50 ? 'done!' : 'Failed') : set.locked ? '' : set.stages.length +' levels'}}
                 </status>
               </h4>
-              <p v-if="set.finished">{{ Intl.NumberFormat(userLocale).format(set.percent) + '%'  }}
-                ({{set.score}} / {{set.highestPossibleScore + ' pts'}})
+              <p v-if="set.finished">{{ Intl.NumberFormat(userLocale).format(set.percent) + '%'  }} –
+                {{set.score}} out of {{set.highestPossibleScore + ' pts'}}
               </p>
-              <p v-if="!set.finished"></p>
+              <p v-if="!set.finished && set.isDirty">– –</p>
+              <p v-if="!set.finished && !set.isDirty"></p>
             </set>
           </sets>
         </section>
@@ -279,8 +279,8 @@
       <confetti></confetti>
     </app>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script src="/helpers/console-enhancer.js?4.0.059"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.059"></script>
+    <script src="/helpers/console-enhancer.js?4.0.060"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.060"></script>
   </body>
 
 </html>
