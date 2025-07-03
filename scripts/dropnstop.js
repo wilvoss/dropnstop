@@ -1083,6 +1083,7 @@ LoadAllModules().then((modules) => {
           if (savedCampaign) {
             // Merge progress fields
             codeCampaign.locked = savedCampaign.locked;
+            codeCampaign.passed = savedCampaign.passed;
             codeCampaign.finished = savedCampaign.finished;
             codeCampaign.score = savedCampaign.score;
             // Merge sets
@@ -1092,6 +1093,7 @@ LoadAllModules().then((modules) => {
                 if (savedSet) {
                   codeSet.locked = savedSet.locked;
                   codeSet.finished = savedSet.finished;
+                  codeSet.passed = savedSet.passed;
                   codeSet.score = savedSet.score;
                   // Merge stages
                   if (codeSet.stages && savedSet.stages) {
@@ -1129,6 +1131,7 @@ LoadAllModules().then((modules) => {
           campaign.finished = false;
           campaign.score = 0;
           campaign.grade = null;
+          campaign.passed = false;
 
           campaign.sets.forEach((set, sIdx) => {
             // Unlock all sets in tutorial, all in endless, and first set in first campaign
@@ -1136,6 +1139,7 @@ LoadAllModules().then((modules) => {
 
             set.locked = !unlockSet;
             set.finished = false;
+            set.passed = false;
             set.score = 0;
             set.grade = null;
 
