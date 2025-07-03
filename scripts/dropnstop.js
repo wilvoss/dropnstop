@@ -929,7 +929,7 @@ LoadAllModules().then((modules) => {
         navigator.share({
           title: "Drop 'n Stop!",
           text: 'The puck stops here.',
-          url: 'https://dropnstop.games',
+          url: 'https://bigtentgames.com/#dropnstop',
         });
       },
       HandleKeyUp(_e) {
