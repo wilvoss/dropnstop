@@ -521,7 +521,7 @@ modal.show,
 overlay.show {
   /* display: flex; */
   transform: translate(0px, 0px);
-  transition: 300ms cubic-bezier(0.165, 0.84, 0.44, 1) transform, opacity;
+  transition: 400ms cubic-bezier(0.165, 0.84, 0.44, 1) transform, opacity;
   /* opacity: 1; */
   /* pointer-events: all; */
 }
