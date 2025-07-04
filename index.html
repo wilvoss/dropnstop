@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.064" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.064" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.065" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.065" media="screen" />
   </head>
 
   <body>
@@ -137,8 +137,8 @@
           drop 'n stop
           <subtitle>= the puck stops here =</subtitle>
         </h1>
-        <welcome @click="showSettings = !showSettings" style="text-transform: initial;">Hi
-          {{tempPlayerName === 'Player 1' || tempPlayerName === '' ? ' Player 1!' : playerName +', welcome back!'}}
+        <welcome @click="showSettings = !showSettings" style="text-transform: initial;">Hi,
+          {{tempPlayerName === 'Player 1' || tempPlayerName === '' ? ' Player 1!' : playerName +'. Welcome back!'}}
         </welcome>
         <ohno>
           <h3>oh no!</h3>
@@ -299,9 +299,9 @@
       </modal>
       <confetti></confetti>
     </app>
-    <script src="/helpers/console-enhancer.js?4.0.064"></script>
+    <script src="/helpers/console-enhancer.js?4.0.065"></script>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.064"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.065"></script>
   </body>
 
 </html>
