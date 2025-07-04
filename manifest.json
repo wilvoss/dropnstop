@@ -42,5 +42,58 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "images/1.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "images/2.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "images/3.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "images/4.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "images/5.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    },
+    {
+      "src": "images/6.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "platform": "narrow"
+    }
+  ],
+  "handle_links": "preferred",
+  "url_handlers": [
+    {
+      "origin": "https://dropnstop.bigtentgames.com"
+    }
+  ],
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "categories": ["entertainment", "games"],
+  "edge_side_panel": {
+    "preferred_width": 0
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
 }
