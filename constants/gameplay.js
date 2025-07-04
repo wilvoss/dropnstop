@@ -47,7 +47,7 @@ export async function loadGameplayModules() {
           locked: false,
           // prettier-ignore
           stages: [
-            new StageModel({ kx: 215, ty: 42, th: 170, showPuck: true, name: `you control gravity`, description: `the puck falls while you <b>PRESS</b> & <b>HOLD</b> the "drop" button at the bottom`, difficulty: new DifficultyModel({ speed: 200 }) }),
+            new StageModel({ kx: 215, ty: 42, th: 170, showPuck: true, name: `you control gravity`, description: `<b>Hold</b> the drop button (bottom of your screen) and <b>release</b> when the puck hits the dropzone`, difficulty: new DifficultyModel({ speed: 200 }) }),
             new StageModel({ kx: 20, ty: 200, th: 40, showPuck: true, name: `you get 3 chances`, description: `each miss lowers the dropzone's value and your overall score potential` }),
             new StageModel({ kx: 420, ty: 100, th: 120, name: `hidden puck!`, description: `sometimes the puck appears only while you <b>press</b> & <b>hold</b> the "drop" button` }),
             new StageModel({ kx: 340, ty: 220, th: 170, showPuck: true, hideTarget: true, name: `hidden dropzone!`, description: `the dropzone can also be hidden from view until you <b>press</b> & <b>hold</b> the "drop" button` }),
