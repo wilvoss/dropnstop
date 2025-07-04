@@ -249,7 +249,7 @@ LoadAllModules().then((modules) => {
           this.currentCampaign = this.campaigns[0];
         }
       },
-      StopPuck() {
+      async StopPuck() {
         note('Stopping puck');
         const kStyle = window.getComputedStyle(this.puckElement);
         const kMatrix = kStyle.transform;
@@ -310,8 +310,7 @@ LoadAllModules().then((modules) => {
           this.showEndSet = true; // Only show end game if campaign is complete
 
           const colorConfetti = this.finalGrade.threshold > this.goodGradeThreshold;
-          this.SaveGameState();
-          this.UpdateScores();
+          await this.UpdateScores();
 
           if (this.currentSet.passed) {
             this.UnlockNextSet(this.currentCampaign, this.currentSet);
@@ -324,6 +323,7 @@ LoadAllModules().then((modules) => {
             }
             setTimeout(() => this.CreateConfetti(colorConfetti), 300);
           }
+          await this.SaveGameState();
         }
       },
       SetScale() {
