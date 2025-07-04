@@ -92,7 +92,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 210, ty: 230, th: 90 }),
@@ -109,7 +108,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 220, th: 114 }),
@@ -127,7 +125,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 160, ty: 180, th: 78 }),
@@ -146,7 +143,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 150, ty: 90, th: 88 }),
@@ -166,7 +162,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 210, ty: 250, th: 110 }),
@@ -188,7 +183,6 @@ export async function loadGameplayModules() {
       subtitle: `Precision alone won’t save you now`,
       selected: false,
       isTutorial: false,
-      locked: false,
       sets: [
         new SetModel({
           name: `Set 1`,
@@ -217,7 +211,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 160, th: 110 }),
@@ -238,7 +231,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 50, th: 88 }),
@@ -259,7 +251,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 250, th: 38 }),
@@ -280,7 +271,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: true, // overridden at stage level
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 130, th: 88 }),
@@ -301,7 +291,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 150, th: 70 }),
@@ -324,7 +313,6 @@ export async function loadGameplayModules() {
       subtitle: `When rhythm and instinct collide`,
       selected: false,
       isTutorial: false,
-      locked: false,
       sets: [
         new SetModel({
           name: `Set 1`,
@@ -353,7 +341,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 210, ty: 100, th: 84 }),
@@ -374,7 +361,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[0],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 130, th: 86, hideTarget: true }),
@@ -395,7 +381,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 110, th: 60 }),
@@ -416,7 +401,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 120, th: 54, hideTarget: true }),
@@ -437,7 +421,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: true,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 150, th: 66, hideTarget: true }),
@@ -460,7 +443,6 @@ export async function loadGameplayModules() {
       subtitle: `It looked easy from above...`,
       selected: false,
       isTutorial: false,
-      locked: true,
       sets: [
         new SetModel({
           name: `Set 1`,
@@ -489,7 +471,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 80, th: 130 }),
@@ -510,7 +491,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 60, th: 110 }),
@@ -531,7 +511,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 180, ty: 130, th: 88 }),
@@ -552,7 +531,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 60, th: 80 }),
@@ -573,7 +551,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: true,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 360, th: 80 }),
@@ -624,7 +601,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           stages: [
             new StageModel({ kx: 200, ty: 90, th: 80 }),
             new StageModel({ kx: 210, ty: 270, th: 42, hideTarget: true }),
@@ -644,7 +620,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           stages: [
             new StageModel({ kx: 200, ty: 120, th: 40 }),
             new StageModel({ kx: 230, ty: 310, th: 60, hideTarget: true }),
@@ -664,7 +639,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           stages: [
             new StageModel({ kx: 200, ty: 440, th: 50 }),
             new StageModel({ kx: 230, ty: 140, th: 32, hideTarget: true }),
@@ -684,7 +658,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           stages: [
             new StageModel({ kx: 210, ty: 320, th: 34, hideTarget: true }),
             new StageModel({ kx: 190, ty: 140, th: 72 }),
@@ -704,7 +677,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[1],
           showPuck: false,
           hideTarget: true,
-          locked: false,
           stages: [
             new StageModel({ kx: 200, ty: 450, th: 44, hideTarget: true, difficulty: difficulties[0] }),
             new StageModel({ kx: 230, ty: 110, th: 36 }),
@@ -726,7 +698,6 @@ export async function loadGameplayModules() {
       subtitle: `You will be broken`,
       selected: false,
       isTutorial: false,
-      locked: true,
       sets: [
         new SetModel({
           name: `Set 1`,
@@ -734,7 +705,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[2],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 420, th: 68 }),
@@ -755,7 +725,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[3],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 450, th: 40 }),
@@ -776,7 +745,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[3],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 460, th: 30 }),
@@ -797,7 +765,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[3],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 470, th: 24 }),
@@ -818,7 +785,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[3],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 470, th: 20, difficulty: difficulties[2] }),
@@ -839,7 +805,6 @@ export async function loadGameplayModules() {
           difficulty: difficulties[3],
           showPuck: false,
           hideTarget: false,
-          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 470, th: 24 }),
