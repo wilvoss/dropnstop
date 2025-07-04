@@ -1198,6 +1198,7 @@ LoadAllModules().then((modules) => {
 
     async mounted() {
       highlight(`App version ${this.version} initiated`, true);
+      UseDebug = document.location.href.indexOf('staging') != -1 || document.location.href.indexOf('debug=true') != -1;
       this.isLoading = true;
       this.stageElement = document.getElementsByTagName('stage')[0];
       this.puckElement = document.getElementsByTagName('puck')[0];
