@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.075" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.075" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.076" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.076" media="screen" />
   </head>
 
   <body>
@@ -105,7 +105,7 @@
           <button tabindex="0" id="buttonRetryStage" key="buttonRetryStage"
             :class="{hide: currentCampaign && currentCampaign.isTutorial}"
             @pointerup="HandleSelectSetButtonClick(event, currentSet)"
-            v-if="currentSet && currentSet.finished && !currentSet.passed">Retry</button>
+            v-if="currentCampaign && !currentCampaign.isTutorial && currentSet && currentSet.finished && !currentSet.passed">Retry</button>
           <button tabindex="0" id="buttonNextStage" key="buttonNextStage" @pointerup="HandleActionButton(event, 'next')"
             class="action" v-if="!showEndSet"
             :class="{hide:  lock || isReady || !isStopped, highlight: currentStage && currentStage.finished}">
@@ -299,9 +299,9 @@
       </modal>
       <confetti></confetti>
     </app>
-    <script src="/helpers/console-enhancer.js?4.0.075"></script>
+    <script src="/helpers/console-enhancer.js?4.0.076"></script>
     <script id="vue-framework" src="/helpers/vue.min.js"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.075"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.076"></script>
   </body>
 
 </html>
