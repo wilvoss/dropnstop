@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.077" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.077" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.078" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.078" media="screen" />
   </head>
 
   <body>
@@ -277,7 +277,7 @@
             <section v-if="!isPlaying">
               <!-- <h3>advanced</h3> -->
               <leftright style="margin: 0">
-                <button class="tertiary" @click="location.reload()">Reload App</button>
+                <button class="tertiary" @click="HandleReloadAppButtonClick">Reload App</button>
                 <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
               </leftright>
             </section>
@@ -301,9 +301,9 @@
         <confetti></confetti>
       </app>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.077"></script>
+    <script src="/helpers/console-enhancer.js?4.0.078"></script>
     <script id="vue-framework" src="/helpers/vue.global.prod.js"></script>
-    <script type="module" src="/scripts/dropnstop.min.js?4.0.077"></script>
+    <script type="module" src="/scripts/dropnstop.min.js?4.0.078"></script>
   </body>
 
 </html>

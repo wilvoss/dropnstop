@@ -1120,6 +1120,10 @@ LoadAllModules().then((modules) => {
           }
         });
       },
+      HandleReloadAppButtonClick() {
+        note('Reload app button clicked');
+        window.location.reload();
+      },
       HandleClearDataButtonClick() {
         note('Clear data button clicked');
         this.NewYesNo('Clear Data?', 'clear', 'This will reset all scores and game locks');
