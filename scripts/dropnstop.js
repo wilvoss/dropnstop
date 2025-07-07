@@ -1120,6 +1120,10 @@ LoadAllModules().then((modules) => {
           }
         });
       },
+      HandleDonateButtonClick() {
+        note('Donate button clicked');
+        window.open('https://www.buymeacoffee.com/wilvoss');
+      },
       HandleReloadAppButtonClick() {
         note('Reload app button clicked');
         window.location.reload();
