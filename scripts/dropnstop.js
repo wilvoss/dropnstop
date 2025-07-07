@@ -1,3 +1,4 @@
+import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js';
 import { loadGameplayModules } from '../constants/gameplay.js';
 import { version } from '/constants/version.js';
 
@@ -33,7 +34,7 @@ async function LoadAllModules() {
 LoadAllModules().then((modules) => {
   note('Modules loaded');
 
-  const app = Vue.createApp({
+  const app = createApp({
     data() {
       return {
         version: version,
@@ -1419,6 +1420,15 @@ LoadAllModules().then((modules) => {
       },
     },
   });
+
+  //#region configuration
+  // prettier-ignore
+  app.config.compilerOptions.isCustomElement = tag =>
+    [
+      // 'app',  <-- REMOVE THIS LINE
+      'app', 'modal', 'theater', 'overlay', 'controls', 'stat', 'score', 'icon', 'stage', 'puck', 'tail', 'target', 'splat', 'info', 'grade', 'welcome', 'ohno', 'pretitle', 'subtitle', 'divider', 'stretch', 'leftright', 'setting', 'puckcolor', 'theme', 'color', 'value', 'sets', 'set', 'campaigns', 'campaign', 'tinycontrols', 'confetti', 'announcement', 'instructions', 'version', 'words','stats', 'name', 'status'
+    ].includes(tag);
+  //#endregion
 
   //#endregion
   window.app = app.mount('#app');
