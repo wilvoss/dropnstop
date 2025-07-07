@@ -10,6 +10,7 @@
   --highlightSaturation: calc(var(--saturation) + 30%);
   --mainLuminosity: 61%;
   --oppositeLuminosity: 17%;
+  --stripeLuminosity: 17%;
   --puckLuminosity: 100%;
   --appBackground: hsl(var(--hue), var(--saturation), var(--mainLuminosity));
   --appBackgroundSemiTransparent: hsla(var(--hue), var(--saturation), var(--mainLuminosity), .4);
@@ -38,12 +39,20 @@
 
 html,
 body {
+  display: block;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0px;
-  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--oppositeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--oppositeLuminosity) - 1%)) var(--hugeGap));
+  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--hugeGap));
   padding: 0px;
   width: 100%;
   height: 100%;
@@ -55,6 +64,7 @@ body {
   -webkit-user-select: none;
   text-shadow: var(--shadow);
 }
+
 
 [v-cloak] {
   opacity: 0;
@@ -526,8 +536,8 @@ welcome {
   cursor: pointer;
   border: 1px solid white;
   background-color: hsla(var(--highlightHue), var(--highlightSaturation), 86%, 1);
-  ;
   padding: 8px 16px;
+  color: hsl(var(--hue), var(--saturation), var(--stripeLuminosity));
 }
 
 overlay {
@@ -1067,7 +1077,7 @@ overlay button.tertiary {
   background: var(--highlightColor);
   padding: 4px 14px;
   width: auto;
-  color: var(--appForegroundDark);
+  color: hsl(var(--hue), var(--saturation), var(--stripeLuminosity));
   font-weight: normal;
   font-size: 1em;
   text-shadow: unset;
@@ -1128,7 +1138,7 @@ overlay announcement {
   gap: 6px;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  background: var(--appForeground) linear-gradient(rgba(0, 0, 0, 0.5));
+  background: hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) linear-gradient(rgba(0, 0, 0, 0.5));
   padding: var(--defaultGap) calc(1.5 * var(--defaultGap));
   max-width: calc(var(--maxWidth) - (2 * var(--bigGap)) - (1.5 * var(--defaultGap)));
   color: var(--highlightColor);

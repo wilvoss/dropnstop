@@ -33,6 +33,7 @@ export async function loadGameplayModules() {
 
   var campaigns = [
     new CampaignModel({
+      id: 0,
       name: `Tutorial`,
       subtitle: `Learn the basics of drop 'n stop`,
       selected: true,

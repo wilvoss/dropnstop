@@ -30,20 +30,10 @@ async function LoadAllModules() {
 }
 //#endregion
 
-//#region configuration
-Vue.config.devtools = false;
-Vue.config.debug = false;
-Vue.config.silent = true;
-
-// prettier-ignore
-Vue.config.ignoredElements = ['app', 'page', 'navbar', 'settings', 'splash', 'splashwrap', 'message', 'notifications', 'speedControls', 'state', 'bank', 'commodity', 'detail', 'gameover', 'listheader', 'listings', 'category', 'name', 'units', 'currentPrice', 'description', 'market', 'currentValue', 'contractSize', 'goldbacking', 'contractUnit'];
-//#endregion
-
 LoadAllModules().then((modules) => {
   note('Modules loaded');
 
-  window.app = new Vue({
-    el: '#app',
+  const app = Vue.createApp({
     data() {
       return {
         version: version,
@@ -1416,6 +1406,12 @@ LoadAllModules().then((modules) => {
       showOverlay() {
         return this.isPlaying && !this.showEndSet && !this.lock && !this.isDropping && (this.announcement !== '' || this.instructions !== '');
       },
+      campaignsWithoutTutorialOrEndless() {
+        return this.campaigns.filter((c) => !c.isTutorial && !c.isEndless);
+      },
     },
   });
+
+  //#endregion
+  window.app = app.mount('#app');
 });
