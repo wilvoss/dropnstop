@@ -108,6 +108,7 @@ LoadAllModules().then((modules) => {
         showAnnouncement: true,
         hasUsedSpaceBar: false,
         spaceBarInUse: false,
+        useDarkTheme: false,
         results: [],
         difficulties: modules.difficulties,
         currentDifficulty: modules.difficulties[0],
@@ -548,8 +549,6 @@ LoadAllModules().then((modules) => {
         }
       },
       HandlePuckColorButtonClick(_e, _usedark) {
-        // _e.stopPropagation();
-        // _e.preventDefault();
         this.SetPuckColor(_usedark);
       },
       async SetPuckColor(_usedark) {
@@ -557,6 +556,16 @@ LoadAllModules().then((modules) => {
         this.useDarkPuck = _usedark;
         this.r.style.setProperty('--puckLuminosity', (this.useDarkPuck ? 0 : 100) + '%');
         await modules.SaveData('useDarkPuck', _usedark);
+      },
+      HandleDarkThemeToggleButtonClick(_e, _useDark) {
+        if (_useDark !== this.useDarkTheme) {
+          this.SetDarkTheme(_useDark);
+        }
+      },
+      async SetDarkTheme(_useDark) {
+        note('Set dark theme: ' + _useDark);
+        this.useDarkTheme = _useDark;
+        await modules.SaveData('useDarkTheme', _useDark);
       },
       HandleThemeButton(_e, _theme) {
         this.SelectGameTheme(_theme.name);
@@ -884,8 +893,15 @@ LoadAllModules().then((modules) => {
           this.SetPuckColor(false);
         }
 
+        const useDarkThemeData = await modules.GetData('useDarkTheme');
+        if (typeof useDarkThemeData === 'boolean') {
+          this.SetDarkTheme(useDarkThemeData);
+        } else {
+          this.SetDarkTheme(false);
+        }
+
         const hasUsedSpaceBarData = await modules.GetData('hasUsedSpaceBar');
-        if (typeof hasUsedSpaceBarData === 'useDarkPuck') {
+        if (typeof hasUsedSpaceBarData === 'hasUsedSpaceBar') {
           this.hasUsedSpaceBar = hasUsedSpaceBarData;
         } else {
           this.hasUsedSpaceBar = false;
@@ -1249,6 +1265,18 @@ LoadAllModules().then((modules) => {
       async playerName(newVal) {
         note('Saving player name: ' + newVal);
         await modules.SaveData('playerName', newVal);
+      },
+      useDarkTheme(newVal) {
+        const id = 'dark-theme-link';
+        document.querySelectorAll(`#${id}`).forEach((link) => link.remove());
+        if (newVal) {
+          const link = document.createElement('link');
+          link.id = id;
+          link.rel = 'stylesheet';
+          link.href = `/styles/darkTheme.css?${this.version}`;
+          link.media = 'screen';
+          document.head.appendChild(link);
+        }
       },
     },
 

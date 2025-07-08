@@ -783,15 +783,17 @@ difficulty.selected value {
 input {
   border: 1px solid var(--appForeground);
   border-radius: 0px;
-  background: hsla(var(--hue), var(--saturation), 100%, .2);
+  background: hsla(var(--hue), var(--saturation), 69%, 1);
   padding: 13px 12px;
   max-width: 200px;
+  color: hsla(var(--hue), var(--saturation), var(--oppositeLuminosity), 1);
   font-size: 1em;
 }
 
 input:focus {
   outline: none;
   background: white;
+  color: black;
 }
 
 input::placeholder {

@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.081" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.081" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.082" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.082" media="screen" />
   </head>
 
   <body>
@@ -252,29 +252,23 @@
             </section>
             <divider></divider>
             <section class="puck">
-              <!-- <h3>puck color</h3> -->
-              <puck :class="{start: isFirstRun}"></puck>
               <setting>
-                <puckcolor @click="HandlePuckColorButtonClick(event, false)" :class="{selected: !useDarkPuck}">light
+                <puckcolor @click="HandleDarkThemeToggleButtonClick(event, false)" :class="{selected: !useDarkTheme}">
+                  light
                 </puckcolor>
-                <puckcolor @click="HandlePuckColorButtonClick(event, true)" :class="{selected: useDarkPuck}">dark
+                <puckcolor @click="HandleDarkThemeToggleButtonClick(event, true)" :class="{selected: useDarkTheme}">dark
                 </puckcolor>
               </setting>
-            </section>
-            <divider></divider>
-            <section>
-              <!-- <h3>color theme</h3> -->
               <setting>
                 <theme :class="{selected: theme.selected}" v-for="theme in themes"
                   @click="HandleThemeButton(event, theme)">
-                  <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, 65%)'}"></color>
+                  <color :style="{background: 'hsl(' + theme.h + ', ' + theme.s + '%, var(--mainLuminosity))'}"></color>
                   <value>{{theme.name}}</value>
                 </theme>
               </setting>
             </section>
             <divider></divider>
             <section v-if="!isPlaying">
-              <!-- <h3>advanced</h3> -->
               <leftright style="margin: 0">
                 <button class="tertiary" @click="HandleReloadAppButtonClick">Reload App</button>
                 <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
@@ -300,8 +294,8 @@
         <confetti></confetti>
       </app>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.081"></script>
-    <script type="module" src="/scripts/dropnstop.min.js?4.0.081"></script>
+    <script src="/helpers/console-enhancer.js?4.0.082"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.082"></script>
   </body>
 
 </html>

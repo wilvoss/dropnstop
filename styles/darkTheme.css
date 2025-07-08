@@ -1,0 +1,19 @@
+:root {
+    --mainLuminosity: 17%;
+    --oppositeLuminosity: 42%;
+    --stripeLuminosity: 11%;
+}
+
+input {
+    background: hsla(var(--hue), var(--saturation), 10%, 1);
+}
+
+theater controls button.highlight {
+    border-color: hsl(var(--hue), var(--saturation), 0%);
+    background-color: hsl(var(--hue), var(--saturation), 0%);
+    color: white;
+}
+
+.ended target {
+    opacity: 0.1;
+}
