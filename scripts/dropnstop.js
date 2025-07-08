@@ -153,6 +153,17 @@ LoadAllModules().then((modules) => {
             this.currentStage.success = result.success;
             this.currentStage.attempts = result.attempts;
           }
+
+          if (endless) {
+            this.currentStage = new modules.StageModel({
+              kx: getRandomInt(this.puckWidth / 2, stageRect.width - this.puckWidth / 2),
+              th: getRandomInt(20, 100),
+              ty: getRandomInt(100 + this.puckHeight, stageRect.height - this.targetHeight),
+              difficulty: modules.difficulties[0],
+              showPuck: true,
+              hideTarget: false,
+            });
+          }
           // If not endless, queue the next set and reset difficulty
           if (!endless) {
             this.QueueSet();
@@ -165,9 +176,9 @@ LoadAllModules().then((modules) => {
           }
           // Reset for next stage
           this.puckY = -this.puckHeight - 2;
-          this.puckX = endless ? getRandomInt(this.puckWidth / 2, stageRect.width - this.puckWidth / 2) : this.currentStage.kx;
-          this.targetHeight = endless ? getRandomInt(20, 100) : this.currentStage.th;
-          this.targetY = endless ? getRandomInt(100 + this.puckHeight, stageRect.height - this.targetHeight) : this.currentStage.ty;
+          this.puckX = this.currentStage.kx;
+          this.targetHeight = this.currentStage.th;
+          this.targetY = this.currentStage.ty;
           this.dropCount = 0;
           this.results.push(
             new modules.ResultModel({
@@ -620,16 +631,23 @@ LoadAllModules().then((modules) => {
         this.showSets = false;
         this.CompleteStageAndReadyNext();
       },
+      StartZenMode() {
+        note('Starting Zen Mode');
+
+        this.StartCampaign(this.campaigns[1]);
+        this.SelectSet(this.campaigns[1].sets[0]);
+
+        this.difficulty = modules.difficulties[0];
+        this.puckX = this.difficulty.kx;
+        this.puckWidth = this.difficulty.width;
+        this.puckHeight = this.difficulty.height;
+        this.speed = this.difficulty.speed;
+        this.hideTarget = false;
+        this.showPuck = true;
+        this.RestartGame();
+      },
       StartCampaign(_campaign) {
         this.SelectCampaign(_campaign);
-        if (_campaign.isEndless) {
-          note('adjusting difficulty: ' + modules.difficulties[0].name);
-          this.difficulty = modules.difficulties[0];
-          this.puckX = this.difficulty.kx;
-          this.puckWidth = this.difficulty.width;
-          this.puckHeight = this.difficulty.height;
-          this.speed = this.difficulty.speed;
-        }
         note('Starting campaign: ' + _campaign.name);
         // this.showCampaigns = false;
         if (this.currentCampaign.isEndless) {
@@ -1262,7 +1280,7 @@ LoadAllModules().then((modules) => {
       });
     },
 
-    beforeDestroy() {
+    beforeUnmount() {
       this.SaveGameState();
       cancelAnimationFrame(this._animationFrame);
       window.removeEventListener('keyup', this.HandleKeyUp);

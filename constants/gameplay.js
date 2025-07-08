@@ -62,6 +62,14 @@ export async function loadGameplayModules() {
       subtitle: `Master your stops with endless drops`,
       isEndless: true,
       locked: false,
+      sets: [
+        new SetModel({
+          locked: false,
+          showPuck: false,
+          hideTarget: false,
+          name: `Endless Drops`,
+        }),
+      ],
     }),
     new CampaignModel({
       id: 2,
