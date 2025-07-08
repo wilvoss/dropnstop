@@ -960,7 +960,6 @@ LoadAllModules().then((modules) => {
             currentThemeIndex = i;
           }
         });
-        highlight('Key up: ' + _e.code);
         switch (_e.code) {
           case 'BracketRight':
             currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
@@ -974,7 +973,7 @@ LoadAllModules().then((modules) => {
               this.SelectGameTheme(this.themes[currentThemeIndex].name);
             }
             break;
-          case 'Slash':
+          case 'Backslash':
             this.SetDarkTheme(!this.useDarkTheme);
             break;
           case 'Enter':
