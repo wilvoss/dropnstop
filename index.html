@@ -40,8 +40,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.087" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.087" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.088" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.088" media="screen" />
   </head>
 
   <body>
@@ -107,16 +107,16 @@
           <controls>
             <button tabindex="0" id="buttonRetryStage" key="buttonRetryStage"
               :class="{hide: currentCampaign && currentCampaign.isTutorial}"
-              @pointerup="HandleSelectSetButtonClick(event, currentSet)"
+              @click="HandleSelectSetButtonClick(event, currentSet)"
               v-if="currentCampaign && !currentCampaign.isTutorial && currentSet && currentSet.finished && !currentSet.passed">Retry</button>
-            <button tabindex="0" id="buttonNextStage" key="buttonNextStage"
-              @pointerup="HandleActionButton(event, 'next')" class="action" v-if="!showEndSet"
+            <button tabindex="0" id="buttonNextStage" key="buttonNextStage" @click="HandleActionButton(event, 'next')"
+              class="action" v-if="!showEndSet"
               :class="{hide:  lock || isReady || !isStopped, highlight: currentStage && currentStage.finished}">
               {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
             </button>
-            <button tabindex="0" key="buttonNextSet" @pointerup="HandleNextButtonClick(event)" class="highlight"
+            <button tabindex="0" key="buttonNextSet" @click="HandleNextButtonClick(event)" class="highlight"
               v-if="currentSet && currentSet.passed && showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
-            <button tabindex="0" id="buttonQuit" key="buttonQuit" @pointerup="HandleOkayButtonClick"
+            <button tabindex="0" id="buttonQuit" key="buttonQuit" @click="HandleOkayButtonClick"
               v-if="currentSet && currentSet.finished">Quit</button>
             <button tabindex="0" id="buttonDrop" key="buttonDrop" v-if="!showEndSet "
               :class="{hide: showEndSet || lock || (isFirstRun && showAnnouncement), disabled: isStopped, blink: !showAnnouncement && isFirstRun}"
@@ -296,8 +296,8 @@
         <confetti></confetti>
       </app>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.087"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.087"></script>
+    <script src="/helpers/console-enhancer.js?4.0.088"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.088"></script>
   </body>
 
 </html>
