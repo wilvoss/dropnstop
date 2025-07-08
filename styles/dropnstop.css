@@ -248,10 +248,9 @@ theater controls {
   bottom: unset;
   align-items: flex-end;
   transition: 100ms ease-in-out opacity;
-  margin: 0;
-  height: calc(100% - var(--bigGap));
+  margin: 58px 0 0 0;
+  height: calc(100% - var(--bigGap) - 58px);
   max-height: calc(var(--maxHeight) - var(--defaultGap) - 0.5 * env(safe-area-inset-bottom));
-  pointer-events: none;
 }
 
 .keyboard.dropping theater controls {
