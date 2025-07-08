@@ -52,7 +52,7 @@ main {
   justify-content: center;
   align-items: center;
   margin: 0px;
-  background: repeating-linear-gradient(90deg, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--hugeGap));
+  background: repeating-linear-gradient(45deg, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) 0px, hsl(var(--hue), var(--saturation), var(--stripeLuminosity)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--bigGap), hsl(var(--hue), var(--saturation), calc(var(--stripeLuminosity) - 1%)) var(--hugeGap));
   padding: 0px;
   width: 100%;
   height: 100%;

@@ -585,7 +585,8 @@ LoadAllModules().then((modules) => {
         }
         this.r.style.setProperty('--hue', theme.h);
         this.r.style.setProperty('--saturation', theme.s + '%');
-        document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, 61%)');
+        let luminosity = this.useDarkTheme ? 17 : 61;
+        document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, ' + luminosity + '%)');
         await modules.SaveData('theme', theme.name);
       },
       UpdateApp(_now) {
@@ -1277,6 +1278,9 @@ LoadAllModules().then((modules) => {
           link.media = 'screen';
           document.head.appendChild(link);
         }
+        let theme = this.themes.find((t) => t.selected);
+        let luminosity = newVal ? 17 : 61;
+        document.getElementById('themeColor').setAttribute('content', 'hsl(' + theme.h + ', ' + theme.s + '%, ' + luminosity + '%)');
       },
     },
 
