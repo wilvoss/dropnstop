@@ -28,6 +28,11 @@ theater controls button.highlight {
     color: white;
 }
 
+target value,
+theater puck.start::after {
+    color: white;
+}
+
 .ended target {
     opacity: 0.1;
 }

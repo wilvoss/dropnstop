@@ -622,7 +622,16 @@ LoadAllModules().then((modules) => {
       },
       StartCampaign(_campaign) {
         this.SelectCampaign(_campaign);
-        this.showCampaigns = false;
+        if (_campaign.isEndless) {
+          note('adjusting difficulty: ' + modules.difficulties[0].name);
+          this.difficulty = modules.difficulties[0];
+          this.puckX = this.difficulty.kx;
+          this.puckWidth = this.difficulty.width;
+          this.puckHeight = this.difficulty.height;
+          this.speed = this.difficulty.speed;
+        }
+        note('Starting campaign: ' + _campaign.name);
+        // this.showCampaigns = false;
         if (this.currentCampaign.isEndless) {
           this.RestartGame(_campaign);
         } else {
@@ -1356,7 +1365,7 @@ LoadAllModules().then((modules) => {
         return this.currentCampaign ? this.currentCampaign.sets.indexOf(this.currentSet) : -1;
       },
       instructions() {
-        if (this.currentStage && this.currentStage.description && this.dropCount === 0 && this.showInstructions && this.announcement === '') {
+        if (this.currentCampaign && !this.currentCampaign.isEndless && this.currentStage && this.currentStage.description && this.dropCount === 0 && this.showInstructions && this.announcement === '') {
           if (!this.currentStage.name) {
             return `<span>${this.currentStage.description}</span> <button class="tertiary">okay</button>`;
           }
@@ -1365,7 +1374,7 @@ LoadAllModules().then((modules) => {
         return '';
       },
       announcement() {
-        if (this.currentSet && this.currentSet.name && this.dropCount === 0 && this.showAnnouncement && this.currentStageIndex === 0) {
+        if (this.currentCampaign && !this.currentCampaign.isEndless && this.currentSet && this.currentSet.name && this.dropCount === 0 && this.showAnnouncement && this.currentStageIndex === 0) {
           return `${this.currentSet.name}<br /><span>${this.currentSet.description}</span> <button class="tertiary">${this.currentStage.description ? 'Next' : 'Okay'}</button>`;
         }
         return '';
