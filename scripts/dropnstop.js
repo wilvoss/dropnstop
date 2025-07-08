@@ -980,6 +980,9 @@ LoadAllModules().then((modules) => {
           url: 'https://bigtentgames.com/#dropnstop',
         });
       },
+      HandleWindowPointerUp(_e) {
+        note('Window pointer up');
+      },
       HandleKeyUp(_e) {
         let currentThemeIndex;
         this.themes.forEach((theme, i) => {
@@ -1253,6 +1256,7 @@ LoadAllModules().then((modules) => {
       window.addEventListener('keydown', this.HandleKeyDown);
       window.addEventListener('resize', this.HandleResize);
       window.addEventListener('beforeunload', this.SaveGameState);
+      window.addEventListener('pointerup', this.HandleWindowPointerUp);
       this.SetScale();
       let hasSeenTutorial = await modules.GetData('hasSeenTutorial');
       if (typeof hasSeenTutorial === 'boolean') {

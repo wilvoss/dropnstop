@@ -28,6 +28,10 @@ theater controls button.highlight {
     color: white;
 }
 
+.success target {
+    border-color: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
+}
+
 target value,
 theater puck.start::after {
     color: white;
