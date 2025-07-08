@@ -1009,11 +1009,15 @@ LoadAllModules().then((modules) => {
           case 'Enter':
             if (document.activeElement.tagName === 'INPUT') {
               document.activeElement.blur();
-            } else if (!this.lock) {
+            } else if (this.lock) {
               if (this.showYesNo && !this.showEndSet) {
                 this.EndGame();
               } else if (this.showEndSet && !this.showHome && !this.showSettings) {
                 this.EndGame();
+              }
+            } else {
+              if (this.showOverlay) {
+                this.HandleAnnouncementClick();
               }
             }
             break;
@@ -1029,31 +1033,23 @@ LoadAllModules().then((modules) => {
             }
             break;
           case 'Space':
-            if (!this.lock) {
+            if (!this.lock && this.spaceBarInUse) {
               this.spaceBarInUse = false;
 
-              if (this.isDropping && !this.showEndSet && !this.showHome && !this.showSettings) {
+              if (this.isDropping && !this.showEndSet && !this.showHome && !this.showSettings && !this.showYesNo && !this.showOverlay) {
                 this.HandleActionButton(_e, 'stop');
-              } else if (
-                !this.spaceBarCooldown && // <-- ADD THIS LINE
-                (this.isReady || (this.isStopped && !this.showEndSet)) &&
-                !this.showEndSet &&
-                !this.showHome &&
-                !this.showSettings
-              ) {
-                this.HandleActionButton(_e, 'next');
               }
+            } else if ((this.isReady || (this.isStopped && !this.showEndSet)) && !this.showEndSet && !this.showHome && !this.showSettings) {
+              this.HandleActionButton(_e, 'next');
             }
             break;
         }
       },
       HandleKeyDown(_e) {
-        if (this.showAnnouncement) {
-          this.HandleAnnouncementClick();
-        } else if (!this.lock) {
+        if (!this.lock) {
           switch (_e.code) {
             case 'Space':
-              if (!this.spaceBarCooldown && !this.isDropping && this.isReady && !this.showEndSet && !this.isStopped && !this.showHome && !this.showSettings) {
+              if (!this.spaceBarCooldown && !this.isDropping && this.isReady && !this.showEndSet && !this.isStopped && !this.showHome && !this.showSettings && !this.showYesNo && !this.showOverlay) {
                 this.spaceBarInUse = true;
                 this.hasUsedSpaceBar = true;
                 modules.SaveData('hasUsedSpaceBar', true);
