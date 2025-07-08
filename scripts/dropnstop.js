@@ -960,18 +960,22 @@ LoadAllModules().then((modules) => {
             currentThemeIndex = i;
           }
         });
+        highlight('Key up: ' + _e.code);
         switch (_e.code) {
-          case 'ArrowRight':
+          case 'BracketRight':
             currentThemeIndex = currentThemeIndex == this.themes.length - 1 ? 0 : currentThemeIndex + 1;
             if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
               this.SelectGameTheme(this.themes[currentThemeIndex].name);
             }
             break;
-          case 'ArrowLeft':
+          case 'BracketLeft':
             currentThemeIndex = currentThemeIndex == 0 ? this.themes.length - 1 : currentThemeIndex - 1;
             if (currentThemeIndex != undefined && currentThemeIndex >= 0) {
               this.SelectGameTheme(this.themes[currentThemeIndex].name);
             }
+            break;
+          case 'Slash':
+            this.SetDarkTheme(!this.useDarkTheme);
             break;
           case 'Enter':
             if (document.activeElement.tagName === 'INPUT') {

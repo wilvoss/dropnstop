@@ -2,6 +2,20 @@
     --mainLuminosity: 17%;
     --oppositeLuminosity: 42%;
     --stripeLuminosity: 11%;
+    --highlightSaturation: calc(var(--saturation) + 10%);
+    --highlightColor: hsla(var(--highlightHue), var(--highlightSaturation), 46%, 1);
+    --highlightAltColor: hsla(var(--highlightHue), var(--highlightSaturation), 56%, 1);
+}
+
+welcome {
+    border-color: hsla(var(--highlightHue), var(--highlightSaturation), 76%, 1);
+    background-color: var(--highlightColor);
+    color: white
+}
+
+overlay instructions,
+overlay announcement {
+    color: var(--highlightAltColor);
 }
 
 input {
@@ -16,4 +30,14 @@ theater controls button.highlight {
 
 .ended target {
     opacity: 0.1;
+}
+
+button,
+button.secondary,
+button.tertiary,
+button.highlight,
+overlay button.secondary,
+overlay button.tertiary,
+score {
+    color: white;
 }
