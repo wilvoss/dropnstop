@@ -714,6 +714,7 @@ export async function loadGameplayModules() {
           difficulty: difficulties[2],
           showPuck: false,
           hideTarget: false,
+          locked: false,
           // prettier-ignore
           stages: [
             new StageModel({ kx: 200, ty: 420, th: 68 }),
