@@ -36,8 +36,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.094" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.094" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.095" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.095" media="screen" />
   </head>
 
   <body>
@@ -46,14 +46,14 @@
         :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
         <theater>
           <header :class="{hide: isFirstRun}">
-            <button :class="{hide: lock}" @click="showSettings=!showSettings">
+            <button aria-label="settingsButton" :class="{hide: lock}" @click="showSettings=!showSettings">
               <icon class="settings medium"></icon>
             </button>
             <score v-if="!lock && currentCampaign && !currentCampaign.isEndless">
               {{(showEndSet ? 'final score - ' : '') + Intl.NumberFormat(userLocale).format(score)}}
             </score>
             <score v-if="lock">set complete!</score>
-            <button :class="{hide: lock}" @click="HandleQuitButtonClick">
+            <button aria-label="quitButton" :class="{hide: lock}" @click="HandleQuitButtonClick">
               <icon class="quit medium"></icon>
             </button>
           </header>
@@ -140,7 +140,7 @@
             {{tempPlayerName === 'Player 1' || tempPlayerName === '' ? ' Player 1!' : playerName +'. Welcome back!'}}
           </welcome>
           <ohno>
-            <h3>oh no!</h3>
+            <h2>oh no!</h2>
             <p>
               drop 'n stop needs a bigger window to play
             </p>
@@ -148,22 +148,25 @@
           <icon v-if="isLoading" style="position: relative" class="spinner medium" :class="{show: isLoading}"></icon>
 
           <controls class="endgame" v-if="dropTotalCount == 0" :class="{disabled: isLoading}">
-            <button @click="ShowCampaignsModal">Play</button>
-            <button class="secondary" @click="StartZenMode">Zen Mode</button>
-            <button class="secondary disabled">Achievements</button>
+            <button aria-label="playButton" @click="ShowCampaignsModal">Play</button>
+            <button aria-label="zenModeButton" class="secondary" @click="StartZenMode">Zen Mode</button>
+            <button aria-label="achievementsButton" class="secondary disabled">Achievements</button>
             <leftright>
-              <button class="tertiary" @click="StartCampaign(campaigns[0])">Tutorial</button>
-              <button class="tertiary" @click="showSettings = !showSettings">Settings</button>
+              <button aria-label="tutorialButton" class="tertiary"
+                @click="StartCampaign(campaigns[0])">Tutorial</button>
+              <button aria-label="settingsButton" class="tertiary"
+                @click="showSettings = !showSettings">Settings</button>
             </leftright>
             <leftright>
-              <button class="tertiary" @click="Share">Share</button>
-              <button class="tertiary action" @click="HandleDonateButtonClick">Donate!</button>
+              <button aria-label="shareButton" class="tertiary" @click="Share">Share</button>
+              <button aria-label="donateButton" class="tertiary action"
+                @click="HandleDonateButtonClick">Donate!</button>
             </leftright>
           </controls>
         </modal>
         <modal :class="{show: showCampaigns || showSets}" class="down">
           <header>
-            <button @click="HandleBackButtonClick(event)">
+            <button aria-label="cancelButton" @click="HandleBackButtonClick(event)">
               <icon class="cancel medium"></icon>
             </button>
           </header>
@@ -173,7 +176,7 @@
               <campaign v-for="(campaign, index) in campaignsWithoutTutorialOrEndless" :key="index"
                 :class="{passed: campaign.finished, dirty: campaign.isDirty, locked: campaign.locked, finished: campaign.finished}"
                 @click="StartCampaign(campaign)">
-                <h4>
+                <h3>
                   <name>
                     <icon class="lock tiny" v-if="campaign.locked"></icon>
                     {{campaign.name}}
@@ -181,7 +184,7 @@
                   <status v-if="!campaign.locked">
                     {{campaign.finished ? Intl.NumberFormat(userLocale).format(campaign.score) + ' pts' : 'ready!'}}
                   </status>
-                </h4>
+                </h3>
                 <p></p>
               </campaign>
             </campaigns>
@@ -190,7 +193,7 @@
         </modal>
         <modal :class="{show: showSets}" class="down" v-if="currentCampaign">
           <header>
-            <button @click="HandleBackButtonClick(event)">
+            <button aria-label="backButton" @click="HandleBackButtonClick(event)">
               <icon class="chevron-down medium"></icon>
             </button>
           </header>
@@ -200,7 +203,7 @@
               <set v-for="(set, index) in currentCampaign.sets" :key="index"
                 @click="HandleSelectSetButtonClick(event, set)"
                 :class="{passed: set.passed, dirty: set.isDirty, locked: set.locked, finished: set.finished}">
-                <h4>
+                <h3>
                   <name>
                     <icon class="lock tiny" v-if="set.locked"></icon>
                     {{set.name}}
@@ -211,7 +214,7 @@
                   <status v-if="!currentCampaign.isTutorial">
                     {{set.finished ? (set.percent > 50 ? 'done!' : 'Failed') : set.locked ? '' : set.stages.length +' levels'}}
                   </status>
-                </h4>
+                </h3>
                 <p v-if="set.finished">{{ Intl.NumberFormat(userLocale).format(set.percent) + '%'  }} –
                   {{set.score}} out of {{set.highestPossibleScore + ' pts'}}
                 </p>
@@ -224,7 +227,7 @@
         </modal>
         <modal :class="{show: showSettings}">
           <header>
-            <button @click="HandleBackButtonClick(event)">
+            <button aria-label="cancelButton" @click="HandleBackButtonClick(event)">
               <icon class="cancel medium"></icon>
             </button>
           </header>
@@ -237,11 +240,11 @@
                   placeholder="Player name" v-model="tempPlayerName" tabindex="0"
                   @keyup.enter="playerName = tempPlayerName" />
                 <tinycontrols :class="{disabled: tempPlayerName === playerName}">
-                  <button class="secondary" :tabindex="tempPlayerName === playerName ? -1 : 0"
+                  <button aria-label="cancelButton" class="secondary" :tabindex="tempPlayerName === playerName ? -1 : 0"
                     @click="tempPlayerName = playerName">
                     <icon class="x"></icon>
                   </button>
-                  <button class="primary" :tabindex="tempPlayerName === playerName ? -1 : 0"
+                  <button aria-label="confirmButton" class="primary" :tabindex="tempPlayerName === playerName ? -1 : 0"
                     @click="playerName = tempPlayerName">
                     <icon class="check"></icon>
                   </button>
@@ -268,8 +271,10 @@
             <divider></divider>
             <section v-if="!isPlaying">
               <leftright style="margin: 0">
-                <button class="tertiary" @click="HandleReloadAppButtonClick">Reload App</button>
-                <button class="tertiary" @click="HandleClearDataButtonClick">Clear data</button>
+                <button aria-label="reloadAppButton" class="tertiary" @click="HandleReloadAppButtonClick">Reload
+                  App</button>
+                <button aria-label="clearDataButton" class="tertiary" @click="HandleClearDataButtonClick">Clear
+                  data</button>
               </leftright>
             </section>
             <divider></divider>
@@ -284,16 +289,17 @@
               <subtitle v-html="currentYesNo.message"></subtitle>
             </h1>
             <controls>
-              <button @click="showYesNo = false">no</button>
-              <button @click="HandleActionButton(event, currentYesNo.action)" class="secondary">Yes</button>
+              <button aria-label="noButton" @click="showYesNo = false">no</button>
+              <button aria-label="yesButton" @click="HandleActionButton(event, currentYesNo.action)"
+                class="secondary">Yes</button>
             </controls>
           </section>
         </modal>
         <confetti></confetti>
       </app>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.094"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.094"></script>
+    <script src="/helpers/console-enhancer.js?4.0.095"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.095"></script>
   </body>
 
 </html>

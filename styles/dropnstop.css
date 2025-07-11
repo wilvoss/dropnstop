@@ -655,29 +655,36 @@ set.passed {
   pointer-events: all;
 }
 
-campaign h4,
+campaign h3,
 campaign p,
-set h4,
+set h43,
 set p {
   margin: 0;
 }
 
-campaign h4,
-set h4 {
+campaign h3,
+set h3 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
   gap: 4px;
+  padding: 0px;
   width: 100%;
   font-weight: 200;
+  font-size: 1em;
   line-height: 1.1em;
   text-align: left;
   text-shadow: var(--shadow);
 }
 
-campaign h4 name,
-set h4 name {
+section campaign h3,
+section set h3 {
+  margin: 0px;
+}
+
+campaign h3 name,
+set h3 name {
   display: flex;
   justify-content: start;
   align-items: end;
@@ -686,20 +693,20 @@ set h4 name {
   width: 100%;
 }
 
-campaign h4 status,
-set h4 status {
+campaign h3 status,
+set h3 status {
   display: flex;
   font-weight: 200;
   text-shadow: var(--shadowAlt);
   white-space: nowrap;
 }
 
-campaign h4 status {
+campaign h3 status {
   font-weight: bold;
 }
 
-campaign.finished h4 status,
-set.finished h4 status {
+campaign.finished h3 status,
+set.finished h3 status {
   font-weight: bold;
 }
 
