@@ -1,4 +1,4 @@
-import { ThemeModel } from '../models/ThemeModel.min.js';
+import { ThemeModel } from '../models/models.min.js';
 
 // prettier-ignore
 const themes = [

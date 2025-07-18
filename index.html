@@ -36,8 +36,8 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.095" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.095" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.096" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.096" media="screen" />
   </head>
 
   <body>
@@ -284,10 +284,10 @@
           </version>
         </modal>
         <modal :class="{show: currentYesNo && showYesNo}" class="center up">
-          <section v-if="currentYesNo">
-            <h1>{{currentYesNo.title}}
-              <subtitle v-html="currentYesNo.message"></subtitle>
-            </h1>
+          <h1 v-if="currentYesNo">{{currentYesNo.title}}
+            <subtitle v-html="currentYesNo.message"></subtitle>
+          </h1>
+          <section>
             <controls>
               <button aria-label="noButton" @click="showYesNo = false">no</button>
               <button aria-label="yesButton" @click="HandleActionButton(event, currentYesNo.action)"
@@ -298,8 +298,8 @@
         <confetti></confetti>
       </app>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.095"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.095"></script>
+    <script src="/helpers/console-enhancer.js?4.0.096"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.096"></script>
   </body>
 
 </html>

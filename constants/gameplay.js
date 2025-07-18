@@ -1,13 +1,18 @@
 import { version } from '/constants/version.js';
+// prettier-ignore
 export async function loadGameplayModules() {
-  const { DifficultyModel } = await import(`../models/DifficultyModel.min.js?${version}`);
-  const { GradeModel } = await import(`../models/GradeModel.min.js?${version}`);
-  const { StageModel } = await import(`../models/StageModel.min.js?${version}`);
-  const { SetModel } = await import(`../models/SetModel.min.js?${version}`);
-  const { CampaignModel } = await import(`../models/CampaignModel.min.js?${version}`);
-  const { ResultModel } = await import(`../models/ResultModel.min.js?${version}`);
-  const { YesNoModel } = await import(`../models/YesNoModel.min.js?${version}`);
-  const { achievements } = await import(`../constants/achievements.min.js?${version}`);
+  const {
+    AchievementModel,
+    CampaignModel,
+    DifficultyModel,
+    GradeModel,
+    ModeModel,
+    ResultModel,
+    SetModel,
+    StageModel,
+    ThemeModel,
+    YesNoModel } = await import(`../models/models.min.js?${version}`);
+  const { achievements } = await import(`../constants/achievements.js?${version}`);
 
   const grades = [
     new GradeModel({ threshold: 100, value: `S+`, title: `Drop Deity`, description: `Perfection incarnate!`, emoji: `🏆` }),
@@ -838,12 +843,15 @@ export async function loadGameplayModules() {
     difficulties,
     campaigns,
     achievements,
+    AchievementModel,
+    CampaignModel,
     DifficultyModel,
     GradeModel,
-    StageModel,
-    SetModel,
-    CampaignModel,
+    ModeModel,
     ResultModel,
+    SetModel,
+    StageModel,
+    ThemeModel,    
     YesNoModel,
   };
 }

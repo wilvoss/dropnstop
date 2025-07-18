@@ -1,4 +1,4 @@
-import { AchievementModel } from '/models/AchievementModel.min.js';
+import { AchievementModel } from '/models/models.min.js';
 
 export const achievements = [
   // Progression

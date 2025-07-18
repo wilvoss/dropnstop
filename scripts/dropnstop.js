@@ -487,7 +487,7 @@ LoadAllModules().then((modules) => {
       NewYesNo(_title, _action, _message = null) {
         note('Showing Yes/No dialog for action: ' + _action);
         this.showYesNo = true;
-        this.currentYesNo = modules.YesNoModel({
+        this.currentYesNo = new modules.YesNoModel({
           action: _action,
           title: _title || 'Are you sure?',
           message: _message || 'Are you sure you want to ' + _action + '? This action cannot be undone.',
@@ -1243,7 +1243,7 @@ LoadAllModules().then((modules) => {
 
     async mounted() {
       highlight(`App version ${this.version} initiated`, true);
-      UseDebug = document.location.href.indexOf('staging') != -1 || document.location.href.indexOf('debug=true') != -1;
+      UseDebug = document.location.href.indexOf('local') != -1 || document.location.href.indexOf('debug=true') != -1;
       this.isLoading = true;
       this.stageElement = document.getElementsByTagName('stage')[0];
       this.puckElement = document.getElementsByTagName('puck')[0];
