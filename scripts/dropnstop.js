@@ -513,6 +513,9 @@ LoadAllModules().then((modules) => {
 
           if (_action === 'quit') {
             this.EndGame();
+            if (this.currentCampaign.isEndless) {
+              this.CreateConfetti(true);
+            }
             return;
           }
 
