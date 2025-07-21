@@ -52,6 +52,7 @@ LoadAllModules().then((modules) => {
         campaigns: modules.campaigns,
         currentCampaign: null,
         currentSet: null,
+        appVisualStateAllConfetti: [],
         successThreshold: 50,
         achievements: {
           first_drop: false,
@@ -528,6 +529,7 @@ LoadAllModules().then((modules) => {
         }
 
         if (_action === 'stop') {
+          note('Stopping puck');
           this.StopPuck();
           this.isDropping = false;
           this.StopAnimationLoop();
@@ -537,9 +539,12 @@ LoadAllModules().then((modules) => {
 
         if (_action === 'next') {
           if (this.showEndSet && !this.isLastSet && this.currentCampaign && !this.currentCampaign.finished) {
+            note('Resetting theater and completing stage and readying next');
+
             this.ResetTheater();
             this.CompleteStageAndReadyNext();
           } else {
+            note('Completing stage and readying next');
             this.CompleteStageAndReadyNext();
             this.isStopped = false;
             this.isReady = true;
@@ -937,40 +942,40 @@ LoadAllModules().then((modules) => {
       },
       RemoveConfetti() {
         note('Remove confetti');
-        const confetti = document.getElementsByTagName('confetti')[0];
-        if (confetti) {
-          confetti.innerHTML = '';
-        }
+        this.appVisualStateAllConfetti = [];
       },
       CreateConfetti(_highlight = false) {
         note('Create confetti');
         this.RemoveConfetti();
-        let domConfetti = document.getElementsByTagName('confetti')[0];
-        let count = domConfetti.clientWidth;
+        requestAnimationFrame(() => {
+          let domApp = document.getElementsByTagName('confetti')[0];
+          let count = domApp.clientWidth;
 
-        for (let x = 0; x < count; x++) {
-          let confetto = document.createElement('confetto');
-          let lightness = _highlight ? getRandomInt(66, 84) : getRandomInt(76, 94);
+          for (let x = 0; x < count; x++) {
+            let confetto = { l: '0px', td: '0ms', tdly: '0ms', bc: 'none', r: '0deg', w: 0, h: 0, tl: '0px 0px', cn: '' };
 
-          confetto.style.setProperty('left', getRandomInt(0, domConfetti.clientWidth) + (window.innerWidth - domConfetti.clientWidth) / 2 + 'px');
-          confetto.style.setProperty('transition-duration', getRandomInt(1600, 3001) + 'ms');
-          confetto.style.setProperty('background-color', 'hsl(' + (this.currentTheme.h + (_highlight ? 180 : 0)) + ', ' + (this.currentTheme.s + 40) + '%, ' + lightness + '%)');
-
-          confetto.style.setProperty('transition-delay', getRandomInt(0, 800) + 'ms');
-          confetto.style.setProperty('rotate', +'deg');
-          let width = getRandomInt(40, 100) / 10;
-          let height = getRandomInt(40, 100) / 10;
-          confetto.style.setProperty('width', width + 'px');
-          confetto.style.setProperty('height', height + 'px');
-          domConfetti.appendChild(confetto);
-        }
-        window.setTimeout(function () {
-          let allConfetti = document.getElementsByTagName('confetto');
-          for (let _x = 0; _x < allConfetti.length; _x++) {
-            const confetti = allConfetti[_x];
-            confetti.style.setProperty('transform', 'translate(' + parseInt(getRandomInt(-20, 20)) + 'px, ' + parseInt(document.body.clientHeight - confetti.clientHeight + 20) + 'px) rotate(' + getRandomInt(-360, 360) + 'deg)');
-            confetti.className = 'drop';
+            let lightness = _highlight ? getRandomInt(66, 84) : getRandomInt(76, 94);
+            confetto.l = getRandomInt(0, domApp.clientWidth) + (window.innerWidth - domApp.clientWidth) / 2 + 'px';
+            confetto.td = getRandomInt(1600, 3001) + 'ms';
+            confetto.tdly = getRandomInt(0, 800) + 'ms';
+            confetto.bc = 'hsl(' + (this.currentTheme.h + (_highlight ? 180 : 0)) + ', ' + (this.currentTheme.s + 40) + '%, ' + lightness + '%)';
+            confetto.r = +'0deg';
+            let width = getRandomInt(40, 100) / 10;
+            let height = getRandomInt(40, 100) / 10;
+            confetto.w = width;
+            confetto.h = height;
+            this.appVisualStateAllConfetti.push(confetto);
           }
+          setTimeout(
+            () => {
+              this.appVisualStateAllConfetti.forEach((confetto) => {
+                confetto.tl = parseInt(getRandomInt(-20, 20)) + 'px ' + parseInt(document.body.clientHeight - confetto.h + 20) + 'px';
+                confetto.r = getRandomInt(-360, 360) + 'deg';
+                confetto.cn = 'drop';
+              });
+            },
+            this.appVisualStateShowPageGameOver ? 300 : 10,
+          );
         });
       },
       Share() {

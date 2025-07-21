@@ -180,6 +180,14 @@ button {
   touch-action: manipulation;
 }
 
+button:focus-visible,
+welcome:focus-visible,
+puckcolor:focus-visible,
+theme:focus-visible {
+  outline: 2px solid hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
+  outline-offset: 2px;
+}
+
 theater,
 modal,
 overlay {
@@ -1201,8 +1209,11 @@ b {
 confetti {
   display: block;
   position: absolute;
-  width: var(--maxWidth);
-  height: var(--maxHeight);
+  z-index: 3000;
+  width: 100%;
+  max-width: var(--maxWidth);
+  height: 100%;
+  max-height: var(--maxHeight);
   pointer-events: none;
 }
 
@@ -1213,8 +1224,7 @@ canvas {
   top: -20px;
   transform: translate(0px -10px) rotate(0deg);
   opacity: 1;
-  z-index: 3000;
-  transition-property: transform, opacity;
+  transition-property: translate, rotate, opacity;
   transition-timing-function: ease-in;
   background: var(--appForeground);
   width: 10px;
