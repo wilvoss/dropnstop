@@ -36,16 +36,17 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.098" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.098" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.099" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.099" media="screen" />
   </head>
 
   <body>
     <main id="app">
       <app v-cloak
         :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
-        <theater v-bind:inert="!isPlaying || showSettings">
-          <header :class="{hide: isFirstRun}">
+        <theater
+          v-bind:inert="showYesNo || (!isPlaying && !showEndSet) || showHome || showCampaigns || showSets || showSettings">
+          <header :class="{hide: isFirstRun}" v-bind:inert="lock || isFirstRun || showEndSet">
             <button tabindex="0" aria-label="settingsButton" :class="{hide: lock}" @click="showSettings=!showSettings">
               <icon class="settings medium"></icon>
             </button>
@@ -101,12 +102,12 @@
           </stage>
 
           <controls>
-            <button tabindex="0" id="buttonRetryStage" key="buttonRetryStage"
-              :class="{hide: currentCampaign && currentCampaign.isTutorial}"
+            <button v-bind:inert="currentCampaign && currentCampaign.isTutorial" tabindex="0" id="buttonRetryStage"
+              key="buttonRetryStage" :class="{hide: currentCampaign && currentCampaign.isTutorial}"
               @click="HandleSelectSetButtonClick($event, currentSet)"
               v-if="currentCampaign && !currentCampaign.isTutorial && currentSet && currentSet.finished && !currentSet.passed">Retry</button>
-            <button tabindex="0" id="buttonNextStage" key="buttonNextStage" @click="HandleActionButton($event, 'next')"
-              class="action" v-if="!showEndSet"
+            <button v-bind:inert="lock || isReady || !isStopped" tabindex="0" id="buttonNextStage" key="buttonNextStage"
+              @click="HandleActionButton($event, 'next')" class="action" v-if="!showEndSet"
               :class="{hide:  lock || isReady || !isStopped, highlight: currentStage && currentStage.finished}">
               {{dropCount >= 2 && isStopped || isSuccess ? 'Next' : 'retry'}}
             </button>
@@ -114,7 +115,8 @@
               v-if="currentSet && currentSet.passed && showEndSet && !isLastSet && currentCampaign && !currentCampaign.finished">Next</button>
             <button tabindex="0" id="buttonQuit" key="buttonQuit" @click="HandleOkayButtonClick"
               v-if="currentSet && currentSet.finished">Quit</button>
-            <button tabindex="0" id="buttonDrop" key="buttonDrop" v-if="!showEndSet "
+            <button v-bind:inert="showEndSet || lock || (isFirstRun && showAnnouncement)" tabindex="0" id="buttonDrop"
+              key="buttonDrop" v-if="!showEndSet "
               :class="{hide: showEndSet || lock || (isFirstRun && showAnnouncement), disabled: isStopped, blink: !showAnnouncement && isFirstRun}"
               @pointerdown="HandleActionButton($event, 'drop')" @pointerup="HandleDropButtonPointerUp"
               @pointerleave="HandleDropButtonPointerUp" class="action">DROP</button>
@@ -166,7 +168,7 @@
             </leftright>
           </controls>
         </modal>
-        <modal v-bind:inert="!showCampaigns" :class="{show: showCampaigns || showSets}" class="down">
+        <modal v-bind:inert="showYesNo || !showCampaigns" :class="{show: showCampaigns || showSets}" class="down">
           <header>
             <button tabindex="0" aria-label="cancelButton" @click="HandleBackButtonClick($event)">
               <icon class="cancel medium"></icon>
@@ -175,7 +177,8 @@
           <section>
             <h2>Campaigns</h2>
             <campaigns>
-              <campaign v-for="(campaign, index) in campaignsWithoutTutorialOrEndless" :key="index"
+              <campaign tabindex="0" v-bind:inert="campaign.locked" @keyup.enter="StartCampaign(campaign)"
+                v-for="(campaign, index) in campaignsWithoutTutorialOrEndless" :key="index"
                 :class="{passed: campaign.finished, dirty: campaign.isDirty, locked: campaign.locked, finished: campaign.finished}"
                 @click="StartCampaign(campaign)">
                 <h3>
@@ -193,7 +196,7 @@
           </section>
           <controls></controls>
         </modal>
-        <modal v-bind:inert="!showSets" :class="{show: showSets}" class="down" v-if="currentCampaign">
+        <modal v-bind:inert="showYesNo || !showSets" :class="{show: showSets}" class="down" v-if="currentCampaign">
           <header>
             <button tabindex="0" aria-label="backButton" @click="HandleBackButtonClick($event)">
               <icon class="chevron-down medium"></icon>
@@ -202,7 +205,8 @@
           <section>
             <h2>{{currentCampaign.name}}</h2>
             <sets v-if="currentCampaign.sets && currentCampaign.sets.length > 0">
-              <set v-for="(set, index) in currentCampaign.sets" :key="index"
+              <set tabindex="0" v-bind:inert="set.locked" @keyup.enter="HandleSelectSetButtonClick($event, set)"
+                v-for="(set, index) in currentCampaign.sets" :key="index"
                 @click="HandleSelectSetButtonClick($event, set)"
                 :class="{passed: set.passed, dirty: set.isDirty, locked: set.locked, finished: set.finished}">
                 <h3>
@@ -227,7 +231,7 @@
           </section>
           <controls></controls>
         </modal>
-        <modal v-bind:inert="!showSettings" :class="{show: showSettings}">
+        <modal v-bind:inert="showYesNo || !showSettings" :class="{show: showSettings}">
           <header>
             <button tabindex="0" aria-label="cancelButton" @click="HandleBackButtonClick($event)">
               <icon class="cancel medium"></icon>
@@ -292,7 +296,7 @@
             v{{version}}
           </version>
         </modal>
-        <modal v-bind:inert="!currentYesNo || !showYesNo" :class="{show: currentYesNo && showYesNo}" class="center up">
+        <modal v-bind:inert="!showYesNo || !showYesNo" :class="{show: currentYesNo && showYesNo}" class="center up">
           <h1 v-if="currentYesNo">{{currentYesNo.title}}
             <subtitle v-html="currentYesNo.message"></subtitle>
           </h1>
@@ -311,8 +315,8 @@
         </confetto>
       </confetti>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.098"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.098"></script>
+    <script src="/helpers/console-enhancer.js?4.0.099"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.099"></script>
   </body>
 
 </html>

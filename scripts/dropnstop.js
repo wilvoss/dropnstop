@@ -503,10 +503,10 @@ LoadAllModules().then((modules) => {
         }
       },
       HandleActionButton(_e, _action) {
-        // if (_e) {
-        //   _e.stopPropagation();
-        //   _e.preventDefault();
-        // }
+        if (_e) {
+          _e.stopPropagation();
+          _e.preventDefault();
+        }
 
         if (this.showYesNo) {
           this.showYesNo = false;
@@ -670,8 +670,8 @@ LoadAllModules().then((modules) => {
       },
       HandleSelectSetButtonClick(_e, _set) {
         note('Select set button clicked: ' + _set.name);
-        // _e.stopPropagation();
-        // _e.preventDefault();
+        _e.stopPropagation();
+        _e.preventDefault();
 
         if (_set.finished) {
           this.potentialSet = _set;

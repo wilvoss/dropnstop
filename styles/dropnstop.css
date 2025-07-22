@@ -183,7 +183,9 @@ button {
 button:focus-visible,
 welcome:focus-visible,
 puckcolor:focus-visible,
-theme:focus-visible {
+theme:focus-visible,
+set:focus-visible,
+campaign:focus-visible {
   outline: 2px solid hsl(var(--hue), var(--saturation), var(--oppositeLuminosity));
   outline-offset: 2px;
 }
