@@ -46,6 +46,7 @@ body {
   padding: 0px;
   width: 100%;
   height: 100%;
+  touch-action: manipulation;
 }
 
 main {
@@ -66,7 +67,6 @@ main {
   -webkit-user-select: none;
   text-shadow: var(--shadow);
 }
-
 
 [v-cloak] {
   opacity: 0;
@@ -223,7 +223,6 @@ overlay {
 .up {
   transform: translate(0px, -100%);
 }
-
 
 theater {
   justify-content: start;
@@ -594,7 +593,6 @@ sets {
   width: 100%;
 }
 
-
 campaign,
 set {
   display: flex;
@@ -634,7 +632,6 @@ campaign.finished.passed,
 set.finished.passed {
   font-style: unset
 }
-
 
 campaign.locked,
 set.locked {
@@ -756,7 +753,6 @@ section.puck puck {
   width: 20px;
   height: 20px;
 }
-
 
 difficulty {
   display: flex;
