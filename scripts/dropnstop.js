@@ -1492,12 +1492,9 @@ LoadAllModules().then((modules) => {
   });
 
   //#region configuration
-  // prettier-ignore
-  app.config.compilerOptions.isCustomElement = tag =>
-    [
-      // 'app',  <-- REMOVE THIS LINE
-      'app', 'modal', 'theater', 'overlay', 'controls', 'stat', 'score', 'icon', 'stage', 'puck', 'tail', 'target', 'splat', 'info', 'grade', 'welcome', 'ohno', 'pretitle', 'subtitle', 'divider', 'stretch', 'leftright', 'setting', 'puckcolor', 'theme', 'color', 'value', 'sets', 'set', 'campaigns', 'campaign', 'tinycontrols', 'confetti', 'announcement', 'instructions', 'version', 'words','stats', 'name', 'status'
-    ].includes(tag);
+  // There are NO vue components in this code. All non-standard HTML tags are meant for semantic and syntactical purposes
+  app.config.compilerOptions.isCustomElement = (tag) => true;
+
   //#endregion
 
   //#endregion

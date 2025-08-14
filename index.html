@@ -36,12 +36,13 @@
 
     <link rel="manifest" href="manifest.webmanifest">
 
-    <link rel="stylesheet" href="styles/dropnstop.css?4.0.101" media="screen" />
-    <link rel="stylesheet" href="styles/icons.css?4.0.101" media="screen" />
+    <link rel="stylesheet" href="styles/dropnstop.css?4.0.102" media="screen" />
+    <link rel="stylesheet" href="styles/icons.css?4.0.102" media="screen" />
   </head>
 
   <body>
     <main id="app">
+      <!-- There are NO vue components in this code. All non-standard HTML tags are meant for semantic and syntactical purposes -->
       <app v-cloak
         :class="{lock: lock, stopped: isStopped, success: isSuccess, darkpuck: useDarkPuck, dropping: isDropping, ended: showEndSet, keyboard: spaceBarInUse}">
         <theater
@@ -315,8 +316,8 @@
         </confetto>
       </confetti>
     </main>
-    <script src="/helpers/console-enhancer.js?4.0.101"></script>
-    <script type="module" src="/scripts/dropnstop.js?4.0.101"></script>
+    <script src="/helpers/console-enhancer.js?4.0.102"></script>
+    <script type="module" src="/scripts/dropnstop.js?4.0.102"></script>
   </body>
 
 </html>
