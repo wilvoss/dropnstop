@@ -32,8 +32,8 @@ export async function loadGameplayModules() {
   const difficulties = [
     new DifficultyModel({ id: 0, name: 'Easy', height: 20, speed: 900, }),
     new DifficultyModel({ id: 1, name: 'Normal', height: 12, width: 15, speed: 1400, selected: true, }),
-    new DifficultyModel({ id: 2, name: 'Hard', height: 8, width: 11, speed: 2000, }),
-    new DifficultyModel({ id: 3, name: 'Ultra', height: 4, width: 7, speed: 2300, }),
+    new DifficultyModel({ id: 2, name: 'Hard', height: 8, width: 11, speed: 1600, }),
+    new DifficultyModel({ id: 3, name: 'Ultra', height: 4, width: 7, speed: 1800, }),
   ];
 
   var campaigns = [
